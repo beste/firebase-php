@@ -625,7 +625,7 @@ Validating Registration Tokens
 ******************************
 
 If you have a set of registration tokens that you want to check for validity or if they are still registered
-to your project, you can use the ``validateTokens()`` method:
+to your project, you can use the ``validateRegistrationTokens()`` method:
 
 .. code-block:: php
 
