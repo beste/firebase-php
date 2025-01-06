@@ -24,7 +24,11 @@ final class CustomTokenViaGoogleCredentials
 
     private readonly Parser $parser;
 
-    public function __construct(private readonly SignBlobInterface $signer, private readonly ?string $tenantId = null)
+    public function __construct(
+        private readonly SignBlobInterface $signer,
+        private readonly ?string $tenantId = null,
+        private readonly ?string $serviceAccountIdForTokenGeneration = null,
+    )
     {
         $this->encoder = new JoseEncoder();
         $this->parser = new Parser($this->encoder);
@@ -43,10 +47,12 @@ final class CustomTokenViaGoogleCredentials
             ? DT::toUTCDateTimeImmutable($expiresAt)
             : $now->add(new DateInterval('PT1H'));
 
+        $issAndSub = $this->serviceAccountIdForTokenGeneration ?? $this->signer->getClientName();
+
         $header = ['typ' => 'JWT', 'alg' => 'RS256'];
         $payload = [
-            'iss' => $this->signer->getClientName(),
-            'sub' => $this->signer->getClientName(),
+            'iss' => $issAndSub,
+            'sub' => $issAndSub,
             'aud' => 'https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit',
             'iat' => $now->getTimestamp(),
             'exp' => $expiresAt->getTimestamp(),
