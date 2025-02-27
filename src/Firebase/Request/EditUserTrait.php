@@ -38,6 +38,9 @@ trait EditUserTrait
 
     protected ?string $clearTextPassword = null;
 
+    /** @var array<string, mixed>|null */
+    protected ?array $multiFactor = null;
+
     /**
      * @param Stringable|mixed $uid
      */
@@ -168,6 +171,7 @@ trait EditUserTrait
             'phoneNumber' => $this->phoneNumber,
             'photoUrl' => $this->photoUrl,
             'password' => $this->clearTextPassword,
+            'mfa' => $this->multiFactor,
         ], static fn($value): bool => $value !== null);
     }
 

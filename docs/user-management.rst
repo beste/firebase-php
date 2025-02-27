@@ -269,6 +269,7 @@ Property               Type         Description
 ``deletePhotoUrl``     boolean      Whether or not to delete the user's photo.
 ``deleteDisplayName``  boolean      Whether or not to delete the user's display name.
 ``deletePhoneNumber``  boolean      Whether or not to delete the user's phone number.
+``resetMultiFactor``   boolean      Whether or not to reset all of the user's enrolled factors.
 ``deleteProvider``     string|array One or more identity providers to delete.
 ``customAttributes``   array        A list of custom attributes which will be available in a User's ID token.
 ====================== ============ ===========
@@ -321,6 +322,18 @@ Enable a user
     $uid = 'some-uid';
 
     $updatedUser = $auth->enableUser($uid);
+
+*********************************
+Reset multi factor authentication
+*********************************
+
+The Firebase Admin SDK allows removing all enrolled factors for multi factor authentication for a user:
+
+.. code-block:: php
+
+    $uid = 'some-uid';
+
+    $updatedUser = $auth->resetMultiFactor($uid);
 
 ******************
 Custom user claims

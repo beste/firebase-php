@@ -168,6 +168,14 @@ interface Auth
     /**
      * @param Stringable|non-empty-string $uid
      *
+     * @throws Exception\AuthException
+     * @throws Exception\FirebaseException
+     */
+    public function resetMultiFactor(Stringable|string $uid): UserRecord;
+
+    /**
+     * @param Stringable|non-empty-string $uid
+     *
      * @throws UserNotFound
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException

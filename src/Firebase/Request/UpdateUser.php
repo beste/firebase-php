@@ -153,6 +153,13 @@ final class UpdateUser implements Request
                     );
 
                     break;
+
+                case 'resetmultifactor':
+                    if ($value === true) {
+                        $request = $request->resetMultiFactor();
+                    }
+
+                    break;
             }
         }
 
@@ -201,6 +208,19 @@ final class UpdateUser implements Request
         $request = clone $this;
         $request->email = null;
         $request->attributesToDelete[] = self::EMAIL;
+
+        return $request;
+    }
+
+    public function resetMultiFactor(): self
+    {
+        $request = clone $this;
+
+        if (is_null($request->multiFactor)) {
+            $request->multiFactor = [];
+        }
+
+        $request->multiFactor['enrolledFactors'] = [];
 
         return $request;
     }
