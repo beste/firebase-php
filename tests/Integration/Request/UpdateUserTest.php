@@ -203,4 +203,45 @@ final class UpdateUserTest extends IntegrationTestCase
             $this->auth->deleteUser($user->uid);
         }
     }
+
+    #[Test]
+    public function setMultiFactor(): void
+    {
+        $user = $this->auth->createUser(CreateUser::new());
+
+        $factor = [
+            'mfaEnrollmentId' => '85dc3f7b-7bef-45b9-b9e6-0a1c2c656fed',
+            'phoneInfo' => '+31123456789',
+            'displayName' => '',
+            'enrolledAt' => '2025-02-28T15:30:00Z',
+        ];
+
+        $check = $this->auth->updateUser($user->uid, ['enrolledfactors' => [$factor]]);
+
+        $this->assertEquals($factor['mfaEnrollmentId'], $check->mfaInfo?->mfaEnrollmentId);
+        $this->assertEquals($factor['phoneInfo'], $check->mfaInfo?->phoneInfo);
+        $this->assertEquals($factor['displayName'], $check->mfaInfo?->displayName);
+        $this->assertEquals($factor['enrolledAt'], $check->mfaInfo?->enrolledAt);
+    }
+
+    #[Test]
+    public function resetMultiFactor(): void
+    {
+        $user = $this->auth->createUser(CreateUser::new());
+
+        $factor = [
+            'mfaEnrollmentId' => '85dc3f7b-7bef-45b9-b9e6-0a1c2c656fed',
+            'phoneInfo' => '+31123456789',
+            'displayName' => '',
+            'enrolledAt' => '2025-02-28T15:30:00Z',
+        ];
+
+        $updatedUser = $this->auth->updateUser($user->uid, ['enrolledfactors' => [$factor]]);
+
+        $this->assertNotNull($updatedUser->mfaInfo);
+
+        $check = $this->auth->updateUser($user->uid, ['resetmultifactor' => true]);
+
+        $this->assertNull($check->mfaInfo);
+    }
 }

@@ -160,6 +160,11 @@ final class UpdateUser implements Request
                     }
 
                     break;
+
+                case 'multifactors':
+                    $request = $request->withMultiFactors($value);
+
+                    break;
             }
         }
 
@@ -212,6 +217,27 @@ final class UpdateUser implements Request
         return $request;
     }
 
+    /**
+     * @param array<array-key, array{
+     *     'mfaEnrollmentId'?: string,
+     *     'displayName': string,
+     *     'phoneInfo': string,
+     *     'enrolledAt'?: string,
+     * }> $enrollments
+     */
+    public function withMultiFactors(array $enrollments): self
+    {
+        $request = clone $this;
+
+        if (is_null($request->multiFactor)) {
+            $request->multiFactor = [];
+        }
+
+        $request->multiFactor['enrollments'] = $enrollments;
+
+        return $request;
+    }
+
     public function resetMultiFactor(): self
     {
         $request = clone $this;
@@ -220,7 +246,7 @@ final class UpdateUser implements Request
             $request->multiFactor = [];
         }
 
-        $request->multiFactor['enrolledFactors'] = [];
+        $request->multiFactor['enrollments'] = [];
 
         return $request;
     }

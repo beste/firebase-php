@@ -269,7 +269,8 @@ Property               Type         Description
 ``deletePhotoUrl``     boolean      Whether or not to delete the user's photo.
 ``deleteDisplayName``  boolean      Whether or not to delete the user's display name.
 ``deletePhoneNumber``  boolean      Whether or not to delete the user's phone number.
-``resetMultiFactor``   boolean      Whether or not to reset all of the user's enrolled factors.
+``resetMultiFactor``   boolean      Whether or not to reset all of the user's enrolled factors. Including phone and TOTP factors.
+``multiFactors``       array        An array of multi-factor factors.
 ``deleteProvider``     string|array One or more identity providers to delete.
 ``customAttributes``   array        A list of custom attributes which will be available in a User's ID token.
 ====================== ============ ===========
@@ -322,18 +323,6 @@ Enable a user
     $uid = 'some-uid';
 
     $updatedUser = $auth->enableUser($uid);
-
-*********************************
-Reset multi factor authentication
-*********************************
-
-The Firebase Admin SDK allows removing all enrolled factors for multi factor authentication for a user:
-
-.. code-block:: php
-
-    $uid = 'some-uid';
-
-    $updatedUser = $auth->resetMultiFactor($uid);
 
 ******************
 Custom user claims
@@ -408,6 +397,25 @@ This method always returns an instance of ``Kreait\Firebase\Auth\DeleteUsersResu
     Using this method to delete multiple users at once will not trigger ``onDelete()`` event handlers for
     Cloud Functions for Firebase. This is because batch deletes do not trigger a user deletion event on each user.
     Delete users one at a time if you want user deletion events to fire for each deleted user.
+
+*********************************
+Set multi factor authentication
+*********************************
+
+The Firebase Admin SDK allows setting multi-factor authentication for a user, consisting of phone factors. Setting the
+multi-factor authentication overwrites all existing factors. Setting the `mfaEnrollmentId` and `enrolledAt` properties is
+optional. For example:
+
+.. code-block:: php
+
+    $uid = 'some-uid';
+
+    $updatedUser = $auth->updateUser($uid, ['multifactors' => [[
+        'mfaEnrollmentId' => '85dc3f7b-7bef-45b9-b9e6-0a1c2c656fed',
+        'phoneInfo' => '+31123456789',
+        'displayName' => 'foo',
+        'enrolledAt' => '2025-02-28T15:30:00Z',
+    ]]);
 
 **************************************
 Duplicate/Unregistered email addresses

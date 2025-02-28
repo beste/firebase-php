@@ -235,11 +235,6 @@ final class Auth implements Contract\Auth
         return $this->updateUser($uid, UpdateUser::new()->markAsDisabled());
     }
 
-    public function resetMultiFactor(Stringable|string $uid): UserRecord
-    {
-        return $this->updateUser($uid, UpdateUser::new()->resetMultiFactor());
-    }
-
     public function deleteUser(Stringable|string $uid): void
     {
         $uid = Uid::fromString($uid)->value;
