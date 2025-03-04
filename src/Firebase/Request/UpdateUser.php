@@ -228,11 +228,7 @@ final class UpdateUser implements Request
     public function withMultiFactors(array $enrollments): self
     {
         $request = clone $this;
-
-        if (is_null($request->multiFactor)) {
-            $request->multiFactor = [];
-        }
-
+        $request->multiFactor ??= [];
         $request->multiFactor['enrollments'] = $enrollments;
 
         return $request;
@@ -241,11 +237,7 @@ final class UpdateUser implements Request
     public function resetMultiFactor(): self
     {
         $request = clone $this;
-
-        if (is_null($request->multiFactor)) {
-            $request->multiFactor = [];
-        }
-
+        $request->multiFactor ??= [];
         $request->multiFactor['enrollments'] = [];
 
         return $request;
