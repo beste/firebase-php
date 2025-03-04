@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Integration\Request;
 
 use DateTimeImmutable;
+use Kreait\Firebase\Auth\MfaInfo;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Kreait\Firebase\Tests\IntegrationTestCase;
+use Kreait\Firebase\Util\DT;
 use PHPUnit\Framework\Attributes\Test;
 
 use function bin2hex;
@@ -207,7 +209,9 @@ final class UpdateUserTest extends IntegrationTestCase
     #[Test]
     public function setMultiFactor(): void
     {
-        $user = $this->auth->createUser(CreateUser::new());
+        $user = $this->auth->createUser(
+            CreateUser::new()->withVerifiedEmail(self::randomEmail(__FUNCTION__)),
+        );
 
         $factor = [
             'mfaEnrollmentId' => '85dc3f7b-7bef-45b9-b9e6-0a1c2c656fed',
@@ -216,18 +220,27 @@ final class UpdateUserTest extends IntegrationTestCase
             'enrolledAt' => '2025-02-28T15:30:00Z',
         ];
 
-        $check = $this->auth->updateUser($user->uid, ['enrolledfactors' => [$factor]]);
+        $enrolledAt = DT::toUTCDateTimeImmutable($factor['enrolledAt']);
 
-        $this->assertEquals($factor['mfaEnrollmentId'], $check->mfaInfo?->mfaEnrollmentId);
-        $this->assertEquals($factor['phoneInfo'], $check->mfaInfo?->phoneInfo);
-        $this->assertEquals($factor['displayName'], $check->mfaInfo?->displayName);
-        $this->assertEquals($factor['enrolledAt'], $check->mfaInfo?->enrolledAt);
+        try {
+            $check = $this->auth->updateUser($user->uid, ['multifactors' => [$factor]]);
+
+            $this->assertInstanceOf(MfaInfo::class, $check->mfaInfo);
+            $this->assertSame($factor['mfaEnrollmentId'], $check->mfaInfo->mfaEnrollmentId);
+            $this->assertSame($factor['phoneInfo'], $check->mfaInfo->phoneInfo);
+            $this->assertSame($factor['displayName'], $check->mfaInfo->displayName);
+            $this->assertEquals($enrolledAt, $check->mfaInfo->enrolledAt);
+        } finally {
+            $this->auth->deleteUser($user->uid);
+        }
     }
 
     #[Test]
     public function resetMultiFactor(): void
     {
-        $user = $this->auth->createUser(CreateUser::new());
+        $user = $this->auth->createUser(
+            CreateUser::new()->withVerifiedEmail(self::randomEmail(__FUNCTION__)),
+        );
 
         $factor = [
             'mfaEnrollmentId' => '85dc3f7b-7bef-45b9-b9e6-0a1c2c656fed',
@@ -236,12 +249,16 @@ final class UpdateUserTest extends IntegrationTestCase
             'enrolledAt' => '2025-02-28T15:30:00Z',
         ];
 
-        $updatedUser = $this->auth->updateUser($user->uid, ['enrolledfactors' => [$factor]]);
+        try {
+            $updatedUser = $this->auth->updateUser($user->uid, ['multifactors' => [$factor]]);
 
-        $this->assertNotNull($updatedUser->mfaInfo);
+            $this->assertInstanceOf(MfaInfo::class, $updatedUser->mfaInfo);
 
-        $check = $this->auth->updateUser($user->uid, ['resetmultifactor' => true]);
+            $check = $this->auth->updateUser($user->uid, ['resetmultifactor' => true]);
 
-        $this->assertNull($check->mfaInfo);
+            $this->assertNotInstanceOf(MfaInfo::class, $check->mfaInfo);
+        } finally {
+            $this->auth->deleteUser($user->uid);
+        }
     }
 }
