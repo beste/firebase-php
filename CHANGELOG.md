@@ -9,7 +9,7 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ### Added
 
-* It is now possible to remove all enrolled factors for multi factor authentication for a user.
+* It is now possible to configure multi factor authentication for a user.
 
 ## [7.17.0] - 2025-02-22
 
