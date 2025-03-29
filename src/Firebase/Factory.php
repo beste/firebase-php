@@ -17,7 +17,6 @@ use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Google\Auth\Middleware\AuthTokenMiddleware;
 use Google\Auth\ProjectIdProviderInterface;
 use Google\Auth\SignBlobInterface;
-use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -229,6 +228,9 @@ final class Factory
     }
 
     /**
+     * @deprecated 7.19.0 Use `createFirestore($database)` instead
+     * @see createFirestore()
+     *
      * @param non-empty-string $database
      */
     public function withFirestoreDatabase(string $database): self
@@ -464,17 +466,18 @@ final class Factory
         return DynamicLinks::withApiClient($apiClient);
     }
 
-    public function createFirestore(): Contract\Firestore
+    /**
+     * @param non-empty-string|null $databaseName
+     */
+    public function createFirestore(?string $databaseName = null): Contract\Firestore
     {
         $config = $this->googleCloudClientConfig() + $this->firestoreClientConfig;
 
-        try {
-            $firestoreClient = new FirestoreClient($config);
-        } catch (Throwable $e) {
-            throw new RuntimeException('Unable to create a FirestoreClient: '.$e->getMessage(), $e->getCode(), $e);
+        if ($databaseName !== null) {
+            $config['database'] = $databaseName;
         }
 
-        return Firestore::withFirestoreClient($firestoreClient);
+        return Firestore::fromConfig($config);
     }
 
     public function createStorage(): Contract\Storage

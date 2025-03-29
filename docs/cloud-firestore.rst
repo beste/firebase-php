@@ -72,8 +72,8 @@ Use another Firestore Database
 
 If you don't specify a database, the Firestore Client will connect to the ``(default)`` database.
 
-If you want to connect to another database, you can specify its name with the factory. You can work with multiple
-Firestore Databases simultaneously.
+If you want to connect to another database, you can specify its name when creating a new instance. This enables you
+to work with multiple Firestore Databases simultaneously.
 
 .. code-block:: php
 
@@ -81,19 +81,9 @@ Firestore Databases simultaneously.
 
     $factory = new Factory();
 
-    $defaultDatabase = $factory
-        ->createFirestore()
-        ->database();
-
-    $otherDatabase = $factory
-        ->withFirestoreDatabase('another-database')
-        ->createFirestore()
-        ->database();
-
-    $thirdDatabase = $factory
-        ->withFirestoreDatabase('third-database')
-        ->createFirestore()
-        ->database();
+    $default = $factory->createFirestore();
+    $explicitDefault = $factory->createFirestore('(default)');
+    $custom = $factory->createFirestore('custom');
 
 ***********************************
 Add Firestore configuration options
@@ -113,15 +103,3 @@ You can add additional configuration options for the Firestore Client used by th
 
 You can find all configuration options in the source code of the ``FirestoreClient`` class of the
 `official Google Firestore PHP library <https://github.com/googleapis/google-cloud-php-firestore/blob/4186f2a2f2a8bdaedf19376a35ccb0ffad17f4e1/src/FirestoreClient.php#L138>`_.
-
-In fact, the ``withFirestoreDatabase()`` method is a shortcut for the ``withFirestoreClientConfig()`` method:
-
-.. code-block:: php
-
-    use Kreait\Firebase\Factory;
-
-    $factory = new Factory();
-
-    $firestore = $factory->->withFirestoreDatabase('another-database');
-    // is a shortcut for
-    $firestore = $factory->withFirestoreClientConfig(['database' => 'another-database']);

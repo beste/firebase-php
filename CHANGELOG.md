@@ -7,6 +7,16 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ## [Unreleased]
 
+### Added
+
+* You can now save on method call by passing a custom Firestore database name to
+  `Kreait\Firebase\Factory::createFirestore($databaseName)` instead of having to chain
+  ``::withFirestoreDatabase($databaseName)->createFirestore()``
+
+### Deprecated
+
+* `Kreait\Firebase\Factory::withFirestoreDatabase()`
+
 ## [7.18.0] - 2025-03-08
 
 ### Added
