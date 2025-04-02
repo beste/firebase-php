@@ -43,7 +43,7 @@ final class SetApnsContentAvailableIfNeeded
             return $message;
         }
 
-        $apnsConfig = $apnsConfig->withApsField('content-available', 1);
+        $apnsConfig = $apnsConfig->withApsField('content-available', '1');
 
         $payload['apns'] = $apnsConfig->toArray();
 
