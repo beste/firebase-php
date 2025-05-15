@@ -121,6 +121,16 @@ class ApiClient
     /**
      * @throws AuthException
      */
+    public function getUserByProviderUid(string $providerId, string $uid): ResponseInterface
+    {
+        $url = $this->awareAuthResourceUrlBuilder->getUrl('/accounts:lookup');
+
+        return $this->requestApi($url, ['federatedUserId' => [['providerId' => $providerId, 'rawId' => $uid]]]);
+    }
+
+    /**
+     * @throws AuthException
+     */
     public function downloadAccount(?int $batchSize = null, ?string $nextPageToken = null): ResponseInterface
     {
         $batchSize = $batchSize ?: 1000;

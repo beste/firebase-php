@@ -210,6 +210,22 @@ final class Auth implements Contract\Auth
         return UserRecord::fromResponseData($data['users'][0]);
     }
 
+    public function getUserByProviderUid(Stringable|string $providerId, Stringable|string $providerUid): UserRecord
+    {
+        $providerId = (string) $providerId;
+        $providerUid = (string) $providerUid;
+
+        $response = $this->client->getUserByProviderUid($providerId, $providerUid);
+
+        $data = Json::decode((string) $response->getBody(), true);
+
+        if (empty($data['users'][0])) {
+            throw new UserNotFound("No user with federated account ID '{$providerId}:{$providerUid}' found.");
+        }
+
+        return UserRecord::fromResponseData($data['users'][0]);
+    }
+
     public function createAnonymousUser(): UserRecord
     {
         return $this->createUser(CreateUser::new());
