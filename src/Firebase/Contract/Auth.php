@@ -126,15 +126,6 @@ interface Auth
     public function getUserByPhoneNumber(Stringable|string $phoneNumber): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $providerId
-     * @param Stringable|non-empty-string $providerUid
-     *
-     * @throws Exception\AuthException
-     * @throws Exception\FirebaseException
-     */
-    public function getUserByProviderUid(Stringable|string $providerId, Stringable|string $providerUid): UserRecord;
-
-    /**
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */

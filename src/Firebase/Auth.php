@@ -59,7 +59,7 @@ use function trim;
 /**
  * @internal
  */
-final class Auth implements Contract\Auth
+final class Auth implements Contract\Auth, Contract\Transitional\FederatedUserFetcher
 {
     private readonly Parser $jwtParser;
 
