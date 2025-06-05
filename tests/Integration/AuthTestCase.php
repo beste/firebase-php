@@ -521,6 +521,16 @@ abstract class AuthTestCase extends IntegrationTestCase
     }
 
     #[Test]
+    public function getUserByNonExistingProviderUid(): void
+    {
+        $provider = 'test.com';
+        $uid = 'u'.random_int(1000000, 9999999);
+
+        $this->expectException(UserNotFound::class);
+        $this->auth->getUserByProviderUid($provider, $uid);
+    }
+
+    #[Test]
     public function createUser(): void
     {
         $uid = bin2hex(random_bytes(5));

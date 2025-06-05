@@ -110,7 +110,7 @@
             "Composer\\Config::disableProcessTimeout",
             "@analyze",
             "@test-dependencies",
-            "vendor/bin/phpunit --stop-on-error --stop-on-failure"
+            "php -d date.timezone=UTC vendor/bin/phpunit --stop-on-error --stop-on-failure"
         ],
         "test-bc": [
             "docker run -it --rm -v `pwd`:/app nyholm/roave-bc-check"
@@ -120,16 +120,16 @@
         ],
         "test-coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html=.build/coverage"
+            "XDEBUG_MODE=coverage php -d date.timezone=UTC vendor/bin/phpunit --coverage-html=.build/coverage"
         ],
         "test-emulator": [
             "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator'"
         ],
         "test-units": [
-            "vendor/bin/phpunit --testsuite=unit"
+            "php -d date.timezone=UTC vendor/bin/phpunit --testsuite=unit"
         ],
         "test-integration": [
-            "vendor/bin/phpunit --testsuite=integration"
+            "php -d date.timezone=UTC vendor/bin/phpunit --testsuite=integration"
         ]
     },
     "extra": {
