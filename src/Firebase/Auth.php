@@ -386,11 +386,6 @@ final class Auth implements Contract\Auth
         $verifier = $this->idTokenVerifier;
 
         $idTokenString = is_string($idToken) ? $idToken : $idToken->toString();
-        // The ID Token is annotated as non-empty-string or a valid Token, so it cannot be empty
-        // Static analysis are not always sure about that, so we'll help them here.
-        // The assertion is necessary for lcobucci/jwt 4.* but not needed for 5.*
-        // @phpstan-ignore function.alreadyNarrowedType, notIdentical.alwaysTrue
-        assert($idTokenString !== '');
 
         try {
             if ($leewayInSeconds !== null) {

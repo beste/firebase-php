@@ -10,14 +10,13 @@ parameters:
 		-
 			message: '#Method.+jsonSerialize.+no value type specified in iterable type array.#'
 			path: src
-		-
-			message: '#Call to method.+assertIsCallable.+will always evaluate to true#'
-			path: tests
 
 	checkUninitializedProperties: true
 
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	reportAlwaysTrueInLastCondition: true
 	reportPossiblyNonexistentConstantArrayOffset: true
+	treatPhpDocTypesAsCertain: false
 includes:
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+	- tests/phpstan-conditional-config.php
