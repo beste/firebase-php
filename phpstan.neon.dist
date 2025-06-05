@@ -17,5 +17,6 @@ parameters:
 	checkUninitializedProperties: true
 
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
+	reportAlwaysTrueInLastCondition: true
 includes:
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
