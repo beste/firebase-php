@@ -7,6 +7,34 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ## [Unreleased]
 
+### Added
+
+* You can now get a user by their federated identity provider (e.g. Google, Facebook, etc.) UID with
+  `Kreait\Firebase\Auth::getUserByProviderUid()`. ([#1000](https://github.com/kreait/firebase-php/pull/1000))
+  Since this method couldn't be added to the `Kreait\Firebase\Contract\Auth` interface without causing a breaking
+  change, a new transitional interface/contract named `Kreait\Firebase\Contract\Transitional\FederatedUserFetcher`
+  was added. This interface will be removed in the next major version of the SDK.
+  There are several ways to check if you can use the `getUserByProviderUid()` method:
+  ```php
+  use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
+  use Kreait\Firebase\Factory;
+  
+  $auth = (new Factory())->createAuth();
+  // The return type is Kreait\Firebase\Contract\Auth, which doesn't have the method
+  
+  if (method_exists($auth, 'getUserByProviderUid')) {
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+
+  if ($auth instanceof \Kreait\Firebase\Auth) { // This is the implementation, not the interface
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+  
+  if ($auth instanceof FederatedUserFetcher) {
+      $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+  }
+  ```
+
 ## [7.19.0] - 2025-06-14
 
 ### Added

@@ -144,8 +144,51 @@ Get information about a specific user
         $user = $auth->getUser('some-uid');
         $user = $auth->getUserByEmail('user@example.com');
         $user = $auth->getUserByPhoneNumber('+49-123-456789');
+        // For `getUserByProviderUid()` please see the section below.
+        $user = $auth->getUserByProviderUid('google.com', 'google-uid');
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
         echo $e->getMessage();
+    }
+
+***************************************************
+Get information about a user by federated provider
+***************************************************
+
+You can retrieve a user by their federated identity provider UID (e.g. Google, Facebook, etc.):
+
+.. code-block:: php
+
+    try {
+        $googleUser = $auth->getUserByProviderUid('google.com', 'google-uid');
+        $facebookUser = $auth->getUserByProviderUid('facebook.com', 'facebook-uid');
+    } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+        echo $e->getMessage();
+    }
+
+.. note::
+    Since this method couldn't be added to the ``Kreait\Firebase\Contract\Auth`` interface without causing a breaking
+    change, a new transitional interface/contract named ``Kreait\Firebase\Contract\Transitional\FederatedUserFetcher``
+    was added. This interface will be removed in the next major version of the SDK.
+
+There are several ways to check if you can use the ``getUserByProviderUid()`` method:
+
+.. code-block:: php
+
+    use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
+    use Kreait\Firebase\Factory;
+
+    $auth = (new Factory())->createAuth();
+
+    if (method_exists($auth, 'getUserByProviderUid')) {
+        $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+    }
+
+    if ($auth instanceof \Kreait\Firebase\Auth) { // This is the implementation, not the interface
+        $user = $auth->getUserByProviderUid('google.com', 'google-uid');
+    }
+
+    if ($auth instanceof FederatedUserFetcher) {
+        $user = $auth->getUserByProviderUid('google.com', 'google-uid');
     }
 
 ************************************

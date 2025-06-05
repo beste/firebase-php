@@ -24,6 +24,7 @@ use Kreait\Firebase\Auth\SignInWithIdpCredentials;
 use Kreait\Firebase\Auth\SignInWithRefreshToken;
 use Kreait\Firebase\Auth\UserQuery;
 use Kreait\Firebase\Auth\UserRecord;
+use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
 use Kreait\Firebase\Exception\Auth\AuthError;
 use Kreait\Firebase\Exception\Auth\FailedToVerifySessionCookie;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
@@ -59,7 +60,7 @@ use function trim;
 /**
  * @internal
  */
-final class Auth implements Contract\Auth
+final class Auth implements Contract\Auth, FederatedUserFetcher
 {
     private readonly Parser $jwtParser;
 
@@ -205,6 +206,22 @@ final class Auth implements Contract\Auth
 
         if (empty($data['users'][0])) {
             throw new UserNotFound("No user with phone number '{$phoneNumber}' found.");
+        }
+
+        return UserRecord::fromResponseData($data['users'][0]);
+    }
+
+    public function getUserByProviderUid(Stringable|string $providerId, Stringable|string $providerUid): UserRecord
+    {
+        $providerId = (string) $providerId;
+        $providerUid = (string) $providerUid;
+
+        $response = $this->client->getUserByProviderUid($providerId, $providerUid);
+
+        $data = Json::decode((string) $response->getBody(), true);
+
+        if (empty($data['users'][0])) {
+            throw new UserNotFound("No user with federated account ID '{$providerId}:{$providerUid}' found.");
         }
 
         return UserRecord::fromResponseData($data['users'][0]);
