@@ -14,6 +14,7 @@ use Kreait\Firebase\Auth\SendActionLink\FailedToSendActionLink;
 use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
 use Kreait\Firebase\Auth\UserRecord;
 use Kreait\Firebase\Contract\Auth;
+use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
 use Kreait\Firebase\Exception\Auth\InvalidOobCode;
 use Kreait\Firebase\Exception\Auth\RevokedIdToken;
 use Kreait\Firebase\Exception\Auth\RevokedSessionCookie;
@@ -523,11 +524,16 @@ abstract class AuthTestCase extends IntegrationTestCase
     #[Test]
     public function getUserByNonExistingProviderUid(): void
     {
-        $provider = 'test.com';
-        $uid = 'u'.random_int(1000000, 9999999);
+        if ($this->auth instanceof FederatedUserFetcher) {
+            $provider = 'test.com';
+            $uid = 'u' . random_int(1000000, 9999999);
 
-        $this->expectException(UserNotFound::class);
-        $this->auth->getUserByProviderUid($provider, $uid);
+            $this->expectException(UserNotFound::class);
+            /** @phpstan-ignore method.notFound */
+            $this->auth->getUserByProviderUid($provider, $uid);
+        } else {
+            $this->fail("{\$this->auth} does not implement FederatedUserFetcher as expected - cannot test");
+        }
     }
 
     #[Test]
