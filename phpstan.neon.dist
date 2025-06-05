@@ -18,5 +18,6 @@ parameters:
 
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	reportAlwaysTrueInLastCondition: true
+	reportPossiblyNonexistentConstantArrayOffset: true
 includes:
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
