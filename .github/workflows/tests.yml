@@ -7,6 +7,7 @@ on:
       - 'tests/**'
       - '.github/workflows/tests.yml'
       - 'composer.json'
+      - 'phpstan.neon.dist'
   push:
     branches: ['7.x']
     paths:
@@ -14,6 +15,7 @@ on:
       - 'tests/**'
       - '.github/workflows/tests.yml'
       - 'composer.json'
+      - 'phpstan.neon.dist'
   workflow_dispatch:
 
 permissions:

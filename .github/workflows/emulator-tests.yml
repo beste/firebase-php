@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'phpstan.neon.dist'
   push:
     branches: ['7.x']
     paths:
@@ -13,6 +14,7 @@ on:
       - 'tests/**'
       - '.github/workflows/emulator-tests.yml'
       - 'composer.json'
+      - 'phpstan.neon.dist'
   workflow_dispatch:
 
 permissions:
