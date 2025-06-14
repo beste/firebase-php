@@ -156,7 +156,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->createUser($request);
 
-        return $this->getUserRecordFromResponse($response);
+        return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
     public function updateUser(Stringable|string $uid, array|UpdateUser $properties): UserRecord
@@ -169,7 +169,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->updateUser($request);
 
-        return $this->getUserRecordFromResponse($response);
+        return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
     public function createUserWithEmailAndPassword(Stringable|string $email, Stringable|string $password): UserRecord
@@ -508,7 +508,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->unlinkProvider($uid, $provider);
 
-        return $this->getUserRecordFromResponse($response);
+        return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
     public function signInAsUser($user, ?array $claims = null): SignInResult
@@ -641,7 +641,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    private function getUserRecordFromResponse(ResponseInterface $response): UserRecord
+    private function getUserRecordFromResponseAfterUserUpdate(ResponseInterface $response): UserRecord
     {
         $uid = Json::decode((string) $response->getBody(), true)['localId'];
 
