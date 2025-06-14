@@ -59,6 +59,8 @@ use function trim;
 
 /**
  * @internal
+ *
+ * @phpstan-import-type UserRecordResponseShape from UserRecord
  */
 final class Auth implements Contract\Auth, FederatedUserFetcher
 {
@@ -187,13 +189,13 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->getUserByEmail($email);
 
-        $data = Json::decode((string) $response->getBody(), true);
+        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if (empty($data['users'][0])) {
+        if ($userRecord === null) {
             throw new UserNotFound("No user with email '{$email}' found.");
         }
 
-        return UserRecord::fromResponseData($data['users'][0]);
+        return $userRecord;
     }
 
     public function getUserByPhoneNumber(Stringable|string $phoneNumber): UserRecord
@@ -202,13 +204,13 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->getUserByPhoneNumber($phoneNumber);
 
-        $data = Json::decode((string) $response->getBody(), true);
+        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if (empty($data['users'][0])) {
+        if ($userRecord === null) {
             throw new UserNotFound("No user with phone number '{$phoneNumber}' found.");
         }
 
-        return UserRecord::fromResponseData($data['users'][0]);
+        return $userRecord;
     }
 
     public function getUserByProviderUid(Stringable|string $providerId, Stringable|string $providerUid): UserRecord
@@ -218,13 +220,13 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $response = $this->client->getUserByProviderUid($providerId, $providerUid);
 
-        $data = Json::decode((string) $response->getBody(), true);
+        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if (empty($data['users'][0])) {
+        if ($userRecord === null) {
             throw new UserNotFound("No user with federated account ID '{$providerId}:{$providerUid}' found.");
         }
 
-        return UserRecord::fromResponseData($data['users'][0]);
+        return $userRecord;
     }
 
     public function createAnonymousUser(): UserRecord
@@ -665,5 +667,21 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
         }
 
         return $tokenAuthenticatedAt->getTimestamp() < $validSince->getTimestamp();
+    }
+
+    private static function getFirstUserRecordFromUserListResponse(ResponseInterface $response): ?UserRecord
+    {
+        /** @var array{users?: list<UserRecordResponseShape>} $data */
+        $data = Json::decode((string) $response->getBody(), true);
+
+        if (!array_key_exists('users', $data)) {
+            return null;
+        }
+
+        $userData = array_shift($data['users']);
+
+        return $userData !== null
+            ? UserRecord::fromResponseData($userData)
+            : null;
     }
 }
