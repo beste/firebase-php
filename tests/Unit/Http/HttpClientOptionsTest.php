@@ -110,22 +110,32 @@ final class HttpClientOptionsTest extends TestCase
     #[Test]
     public function itAcceptsMultipleMiddlewares(): void
     {
+        $middlewareClass = new class {
+            public static function handle(): void
+            {
+                // This is just a placeholder to demonstrate a callable middleware
+            }
+        };
         $options = HttpClientOptions::default()
             ->withGuzzleMiddlewares([
                 static fn(): string => 'Foo',
                 ['middleware' => static fn(): string => 'Foo', 'name' => 'Foo'],
+                ['middleware' => [$middlewareClass::class, 'handle'], 'name' => 'Bar'],
             ])
         ;
 
         $middlewares = $options->guzzleMiddlewares();
 
-        $this->assertCount(2, $middlewares);
+        $this->assertCount(3, $middlewares);
 
         $this->assertIsCallable($middlewares[0]['middleware']);
         $this->assertSame('', $middlewares[0]['name']);
 
         $this->assertIsCallable($middlewares[1]['middleware']);
         $this->assertSame('Foo', $middlewares[1]['name']);
+
+        $this->assertIsCallable($middlewares[2]['middleware']);
+        $this->assertSame('Bar', $middlewares[2]['name']);
     }
 
     #[Test]
