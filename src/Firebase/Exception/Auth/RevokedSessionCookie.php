@@ -7,19 +7,12 @@ namespace Kreait\Firebase\Exception\Auth;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\RuntimeException;
 use Lcobucci\JWT\Token;
-use Throwable;
 
 final class RevokedSessionCookie extends RuntimeException implements AuthException
 {
-    public function __construct(
-        private readonly Token $token,
-        string $message = '',
-        int $code = 0,
-        ?Throwable $previous = null,
-    ) {
-        $message = $message ?: 'The Firebase session cookie has been revoked.';
-
-        parent::__construct($message, $code, $previous);
+    public function __construct(private readonly Token $token)
+    {
+        parent::__construct('The Firebase session cookie has been revoked.');
     }
 
     public function getToken(): Token
