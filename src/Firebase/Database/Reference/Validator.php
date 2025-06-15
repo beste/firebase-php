@@ -86,7 +86,7 @@ class Validator
 
         $pattern = sprintf('/[%s]/', preg_quote(self::INVALID_KEY_CHARS, '/'));
 
-        if (preg_match($pattern, $key)) {
+        if (preg_match($pattern, $key) !== 0) {
             throw new InvalidArgumentException(sprintf(
                 'The child key "%s" contains one of the following invalid characters: "%s"',
                 $key,

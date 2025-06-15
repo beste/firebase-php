@@ -105,7 +105,7 @@ class Snapshot
      */
     public function hasChildren(): bool
     {
-        return is_array($this->value) && !empty($this->value);
+        return is_array($this->value) && $this->value !== [];
     }
 
     /**

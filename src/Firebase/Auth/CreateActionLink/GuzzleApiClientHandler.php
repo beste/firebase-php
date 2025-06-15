@@ -53,7 +53,9 @@ final class GuzzleApiClientHandler
             throw new FailedToCreateActionLink('Unable to parse the response data: '.$e->getMessage(), $e->getCode(), $e);
         }
 
-        if (!($actionCode = $data['oobLink'] ?? null)) {
+        $actionCode = $data['oobLink'] ?? null;
+
+        if (!is_scalar($actionCode)) {
             throw new FailedToCreateActionLink('The response did not contain an action link');
         }
 
@@ -62,13 +64,15 @@ final class GuzzleApiClientHandler
 
     private function createRequest(CreateActionLink $action): RequestInterface
     {
-        $data = array_filter([
+        $data = [
             'requestType' => $action->type(),
             'email' => $action->email(),
             'returnOobLink' => true,
-        ]) + $action->settings()->toArray();
+            ...$action->settings()->toArray(),
+        ];
 
-        if ($tenantId = $action->tenantId()) {
+        $tenantId = $action->tenantId();
+        if (is_string($tenantId) && $tenantId !== '') {
             $urlBuilder = TenantAwareAuthResourceUrlBuilder::forProjectAndTenant($this->projectId, $tenantId);
         } else {
             $urlBuilder = ProjectAwareAuthResourceUrlBuilder::forProject($this->projectId);
@@ -82,7 +86,7 @@ final class GuzzleApiClientHandler
             'Content-Type' => 'application/json; charset=UTF-8',
             'Content-Length' => (string) $body->getSize(),
             'X-Firebase-Locale' => $action->locale(),
-        ]);
+        ], fn($value): bool => $value !== null);
 
         return new Request('POST', $url, $headers, $body);
     }

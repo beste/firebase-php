@@ -10,6 +10,16 @@ parameters:
 		-
 			message: '#Method.+jsonSerialize.+no value type specified in iterable type array.#'
 			path: src
+		-
+			# Needed for backward compatibility
+			message: '#VersionNumber::fromValue\(\)#'
+			identifier: missingType.parameter
+			path: src/Firebase/RemoteConfig/VersionNumber.php
+		-
+			# Needed since introducing phpstan/strict-rules, will revisit for next major release
+			message: '#Dynamic call to static method PHPUnit#'
+			identifier: staticMethod.dynamicCall
+			path: tests
 
 	checkUninitializedProperties: true
 

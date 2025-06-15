@@ -49,7 +49,7 @@ final class AppCheckTokenGenerator
             'exp' => $now + 300,
         ];
 
-        if (null !== $options && $options->ttl) {
+        if ($options?->ttl !== null) {
             $payload['ttl'] = $options->ttl.'s';
         }
 

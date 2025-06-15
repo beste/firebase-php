@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase;
 
+use InvalidArgumentException;
 use Kreait\Firebase\DynamicLink\ApiClient;
 use Kreait\Firebase\DynamicLink\CreateDynamicLink;
 use Kreait\Firebase\DynamicLink\CreateDynamicLink\FailedToCreateDynamicLink;
@@ -70,13 +71,13 @@ final class DynamicLinks implements Contract\DynamicLinks
     {
         $action = $this->ensureCreateAction($actionOrParametersOrUrl);
 
-        if ($this->defaultDynamicLinksDomain && !$action->hasDynamicLinkDomain()) {
+        if ($this->defaultDynamicLinksDomain !== null && $action->hasDynamicLinkDomain() === false) {
             $action = $action->withDynamicLinkDomain($this->defaultDynamicLinksDomain);
         }
 
-        if ($suffixType && $suffixType === CreateDynamicLink::WITH_SHORT_SUFFIX) {
+        if ($suffixType === CreateDynamicLink::WITH_SHORT_SUFFIX) {
             $action = $action->withShortSuffix();
-        } elseif ($suffixType && $suffixType === CreateDynamicLink::WITH_UNGUESSABLE_SUFFIX) {
+        } elseif ($suffixType === CreateDynamicLink::WITH_UNGUESSABLE_SUFFIX) {
             $action = $action->withUnguessableSuffix();
         }
 
@@ -99,9 +100,9 @@ final class DynamicLinks implements Contract\DynamicLinks
     {
         $action = $this->ensureShortenAction($longDynamicLinkOrAction);
 
-        if ($suffixType && $suffixType === ShortenLongDynamicLink::WITH_SHORT_SUFFIX) {
+        if ($suffixType === ShortenLongDynamicLink::WITH_SHORT_SUFFIX) {
             $action = $action->withShortSuffix();
-        } elseif ($suffixType && $suffixType === ShortenLongDynamicLink::WITH_UNGUESSABLE_SUFFIX) {
+        } elseif ($suffixType === ShortenLongDynamicLink::WITH_UNGUESSABLE_SUFFIX) {
             $action = $action->withUnguessableSuffix();
         }
 
@@ -120,15 +121,15 @@ final class DynamicLinks implements Contract\DynamicLinks
         throw FailedToShortenLongDynamicLink::withActionAndResponse($action, $response);
     }
 
-    /**
-     * @param Stringable|non-empty-string|GetStatisticsForDynamicLink $dynamicLinkOrAction
-     * @param positive-int|null $durationInDays
-     */
     public function getStatistics(Stringable|string|GetStatisticsForDynamicLink $dynamicLinkOrAction, ?int $durationInDays = null): DynamicLinkStatistics
     {
         $action = $this->ensureGetStatisticsAction($dynamicLinkOrAction);
 
-        if ($durationInDays) {
+        if ($durationInDays !== null && $durationInDays < 1) {
+            throw new InvalidArgumentException('The duration in days must be a positive integer');
+        }
+
+        if ($durationInDays !== null) {
             $action = $action->withDurationInDays($durationInDays);
         }
 
@@ -180,7 +181,7 @@ final class DynamicLinks implements Contract\DynamicLinks
     }
 
     /**
-     * @param Stringable|non-empty-string|GetStatisticsForDynamicLink $actionOrUrl
+     * @throw InvalidArgumentException
      */
     private function ensureGetStatisticsAction(Stringable|string|GetStatisticsForDynamicLink $actionOrUrl): GetStatisticsForDynamicLink
     {
@@ -188,6 +189,12 @@ final class DynamicLinks implements Contract\DynamicLinks
             return $actionOrUrl;
         }
 
-        return GetStatisticsForDynamicLink::forLink((string) $actionOrUrl);
+        $actionOrUrl = trim((string) $actionOrUrl);
+
+        if ($actionOrUrl === '') {
+            throw new InvalidArgumentException('A dynamic link must not be empty');
+        }
+
+        return GetStatisticsForDynamicLink::forLink($actionOrUrl);
     }
 }

@@ -80,7 +80,7 @@ class HttpClientOptionsTest extends IntegrationTestCase
                 return static function ($request, ?array $options = null) use ($handler) {
                     self::$wasInvoked = true;
 
-                    return $handler($request, $options ?: []);
+                    return $handler($request, $options);
                 };
             }
         };
@@ -104,7 +104,7 @@ class HttpClientOptionsTest extends IntegrationTestCase
                 return function (RequestInterface $request, ?array $options = null) use ($handler) {
                     $this->wasInvoked = true;
 
-                    return $handler($request, $options ?: []);
+                    return $handler($request, $options);
                 };
             }
         };

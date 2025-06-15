@@ -76,6 +76,6 @@ final class AnalyticsInfo implements JsonSerializable
         return array_filter([
             'googlePlayAnalytics' => $this->googlePlayAnalytics?->jsonSerialize(),
             'itunesConnectAnalytics' => $this->iTunesConnectAnalytics?->jsonSerialize(),
-        ]);
+        ], fn($value): bool => $value !== null);
     }
 }

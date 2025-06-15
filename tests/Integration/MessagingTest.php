@@ -216,7 +216,7 @@ final class MessagingTest extends IntegrationTestCase
         $success = $report->successes()->getItems()[0];
         $this->assertSame($valid, $success->target()->value());
         $this->assertIsArray($success->result());
-        $this->assertArrayHasKey('name', $success->result() ?: []);
+        $this->assertArrayHasKey('name', $success->result());
 
         $failure = $report->failures()->getItems()[0];
         $this->assertSame($invalid, $failure->target()->value());

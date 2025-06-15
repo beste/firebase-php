@@ -156,7 +156,7 @@ class UserQuery implements JsonSerializable
             'offset' => $this->offset,
             'sortBy' => $this->sortBy,
             'order' => $this->order,
-        ]);
+        ], fn($value): bool => $value !== null);
 
         if ($this->filter !== null) {
             $data['expression'] = $this->filter;

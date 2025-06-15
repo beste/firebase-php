@@ -330,8 +330,8 @@ abstract class AuthTestCase extends IntegrationTestCase
     {
         $signInResult = $this->auth->signInAnonymously();
 
-        /** @var string $uid */
         $uid = $signInResult->firebaseUserId();
+        assert($uid !== null);
 
         try {
             $idToken = $signInResult->idToken();
@@ -352,8 +352,8 @@ abstract class AuthTestCase extends IntegrationTestCase
     {
         $signInResult = $this->auth->signInAnonymously();
 
-        /** @var string $uid */
         $uid = $signInResult->firebaseUserId();
+        assert($uid !== null);
 
         try {
             $idToken = $signInResult->idToken();

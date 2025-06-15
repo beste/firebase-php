@@ -65,7 +65,7 @@ class AppInstanceApiClient
                     foreach ($response['value']['results'] as $index => $tokenResult) {
                         $token = $tokenStrings[$index];
 
-                        if (empty($tokenResult)) {
+                        if ($tokenResult === []) {
                             $topicResults[$token] = 'OK';
 
                             continue;
@@ -132,7 +132,7 @@ class AppInstanceApiClient
                     foreach ($response['value']['results'] as $index => $tokenResult) {
                         $token = $tokenStrings[$index];
 
-                        if (empty($tokenResult)) {
+                        if ($tokenResult === []) {
                             $topicResults[$token] = 'OK';
 
                             continue;

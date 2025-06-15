@@ -40,7 +40,7 @@ final class Middleware
                 $request = $request->withUri($uri);
             }
 
-            return $handler($request, $options ?: []);
+            return $handler($request, $options);
         };
     }
 
@@ -56,7 +56,7 @@ final class Middleware
                 array_merge(Query::parse($uri->getQuery()), ['auth_variable_override' => Json::encode($override)]),
             ));
 
-            return $handler($request->withUri($uri), $options ?: []);
+            return $handler($request->withUri($uri), $options);
         };
     }
 

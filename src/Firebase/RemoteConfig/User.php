@@ -35,7 +35,7 @@ final class User
     public static function fromArray(array $data): self
     {
         $imageUrl = $data['imageUrl'] ?? null;
-        $imageUri = $imageUrl ? new Uri($imageUrl) : null;
+        $imageUri = $imageUrl !== null ? new Uri($imageUrl) : null;
 
         return new self(
             $data['name'] ?? null,

@@ -53,7 +53,7 @@ abstract class IntegrationTestCase extends FirebaseTestCase
     {
         $credentials = self::credentialsFromEnvironment();
 
-        if (!$credentials) {
+        if ($credentials === null) {
             self::markTestSkipped('The integration tests require credentials');
         }
 
@@ -73,7 +73,7 @@ abstract class IntegrationTestCase extends FirebaseTestCase
      */
     protected function getTestRegistrationToken(): string
     {
-        if (empty(self::$registrationTokens)) {
+        if (self::$registrationTokens === []) {
             $this->markTestSkipped('No registration token available');
         }
 
@@ -102,9 +102,7 @@ abstract class IntegrationTestCase extends FirebaseTestCase
      */
     private static function credentialsFromEnvironment(): ?string
     {
-        return ($credentials = Util::getenv('GOOGLE_APPLICATION_CREDENTIALS'))
-            ? $credentials
-            : null;
+        return Util::getenv('GOOGLE_APPLICATION_CREDENTIALS');
     }
 
     /**

@@ -310,9 +310,9 @@ final class Factory
      */
     public function withHttpLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
     {
-        $formatter = $formatter ?: new MessageFormatter();
-        $logLevel = $logLevel ?: LogLevel::INFO;
-        $errorLogLevel = $errorLogLevel ?: LogLevel::NOTICE;
+        $formatter ??= new MessageFormatter();
+        $logLevel ??= LogLevel::INFO;
+        $errorLogLevel ??= LogLevel::NOTICE;
 
         $factory = clone $this;
         $factory->httpLogMiddleware = Middleware::log($logger, $formatter, $logLevel, $errorLogLevel);
@@ -326,9 +326,9 @@ final class Factory
      */
     public function withHttpDebugLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
     {
-        $formatter = $formatter ?: new MessageFormatter(MessageFormatter::DEBUG);
-        $logLevel = $logLevel ?: LogLevel::INFO;
-        $errorLogLevel = $errorLogLevel ?: LogLevel::NOTICE;
+        $formatter ??= new MessageFormatter(MessageFormatter::DEBUG);
+        $logLevel ??= LogLevel::INFO;
+        $errorLogLevel ??= LogLevel::NOTICE;
 
         $factory = clone $this;
         $factory->httpDebugLogMiddleware = Middleware::log($logger, $formatter, $logLevel, $errorLogLevel);
@@ -564,11 +564,11 @@ final class Factory
 
         $handler = HandlerStack::create($config['handler'] ?? null);
 
-        if ($this->httpLogMiddleware) {
+        if ($this->httpLogMiddleware !== null) {
             $handler->push($this->httpLogMiddleware, 'http_logs');
         }
 
-        if ($this->httpDebugLogMiddleware) {
+        if ($this->httpDebugLogMiddleware !== null) {
             $handler->push($this->httpDebugLogMiddleware, 'http_debug_logs');
         }
 
@@ -616,12 +616,12 @@ final class Factory
             'authCache' => $this->authTokenCache,
         ];
 
-        if ($credentials = $this->getGoogleAuthTokenCredentials()) {
+        $credentials = $this->getGoogleAuthTokenCredentials();
+        if ($credentials !== null) {
             $config['credentialsFetcher'] = $credentials;
         }
 
         $serviceAccount = $this->getServiceAccount();
-
         if ($serviceAccount !== null) {
             $config['keyFile'] = $serviceAccount;
         }
@@ -638,15 +638,12 @@ final class Factory
             return $this->projectId;
         }
 
-        if (
-            ($credentials = $this->getGoogleAuthTokenCredentials())
-            && ($credentials instanceof ProjectIdProviderInterface)
-            && ($projectId = $credentials->getProjectId())
-        ) {
-            return $this->projectId = $projectId;
-        }
+        $credentials = $this->getGoogleAuthTokenCredentials();
+        $projectId = $credentials instanceof ProjectIdProviderInterface
+            ? $credentials->getProjectId()
+            : Util::getenv('GOOGLE_CLOUD_PROJECT');
 
-        if ($projectId = Util::getenv('GOOGLE_CLOUD_PROJECT')) {
+        if (is_string($projectId) && $projectId !== '') {
             return $this->projectId = $projectId;
         }
 

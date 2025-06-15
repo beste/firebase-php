@@ -24,9 +24,6 @@ final class VersionNumber implements JsonSerializable, Stringable
         return $this->value;
     }
 
-    /**
-     * @param positive-int|non-empty-string $value
-     */
     public static function fromValue($value): self
     {
         $valueString = (string) $value;

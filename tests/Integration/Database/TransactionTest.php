@@ -72,10 +72,10 @@ final class TransactionTest extends DatabaseTestCase
             $firstSnapshot = $transaction->snapshot($firstRef);
             $secondSnapshot = $transaction->snapshot($secondRef);
 
-            $firstCurrentValue = $firstSnapshot->getValue() ?: 0;
+            $firstCurrentValue = $firstSnapshot->getValue() ?? 0;
             $newFirstValue = ++$firstCurrentValue;
 
-            $secondCurrentValue = $secondSnapshot->getValue() ?: 0;
+            $secondCurrentValue = $secondSnapshot->getValue() ?? 0;
             $newSecondValue = ++$secondCurrentValue;
 
             // Set the value without a transaction

@@ -25,7 +25,7 @@ final class FirestoreTest extends IntegrationTestCase
         // @see https://github.com/googleapis/gax-php/issues/584
         // @see https://www.php.net/manual/en/info.configuration.php#ini.zend.reserved-stack-size
         $this->markTestSkipped('Skipped because of an infinite recursion with certain PHP/gRPC versions.');
-        // @phpstan-ignore-next-line
+        // @phpstan-ignore deadCode.unreachable
         $collection = __FUNCTION__;
         $documentName = __FUNCTION__.self::randomString();
 
@@ -49,7 +49,7 @@ final class FirestoreTest extends IntegrationTestCase
         // @see https://github.com/googleapis/gax-php/issues/584
         // @see https://www.php.net/manual/en/info.configuration.php#ini.zend.reserved-stack-size
         $this->markTestSkipped('Skipped because of an infinite recursion with certain PHP/gRPC versions.');
-        // @phpstan-ignore-next-line
+        // @phpstan-ignore deadCode.unreachable
         $name = self::randomString();
 
         $database = self::$factory->createFirestore($name)->database();
@@ -121,7 +121,7 @@ final class FirestoreTest extends IntegrationTestCase
     {
         $customDBName = Util::getenv('TEST_FIRESTORE_CUSTOM_DB_NAME');
 
-        if ($customDBName == null) {
+        if ($customDBName === null) {
             $this->markTestSkipped('No custom Firestore DB name set via the environment variable `TEST_FIRESTORE_CUSTOM_DB_NAME`');
         }
 

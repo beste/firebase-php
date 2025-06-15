@@ -227,7 +227,8 @@ class Template implements JsonSerializable
     {
         $condition = Condition::named($name)->withExpression($data['expression']);
 
-        if ($tagColor = $data['tagColor'] ?? null) {
+        $tagColor = $data['tagColor'] ?? null;
+        if ($tagColor !== null) {
             return $condition->withTagColor(new TagColor($tagColor));
         }
 

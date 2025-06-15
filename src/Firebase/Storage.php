@@ -33,7 +33,7 @@ final class Storage implements Contract\Storage
 
     public function getBucket(?string $name = null): Bucket
     {
-        $name = $name ?: $this->defaultBucket;
+        $name ??= $this->defaultBucket;
 
         if ($name === null) {
             throw new RuntimeException(

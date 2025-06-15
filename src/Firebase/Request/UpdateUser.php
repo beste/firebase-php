@@ -128,7 +128,7 @@ final class UpdateUser implements Request
 
                 case 'phonenumber':
                 case 'phone':
-                    if (!$value) {
+                    if (in_array($value, [false, null, ''], true)) {
                         $request = $request->withRemovedPhoneNumber();
                     }
 
@@ -276,14 +276,14 @@ final class UpdateUser implements Request
         $data = $this->prepareJsonSerialize();
 
         if (is_array($this->customAttributes)) {
-            $data['customAttributes'] = empty($this->customAttributes) ? '{}' : Json::encode($this->customAttributes);
+            $data['customAttributes'] = $this->customAttributes === [] ? '{}' : Json::encode($this->customAttributes);
         }
 
-        if (!empty($this->attributesToDelete)) {
+        if ($this->attributesToDelete !== []) {
             $data['deleteAttribute'] = array_unique($this->attributesToDelete);
         }
 
-        if (!empty($this->providersToDelete)) {
+        if ($this->providersToDelete !== []) {
             $data['deleteProvider'] = $this->providersToDelete;
         }
 

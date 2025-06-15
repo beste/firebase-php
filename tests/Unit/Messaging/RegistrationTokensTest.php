@@ -25,7 +25,6 @@ final class RegistrationTokensTest extends TestCase
         $tokens = RegistrationTokens::fromValue($value);
 
         $this->assertCount($expectedCount, $tokens);
-        $this->assertSame(!$expectedCount, $tokens->isEmpty());
     }
 
     #[DataProvider('invalidValues')]

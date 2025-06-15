@@ -70,7 +70,8 @@ final class GuzzleApiClientHandler
             'validDuration' => $action->ttlInSeconds(),
         ];
 
-        if ($tenantId = $action->tenantId()) {
+        $tenantId = $action->tenantId();
+        if (is_string($tenantId) && $tenantId !== '') {
             $urlBuilder = TenantAwareAuthResourceUrlBuilder::forProjectAndTenant($this->projectId, $tenantId);
         } else {
             $urlBuilder = ProjectAwareAuthResourceUrlBuilder::forProject($this->projectId);
@@ -82,8 +83,8 @@ final class GuzzleApiClientHandler
 
         $headers = array_filter([
             'Content-Type' => 'application/json; charset=UTF-8',
-            'Content-Length' => (string) $body->getSize(),
-        ]);
+            'Content-Length' => (string) ($body->getSize() ?? ''),
+        ], fn($value): bool => $value !== '' && $value !== '0');
 
         return new Request('POST', $url, $headers, $body);
     }

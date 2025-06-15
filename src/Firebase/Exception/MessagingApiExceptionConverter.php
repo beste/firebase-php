@@ -147,9 +147,9 @@ class MessagingApiExceptionConverter
 
     private function getRetryAfter(ResponseInterface $response): ?DateTimeImmutable
     {
-        $retryAfter = $response->getHeader('Retry-After')[0] ?? null;
+        $retryAfter = $response->getHeaderLine('Retry-After');
 
-        if (!$retryAfter) {
+        if ($retryAfter === '') {
             return null;
         }
 
