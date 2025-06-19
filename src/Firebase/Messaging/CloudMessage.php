@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Messaging;
 
 use Beste\Json;
+use Kreait\Firebase\Concerns\Conditionable;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Stringable;
@@ -28,6 +29,8 @@ use function implode;
  */
 final class CloudMessage implements Message
 {
+    use Conditionable;
+
     private MessageData $data;
 
     private Notification $notification;

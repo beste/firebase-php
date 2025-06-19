@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Messaging;
 
 use JsonSerializable;
+use Kreait\Firebase\Concerns\Conditionable;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 
 use function array_filter;
@@ -27,6 +28,8 @@ use function array_key_exists;
  */
 final class ApnsConfig implements JsonSerializable
 {
+    use Conditionable;
+
     private const PRIORITY_CONSERVE_POWER = '5';
 
     private const PRIORITY_IMMEDIATE = '10';

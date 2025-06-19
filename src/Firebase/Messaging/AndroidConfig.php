@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Messaging;
 
 use JsonSerializable;
+use Kreait\Firebase\Concerns\Conditionable;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 
 use function array_filter;
@@ -81,6 +82,8 @@ use function sprintf;
  */
 final class AndroidConfig implements JsonSerializable
 {
+    use Conditionable;
+
     private const MESSAGE_PRIORITY_NORMAL = 'normal';
 
     private const MESSAGE_PRIORITY_HIGH = 'high';
