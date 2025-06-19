@@ -148,6 +148,56 @@ final class CloudMessageTest extends TestCase
         $this->assertSame($serializedFromObject, $serializedFromArray);
     }
 
+    #[Test]
+    public function itDoesApplyConditionableWhenConditionIsTrue(): void
+    {
+        $data = ['key' => 'value'];
+
+        $message = CloudMessage::new()
+            ->when(true, fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray($data)));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['data' => $data]),
+            Json::encode($message),
+        );
+
+        $message = CloudMessage::new()
+            ->unless(false, fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray($data)));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['data' => $data]),
+            Json::encode($message),
+        );
+
+        $message = CloudMessage::new()
+            ->when(true === false, fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray($data)), fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray(['key' => 'other'])));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['data' => ['key' => 'other']]),
+            Json::encode($message),
+        );
+    }
+
+    #[Test]
+    public function itDoesNotApplyConditionableWhenConditionIsFalse(): void
+    {
+        $message = CloudMessage::new()
+            ->when(false, fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray(['key' => 'value'])));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($message),
+        );
+
+        $message = CloudMessage::new()
+            ->unless(true, fn(CloudMessage $message): CloudMessage => $message->withData(MessageData::fromArray(['key' => 'value'])));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($message),
+        );
+    }
+
     public static function multipleTargets(): Iterator
     {
         yield 'condition and token' => [[

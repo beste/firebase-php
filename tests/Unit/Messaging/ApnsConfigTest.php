@@ -125,6 +125,54 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
+    #[Test]
+    public function itDoesApplyConditionableWhenConditionIsTrue(): void
+    {
+        $config = ApnsConfig::new()
+            ->when(true, static fn(ApnsConfig $config): ApnsConfig => $config->withBadge(42));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['payload' => ['aps' => ['badge' => 42]]]),
+            Json::encode($config),
+        );
+
+        $config = ApnsConfig::new()
+            ->unless(false, static fn(ApnsConfig $config): ApnsConfig => $config->withBadge(42));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['payload' => ['aps' => ['badge' => 42]]]),
+            Json::encode($config),
+        );
+
+        $config = ApnsConfig::new()
+            ->when(true === false, static fn(ApnsConfig $config): ApnsConfig => $config->withBadge(42), fn(ApnsConfig $config): ApnsConfig => $config->withBadge(32));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['payload' => ['aps' => ['badge' => 32]]]),
+            Json::encode($config),
+        );
+    }
+
+    #[Test]
+    public function itDoesNotApplyConditionableWhenConditionIsFalse(): void
+    {
+        $config = ApnsConfig::new()
+            ->when(false, static fn(ApnsConfig $config): ApnsConfig => $config->withBadge(42));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($config),
+        );
+
+        $config = ApnsConfig::new()
+            ->unless(true, static fn(ApnsConfig $config): ApnsConfig => $config->withBadge(42));
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($config),
+        );
+    }
+
     public static function validDataProvider(): Iterator
     {
         yield 'full_config' => [[

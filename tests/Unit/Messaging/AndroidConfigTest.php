@@ -84,6 +84,54 @@ final class AndroidConfigTest extends UnitTestCase
         ]);
     }
 
+    #[Test]
+    public function itDoesApplyConditionableWhenConditionIsTrue(): void
+    {
+        $config = AndroidConfig::new()
+            ->when(true, fn(AndroidConfig $config): AndroidConfig => $config->withDefaultSound());
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['notification' => ['sound' => 'default']]),
+            Json::encode($config),
+        );
+
+        $config = AndroidConfig::new()
+            ->unless(false, fn(AndroidConfig $config): AndroidConfig => $config->withDefaultSound());
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['notification' => ['sound' => 'default']]),
+            Json::encode($config),
+        );
+
+        $config = AndroidConfig::new()
+            ->when(true === false, fn(AndroidConfig $config): AndroidConfig => $config->withDefaultSound(), fn(AndroidConfig $config): AndroidConfig => $config->withHighMessagePriority());
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode(['priority' => 'high']),
+            Json::encode($config),
+        );
+    }
+
+    #[Test]
+    public function itDoesNotApplyConditionableWhenConditionIsFalse(): void
+    {
+        $config = AndroidConfig::new()
+            ->when(false, fn(AndroidConfig $config): AndroidConfig => $config->withDefaultSound());
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($config),
+        );
+
+        $config = AndroidConfig::new()
+            ->unless(true, fn(AndroidConfig $config): AndroidConfig => $config->withDefaultSound());
+
+        $this->assertJsonStringEqualsJsonString(
+            Json::encode([]),
+            Json::encode($config),
+        );
+    }
+
     public static function validDataProvider(): Iterator
     {
         yield 'full_config' => [[
