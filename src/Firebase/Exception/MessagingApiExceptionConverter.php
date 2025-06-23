@@ -66,23 +66,23 @@ class MessagingApiExceptionConverter
 
         switch ($code) {
             case StatusCode::STATUS_BAD_REQUEST:
-                $convertedError = new InvalidMessage($message);
+                $convertedError = new InvalidMessage($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_UNAUTHORIZED:
             case StatusCode::STATUS_FORBIDDEN:
-                $convertedError = new AuthenticationError($message);
+                $convertedError = new AuthenticationError($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_NOT_FOUND:
-                $convertedError = new NotFound($message);
+                $convertedError = new NotFound($message, previous: $previous);
 
                 break;
 
             case StatusCode::STATUS_TOO_MANY_REQUESTS:
-                $convertedError = new QuotaExceeded($message);
+                $convertedError = new QuotaExceeded($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
                 if ($retryAfter !== null) {
@@ -92,7 +92,7 @@ class MessagingApiExceptionConverter
                 break;
 
             case StatusCode::STATUS_INTERNAL_SERVER_ERROR:
-                $convertedError = new ServerError($message);
+                $convertedError = new ServerError($message, previous: $previous);
 
                 break;
 
@@ -107,7 +107,7 @@ class MessagingApiExceptionConverter
                     $message = 'The server encountered a temporary error and could not complete your request.';
                 }
 
-                $convertedError = new ServerUnavailable($message);
+                $convertedError = new ServerUnavailable($message, previous: $previous);
 
                 if ($retryAfter !== null) {
                     $convertedError = $convertedError->withRetryAfter($retryAfter);
@@ -116,7 +116,7 @@ class MessagingApiExceptionConverter
                 break;
 
             case StatusCode::STATUS_SERVICE_UNAVAILABLE:
-                $convertedError = new ServerUnavailable($message);
+                $convertedError = new ServerUnavailable($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
                 if ($retryAfter !== null) {
