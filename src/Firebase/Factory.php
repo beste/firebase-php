@@ -38,6 +38,9 @@ use Kreait\Firebase\JWT\IdTokenVerifier;
 use Kreait\Firebase\JWT\SessionCookieVerifier;
 use Kreait\Firebase\Messaging\AppInstanceApiClient;
 use Kreait\Firebase\Messaging\RequestFactory;
+use Kreait\Firebase\Valinor\Mapper;
+use Kreait\Firebase\Valinor\Normalizer;
+use Kreait\Firebase\Valinor\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\UriInterface;
@@ -133,6 +136,14 @@ final class Factory
      * @var array<non-empty-string, mixed>
      */
     private array $firestoreClientConfig = [];
+
+    private mixed $mapperCache = null;
+
+    private mixed $normalizerCache = null;
+
+    private ?Mapper $mapper = null;
+
+    private ?Normalizer $normalizer = null;
 
     public function __construct()
     {
@@ -304,6 +315,24 @@ final class Factory
     {
         $factory = clone $this;
         $factory->keySetCache = $cache;
+
+        return $factory;
+    }
+
+    public function withMapperCache(mixed $cache): self
+    {
+        $factory = clone $this;
+        $factory->mapperCache = $cache;
+        $factory->mapper = null;
+
+        return $factory;
+    }
+
+    public function withNormalizerCache(mixed $cache): self
+    {
+        $factory = clone $this;
+        $factory->normalizerCache = $cache;
+        $factory->normalizer = null;
 
         return $factory;
     }
@@ -709,6 +738,16 @@ final class Factory
         }
 
         return $verifier->withExpectedTenantId($this->tenantId);
+    }
+
+    private function getMapper(): Mapper
+    {
+        return $this->mapper ??= new Mapper($this->mapperCache);
+    }
+
+    private function getNormalizer(): Normalizer
+    {
+        return $this->normalizer ??= new Normalizer($this->normalizerCache);
     }
 
     private function createSessionCookieVerifier(): SessionCookieVerifier

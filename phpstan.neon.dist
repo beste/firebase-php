@@ -28,4 +28,5 @@ parameters:
 	reportPossiblyNonexistentConstantArrayOffset: true
 	treatPhpDocTypesAsCertain: false
 includes:
+	- vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
