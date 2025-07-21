@@ -15,17 +15,12 @@ use function random_bytes;
 
 /**
  * @internal
- *
- * @phpstan-import-type ServiceAccountShape from Factory
  */
 abstract class IntegrationTestCase extends FirebaseTestCase
 {
     protected static Factory $factory;
 
-    /**
-     * @var ServiceAccountShape
-     */
-    protected static array $serviceAccount;
+    protected static mixed $credentials;
 
     /**
      * @var non-empty-string|null
@@ -57,11 +52,8 @@ abstract class IntegrationTestCase extends FirebaseTestCase
             self::markTestSkipped('The integration tests require credentials');
         }
 
-        /** @var ServiceAccountShape $serviceAccountArray */
-        $serviceAccountArray = Json::decode($credentials, true);
-        self::$serviceAccount = $serviceAccountArray;
-
-        self::$factory = (new Factory())->withServiceAccount(self::$serviceAccount);
+        self::$credentials = $credentials;
+        self::$factory = (new Factory())->withServiceAccount($credentials);
         self::$registrationTokens = self::registrationTokensFromEnvironment();
         self::$rtdbUrl = Util::getenv('TEST_FIREBASE_RTDB_URI');
         self::$tenantId = Util::getenv('TEST_FIREBASE_TENANT_ID');

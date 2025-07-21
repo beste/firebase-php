@@ -8,7 +8,11 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 use Kreait\Firebase\Auth\CustomTokenViaGoogleCredentials;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Tests\IntegrationTestCase;
+use Kreait\Firebase\Valinor\Mapper;
+use Kreait\Firebase\Valinor\Normalizer;
+use Kreait\Firebase\Valinor\Source;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\UnencryptedToken;
@@ -27,7 +31,14 @@ final class CustomTokenViaGoogleCredentialsTest extends IntegrationTestCase
 
     protected function setUp(): void
     {
-        $credentials = new ServiceAccountCredentials(Factory::API_CLIENT_SCOPES, self::$serviceAccount);
+        $serviceAccount = (new Mapper())
+            ->allowSuperfluousKeys()
+            ->snakeToCamelCase()
+            ->map(ServiceAccount::class, Source::parse(self::$credentials));
+
+        $normalizedServiceAccount = (new Normalizer())->camelToSnakeCase()->toArray($serviceAccount);
+
+        $credentials = new ServiceAccountCredentials(Factory::API_CLIENT_SCOPES, $normalizedServiceAccount);
 
         $this->generator = new CustomTokenViaGoogleCredentials($credentials);
         $this->auth = self::$factory->createAuth();

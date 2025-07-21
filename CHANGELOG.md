@@ -7,6 +7,12 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ## [Unreleased]
 
+### Changed
+
+* This release introduces [Valinor](https://valinor.cuyz.io/) for type-safe object mapping. The first application is
+  mapping a given service account file, JSON, or array to the newly added internal `ServiceAccount` class, with more
+  to follow in future releases.
+
 ## [7.20.0] - 2025-07-18
 
 ### Added

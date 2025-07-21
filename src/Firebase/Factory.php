@@ -7,7 +7,6 @@ namespace Kreait\Firebase;
 use Beste\Cache\InMemoryCache;
 use Beste\Clock\SystemClock;
 use Beste\Clock\WrappingClock;
-use Beste\Json;
 use Firebase\JWT\CachedKeySet;
 use Google\Auth\ApplicationDefaultCredentials;
 use Google\Auth\Credentials\ServiceAccountCredentials;
@@ -48,21 +47,12 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Stringable;
 use Throwable;
-use UnexpectedValueException;
 
 use function array_filter;
 use function is_string;
 use function sprintf;
 use function trim;
 
-/**
- * @phpstan-type ServiceAccountShape array{
- *     project_id: non-empty-string,
- *     client_email: non-empty-string,
- *     private_key: non-empty-string,
- *     type: 'service_account'
- * }
- */
 final class Factory
 {
     public const API_CLIENT_SCOPES = [
@@ -86,10 +76,7 @@ final class Factory
      */
     private ?string $defaultStorageBucket = null;
 
-    /**
-     * @var ServiceAccountShape|null
-     */
-    private ?array $serviceAccount = null;
+    private ?ServiceAccount $serviceAccount = null;
 
     private ?FetchAuthTokenInterface $googleAuthTokenCredentials = null;
 
@@ -155,40 +142,16 @@ final class Factory
     }
 
     /**
-     * @param non-empty-string|ServiceAccountShape $value
+     * @param string|array<mixed> $value
+     *
+     * @throws InvalidArgumentException
      */
     public function withServiceAccount(string|array $value): self
     {
-        if (is_string($value) && str_starts_with($value, '{')) {
-            try {
-                /** @var ServiceAccountShape $serviceAccount */
-                $serviceAccount = Json::decode($value, true);
-            } catch (UnexpectedValueException $e) {
-                throw new InvalidArgumentException('Invalid service account: '.$e->getMessage(), $e->getCode(), $e);
-            }
-
-            $factory = clone $this;
-            $factory->serviceAccount = $serviceAccount;
-
-            return $factory;
-        }
-
-        if (is_string($value)) {
-            try {
-                /** @var ServiceAccountShape $serviceAccount */
-                $serviceAccount = Json::decodeFile($value, true);
-
-                $factory = clone $this;
-                $factory->serviceAccount = $serviceAccount;
-
-                return $factory;
-            } catch (UnexpectedValueException $e) {
-                throw new InvalidArgumentException('Invalid service account: '.$e->getMessage(), $e->getCode(), $e);
-            }
-        }
+        $serviceAccount = $this->mapServiceAccount($value);
 
         $factory = clone $this;
-        $factory->serviceAccount = $value;
+        $factory->serviceAccount = $serviceAccount;
 
         return $factory;
     }
@@ -414,8 +377,8 @@ final class Factory
         return new AppCheck(
             new AppCheck\ApiClient($http),
             new AppCheckTokenGenerator(
-                $serviceAccount['client_email'],
-                $serviceAccount['private_key'],
+                $serviceAccount->clientEmail,
+                $serviceAccount->privateKey,
                 $this->clock,
             ),
             new AppCheckTokenVerifier($projectId, $keySet),
@@ -548,16 +511,7 @@ final class Factory
      * @deprecated 7.20.0
      * @codeCoverageIgnore
      *
-     * @return array{
-     *     credentialsType: string|null,
-     *     databaseUrl: string,
-     *     defaultStorageBucket: string|null,
-     *     serviceAccount: string|array<string, string>|null,
-     *     projectId: string,
-     *     tenantId: non-empty-string|null,
-     *     tokenCacheType: class-string,
-     *     verifierCacheType: class-string,
-     * }
+     * @return array<mixed>
      */
     public function getDebugInfo(): array
     {
@@ -645,13 +599,7 @@ final class Factory
     }
 
     /**
-     * @return array{
-     *     projectId: non-empty-string,
-     *     authCache: CacheItemPoolInterface,
-     *     credentialsFetcher?: FetchAuthTokenInterface,
-     *     keyFile?: ServiceAccountShape,
-     *     keyFilePath?: non-empty-string
-     * }
+     * @return array<non-empty-string, mixed>
      */
     private function googleCloudClientConfig(): array
     {
@@ -667,7 +615,7 @@ final class Factory
 
         $serviceAccount = $this->getServiceAccount();
         if ($serviceAccount !== null) {
-            $config['keyFile'] = $serviceAccount;
+            $config['keyFile'] = $this->normalizeServiceAccount($serviceAccount);
         }
 
         return $config;
@@ -687,6 +635,8 @@ final class Factory
             ? $credentials->getProjectId()
             : Util::getenv('GOOGLE_CLOUD_PROJECT');
 
+        $projectId ??= $this->getServiceAccount()?->projectId;
+
         if (is_string($projectId) && $projectId !== '') {
             return $this->projectId = $projectId;
         }
@@ -699,11 +649,7 @@ final class Factory
      */
     private function getDatabaseUrl(): string
     {
-        if ($this->databaseUrl === null) {
-            $this->databaseUrl = sprintf('https://%s.firebaseio.com', $this->getProjectId());
-        }
-
-        return $this->databaseUrl;
+        return $this->databaseUrl ??= sprintf('https://%s.firebaseio.com', $this->getProjectId());
     }
 
     /**
@@ -711,11 +657,7 @@ final class Factory
      */
     private function getStorageBucketName(): string
     {
-        if ($this->defaultStorageBucket === null) {
-            $this->defaultStorageBucket = sprintf('%s.appspot.com', $this->getProjectId());
-        }
-
-        return $this->defaultStorageBucket;
+        return $this->defaultStorageBucket ??= sprintf('%s.appspot.com', $this->getProjectId());
     }
 
     private function createCustomTokenGenerator(): ?CustomTokenViaGoogleCredentials
@@ -755,41 +697,34 @@ final class Factory
         return SessionCookieVerifier::createWithProjectIdAndCache($this->getProjectId(), $this->verifierCache ?? $this->defaultCache);
     }
 
-    /**
-     * @return ServiceAccountShape|null
-     */
-    private function getServiceAccount(): ?array
+    private function getServiceAccount(): ?ServiceAccount
     {
-        if ($this->serviceAccount === null) {
-            $googleApplicationCredentials = Util::getenv('GOOGLE_APPLICATION_CREDENTIALS');
-
-            if ($googleApplicationCredentials === null) {
-                return null;
-            }
-
-            if (!str_starts_with($googleApplicationCredentials, '{')) {
-                return null;
-            }
-
-            /** @var ServiceAccountShape $serviceAccount */
-            $serviceAccount = Json::decode($googleApplicationCredentials, true);
-
-            $this->serviceAccount = $serviceAccount;
+        if ($this->serviceAccount !== null) {
+            return $this->serviceAccount;
         }
 
-        return $this->serviceAccount;
+        $googleApplicationCredentials = Util::getenv('GOOGLE_APPLICATION_CREDENTIALS');
+
+        if ($googleApplicationCredentials === null) {
+            return $this->serviceAccount;
+        }
+
+        return $this->serviceAccount = $this->mapServiceAccount($googleApplicationCredentials);
     }
 
     private function getGoogleAuthTokenCredentials(): ?FetchAuthTokenInterface
     {
-        if ($this->googleAuthTokenCredentials !== null) {
+        if ($this->googleAuthTokenCredentials instanceof FetchAuthTokenInterface) {
             return $this->googleAuthTokenCredentials;
         }
 
         $serviceAccount = $this->getServiceAccount();
 
         if ($serviceAccount !== null) {
-            return $this->googleAuthTokenCredentials = new ServiceAccountCredentials(self::API_CLIENT_SCOPES, $serviceAccount);
+            return $this->googleAuthTokenCredentials = new ServiceAccountCredentials(
+                self::API_CLIENT_SCOPES,
+                $this->normalizeServiceAccount($serviceAccount),
+            );
         }
 
         try {
@@ -797,5 +732,23 @@ final class Factory
         } catch (Throwable) {
             return null;
         }
+    }
+
+    private function mapServiceAccount(mixed $value): ServiceAccount
+    {
+        return $this->getMapper()
+            ->allowSuperfluousKeys()
+            ->snakeToCamelCase()
+            ->map(ServiceAccount::class, Source::parse($value));
+    }
+
+    /**
+     * @return array<non-empty-string, mixed>
+     */
+    private function normalizeServiceAccount(ServiceAccount $serviceAccount): array
+    {
+        return $this->getNormalizer()
+            ->camelToSnakeCase()
+            ->toArray($serviceAccount);
     }
 }
