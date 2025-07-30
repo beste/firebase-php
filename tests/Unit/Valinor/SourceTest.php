@@ -52,6 +52,14 @@ class SourceTest extends TestCase
     }
 
     #[Test]
+    public function itSupportsJsonFilesWithFileExtensionsNotSuggestingJson(): void
+    {
+        $source = Source::parse(__DIR__.'/valid.txt');
+
+        $this->assertSame(['foo' => 'bar'], iterator_to_array($source));
+    }
+
+    #[Test]
     public function itRejectsInvalidFiles(): void
     {
         $this->expectException(InvalidArgumentException::class);

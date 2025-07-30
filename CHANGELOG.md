@@ -7,10 +7,14 @@ Please read about the future of the Firebase Admin PHP SDK on the
 
 ## [Unreleased]
 
-## Added
+### Added
 
 * Re-added the `#[SensitiveParameter]` attribute because, while it's not supported in PHP 8.1, it can still be used
   if placed in a standalone line above the variable or property.
+
+### Fixed
+
+* Re-added support for JSON files with any file extension
 
 ## [7.21.1] - 2025-07-24
 

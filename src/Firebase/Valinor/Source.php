@@ -24,25 +24,47 @@ final class Source implements IteratorAggregate
     ) {
     }
 
-    public static function parse(mixed $value): self
+    /**
+     * @param iterable<mixed>|string $value
+     */
+    public static function parse(iterable|string $value): self
     {
         if (is_iterable($value)) {
             return new self(BaseSource::iterable($value));
         }
 
-        if (str_starts_with((string) $value, '{') || str_starts_with((string) $value, '[')) {
-            try {
-                return new self(BaseSource::json($value));
-            } catch (Throwable $e) {
-                throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
-            }
+        if (str_starts_with($value, '{') || str_starts_with($value, '[')) {
+            return self::json($value);
         }
 
+        return self::file($value);
+    }
+
+    private static function json(string $value): self
+    {
         try {
-            return new self(BaseSource::file(new SplFileObject($value)));
+            return new self(BaseSource::json($value));
         } catch (Throwable $e) {
             throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
         }
+    }
+
+    public static function file(string $value): self
+    {
+        try {
+            $file = new SplFileObject($value);
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
+        }
+
+        $content = $file->fread($file->getSize());
+        $pathName = $file->getPathname();
+
+        if ($content === false) {
+            throw new InvalidArgumentException("Unable to parse `$pathName`");
+        }
+
+        return self::json($content);
     }
 
     public function getIterator(): Traversable
