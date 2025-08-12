@@ -20,25 +20,25 @@ final class ServiceAccount
         public string $clientEmail,
         /** @var non-empty-string */
         #[\SensitiveParameter]
-        public string $clientId,
-        /** @var non-empty-string */
-        #[\SensitiveParameter]
         public string $privateKey,
-        /** @var non-empty-string */
+        /** @var non-empty-string|null */
         #[\SensitiveParameter]
-        public string $privateKeyId,
-        /** @var non-empty-string */
+        public ?string $clientId = null,
+        /** @var non-empty-string|null */
         #[\SensitiveParameter]
-        public string $authUri,
-        /** @var non-empty-string */
+        public ?string $privateKeyId = null,
+        /** @var non-empty-string|null */
         #[\SensitiveParameter]
-        public string $tokenUri,
-        /** @var non-empty-string */
+        public ?string $authUri = null,
+        /** @var non-empty-string|null */
         #[\SensitiveParameter]
-        public string $authProviderX509CertUrl,
-        /** @var non-empty-string */
+        public ?string $tokenUri = null,
+        /** @var non-empty-string|null */
         #[\SensitiveParameter]
-        public string $clientX509CertUrl,
+        public ?string $authProviderX509CertUrl = null,
+        /** @var non-empty-string|null */
+        #[\SensitiveParameter]
+        public ?string $clientX509CertUrl = null,
         /** @var non-empty-string|null */
         #[\SensitiveParameter]
         public ?string $quotaProjectId = null,
