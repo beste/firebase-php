@@ -16,34 +16,10 @@
 
 </div>
 
----
-
-> [!IMPORTANT]
-> The SDK, along with its [Laravel Package](https://github.com/kreait/laravel-firebase) and 
-> [Symfony Bundle](https://github.com/kreait/firebase-bundle), has garnered over 3,200 stars on GitHub. The SDK alone is
-> [downloaded more than 650,000 times a month](https://packagist.org/packages/kreait/firebase-php/stats),
-highlighting its significant impact and widespread use in the PHP community.
-> 
-> If your PHP project utilizes Firebase, there’s a high likelihood it’s leveraging this SDK. The impressive number of
-> downloads underscores its integration into numerous CI/CD pipelines, signifying its critical role for many enterprises
-> and agencies. 
->
-> Despite its extensive use and the value it provides, the development and maintenance of this SDK have largely been unfunded.
->
-> Over the past nine years, I have dedicated countless hours to developing and maintaining this SDK. This includes staying
-> current with Firebase updates, supporting users, and [contributing significantly to official Google PHP libraries](https://github.com/pulls?user=googleapis&q=sort%3Acomments-desc+author%3Ajeromegamez&user=googleapis),
-> ensuring all users benefit from up-to-date dependencies.
->
-> While I am passionate about this work and thrilled by its utility to many, the lack of sponsorship has become
-> increasingly challenging. To continue delivering high-quality updates and support, I need your help.
->
-> If this SDK is valuable to your business, please consider [showing your appreciation through sponsorship](https://github.com/sponsors/jeromegamez).
->
-> Your support will motivate me to continue enhancing and maintaining the SDK, ensuring it remains a valuable resource for everyone.
->
-> To discuss additional sponsorship opportunities, please reach out to me at [funding@jerome.gamez.name](mailto:funding@jerome.gamez.name).
-
----
+> [!IMPORTANT]  
+> **Support the project:** This SDK is downloaded 1M+ times monthly and powers thousands of applications.
+> If it saves you or your team time, please consider
+> [sponsoring its development](https://github.com/sponsors/jeromegamez).
 
 ## Overview
 

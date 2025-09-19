@@ -1,10 +1,5 @@
 # CHANGELOG
 
-## The future of the Firebase Admin PHP SDK
-
-Please read about the future of the Firebase Admin PHP SDK on the
-[SDK's GitHub Repository](https://github.com/kreait/firebase-php).
-
 ## [Unreleased]
 
 ### Added
