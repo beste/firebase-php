@@ -1,0 +1,69 @@
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Clipping path for rounded rectangle -->
+    <clipPath id="roundedRect">
+      <rect x="0" y="0" width="60" height="60" rx="12" ry="12"/>
+    </clipPath>
+
+    <!-- Clipping paths for triangular areas -->
+    <clipPath id="leftTriangle">
+      <polygon points="0,0 60,0 0,60"/>
+    </clipPath>
+
+    <clipPath id="rightTriangle">
+      <polygon points="60,0 60,60 0,60"/>
+    </clipPath>
+
+    <!-- Firebase vertical stripe clips -->
+    <clipPath id="firebaseYellow">
+      <polygon points="0,0 20,0 20,60 0,60"/>
+    </clipPath>
+
+    <clipPath id="firebaseOrange">
+      <polygon points="20,0 40,0 40,60 20,60"/>
+    </clipPath>
+
+    <clipPath id="firebaseRed">
+      <polygon points="40,0 60,0 60,60 40,60"/>
+    </clipPath>
+
+    <!-- PHP horizontal stripe clips -->
+    <clipPath id="phpLight">
+      <polygon points="0,0 60,0 60,20 0,20"/>
+    </clipPath>
+
+    <clipPath id="phpMedium">
+      <polygon points="0,20 60,20 60,40 0,40"/>
+    </clipPath>
+
+    <clipPath id="phpDark">
+      <polygon points="0,40 60,40 60,60 0,60"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="60" height="60" rx="12" ry="12" fill="#f0f0f0"/>
+
+  <!-- Firebase vertical stripes (left triangle) -->
+  <g clip-path="url(#leftTriangle)">
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#FFC400" clip-path="url(#firebaseYellow)"/>
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#FF9100" clip-path="url(#firebaseOrange)"/>
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#DD2C00" clip-path="url(#firebaseRed)"/>
+  </g>
+
+  <!-- PHP horizontal stripes (right triangle) -->
+  <g clip-path="url(#rightTriangle)">
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#B0B3D6" clip-path="url(#phpLight)"/>
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#787CB5" clip-path="url(#phpMedium)"/>
+    <rect x="0" y="0" width="60" height="60" rx="12" ry="12"
+          fill="#474A8A" clip-path="url(#phpDark)"/>
+  </g>
+
+  <!-- Diagonal separator -->
+  <line x1="0" y1="60" x2="60" y2="0" stroke="rgba(255,255,255,0.2)" stroke-width="1" clip-path="url(#roundedRect)"/>
+</svg>

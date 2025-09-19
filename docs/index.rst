@@ -1,23 +1,30 @@
-.. title:: Firebase Admin SDK for PHP
+.. title:: Firebase for PHP
 
-##########################
-Firebase Admin SDK for PHP
-##########################
+################
+Firebase for PHP
+################
 
-Interact with `Google Firebase <https://firebase.google.com>`_ from your PHP application.
+.. raw:: html
 
-.. image:: https://img.shields.io/github/license/kreait/firebase-php.svg
-   :target: https://github.com/kreait/firebase-php/blob/master/LICENSE
-   :alt: License
-.. image:: https://img.shields.io/github/stars/kreait/firebase-php.svg
-   :target: https://github.com/kreait/firebase-php/stargazers
-   :alt: Stargazers
-.. image:: https://img.shields.io/packagist/dt/kreait/firebase-php.svg
-   :target: https://packagist.org/packages/kreait/firebase-php
-   :alt: Total downloads
-.. image:: https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4
-   :target: https://github.com/sponsors/jeromegamez
-   :alt: Sponsoring
+   <div align="center">
+
+      <p><img src="_static/logo.svg" alt="Firebase for PHP Logo" width="120"></p>
+
+      <p><em>An (unofficial) Firebase Admin SDK for PHP</em></p>
+
+      <p>
+         <a href="https://packagist.org/packages/kreait/firebase-php"><img src="https://img.shields.io/packagist/v/kreait/firebase-php.svg?logo=composer" alt="Current version"></a>
+         <a href="https://packagist.org/packages/kreait/firebase-php/stats"><img src="https://img.shields.io/packagist/dm/kreait/firebase-php.svg" alt="Monthly Downloads"></a>
+         <a href="https://packagist.org/packages/kreait/firebase-php/stats"><img src="https://img.shields.io/packagist/dt/kreait/firebase-php.svg" alt="Total Downloads"></a><br/>
+         <a href="https://github.com/kreait/firebase-php/actions/workflows/tests.yml"><img src="https://github.com/kreait/firebase-php/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+         <a href="https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml"><img src="https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml/badge.svg" alt="Integration Tests"></a>
+         <a href="https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml"><img src="https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml/badge.svg" alt="Emulator Tests"></a>
+         <a href="https://github.com/sponsors/jeromegamez"><img src="https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4" alt="Sponsor"></a>
+      </p>
+
+   </div>
+
+----
 
 .. note::
     If you are interested in using the PHP Admin SDK as a client for end-user access
@@ -25,7 +32,7 @@ Interact with `Google Firebase <https://firebase.google.com>`_ from your PHP app
     privileged environment (like a server), you should instead follow the
     `instructions for setting up the client JavaScript SDK <https://firebase.google.com/docs/web/setup>`_.
 
-The source code can be found at https://github.com/kreait/firebase-php/ .
+----
 
 ***********
 Quick Start

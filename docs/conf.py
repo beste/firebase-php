@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Project information
-project = 'Firebase Admin SDK for PHP'
+project = 'Firebase for PHP'
 author = 'Jérôme Gamez'
 copyright = 'Jérôme Gamez'
 version = '7.x'
@@ -33,9 +33,11 @@ exclude_patterns = ['_build', '.venv']
 suppress_warnings = ['image.nonlocal_uri']
 
 # HTML theme and static files
+html_title = 'Firebase for PHP'
 html_theme = 'furo'
 html_static_path = ['_static']
 html_css_files = ['custom.css']
+html_logo = "_static/logo.svg"
 
 html_theme_options = {
     # GitHub integration
@@ -79,6 +81,9 @@ html_theme_options = {
 # SEO and social media
 html_baseurl = "https://firebase-php.readthedocs.io/"
 ogp_site_url = "https://firebase-php.readthedocs.io/"
+ogp_social_cards = {
+    "image": "_static/logo.png",
+}
 sitemap_url_scheme = "{lang}{version}{link}"
 
 # Extension-specific configuration

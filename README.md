@@ -1,14 +1,20 @@
-# Firebase Admin PHP SDK
+<div align="center">
+
+# Firebase for PHP
+
+<img src="docs/_static/logo.svg" alt="Firebase Admin PHP SDK Logo" width="120">
+
+<p><em>An (unofficial) Firebase Admin SDK for PHP</em></p>
 
 [![Current version](https://img.shields.io/packagist/v/kreait/firebase-php.svg?logo=composer)](https://packagist.org/packages/kreait/firebase-php)
-[![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/kreait/firebase-php)](https://packagist.org/packages/kreait/firebase-php)
 [![Monthly Downloads](https://img.shields.io/packagist/dm/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)
-[![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)
+[![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)<br/>
 [![Tests](https://github.com/kreait/firebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/tests.yml)
 [![Integration Tests](https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml)
 [![Emulator Tests](https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml)
-[![codecov](https://codecov.io/gh/kreait/firebase-php/graph/badge.svg?token=Azl8QCvbTQ)](https://codecov.io/gh/kreait/firebase-php)
 [![Sponsor](https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4)](https://github.com/sponsors/jeromegamez)
+
+</div>
 
 ---
 
