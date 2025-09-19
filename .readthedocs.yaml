@@ -3,13 +3,21 @@
 version: 2
 
 build:
-  os: ubuntu-22.04
+  os: ubuntu-24.04
   tools:
-    python: "3.11"
+    python: "3.12"
+  jobs:
+    pre_create_environment:
+      - asdf plugin add uv
+      - asdf install uv latest
+      - asdf global uv latest
+
+    install:
+      - cd docs && uv sync
+
+    build:
+      html:
+        - cd docs && uv run sphinx-build -T -b html . $READTHEDOCS_OUTPUT/html
 
 sphinx:
   configuration: docs/conf.py
-
-python:
-  install:
-    - requirements: docs/requirements.txt

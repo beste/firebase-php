@@ -19,31 +19,37 @@ Before you start, please read about Firebase Cloud Storage in the official docum
 Initializing the Storage component
 **********************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $storage = $factory->createStorage();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $storage = $factory->createStorage();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\Storage;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(Storage $storage)
-        {
-            $this->storage = $storage;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\Storage;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(Storage $storage)
+             {
+                 $this->storage = $storage;
+             }
+         }
 
-    $storage = app('firebase.storage');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $storage = app('firebase.storage');
 
 
 ***************

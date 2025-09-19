@@ -37,36 +37,40 @@ Getting started
 Initializing the Dynamic Links component
 ****************************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $dynamicLinksDomain = 'https://example.page.link';
-    $dynamicLinks = $factory->createDynamicLinksService($dynamicLinksDomain);
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $dynamicLinksDomain = 'https://example.page.link';
+         $dynamicLinks = $factory->createDynamicLinksService($dynamicLinksDomain);
 
-To define the default Dynamic Links Domain for **Laravel**, configure the ``FIREBASE_DYNAMIC_LINKS_DEFAULT_DOMAIN`` environment variable.
+   .. tab-item:: Symfony
 
-.. code-block:: php
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    use Kreait\Firebase\Contract\DynamicLinks;
+      .. code-block:: php
 
-    class MyService
-    {
-        public function __construct(DynamicLinks $dynamicLinks)
-        {
-            $this->dynamicLinks = $dynamicLinks;
-        }
-    }
+         use Kreait\Firebase\Contract\DynamicLinks;
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         class MyService
+         {
+             public function __construct(DynamicLinks $dynamicLinks)
+             {
+                 $this->dynamicLinks = $dynamicLinks;
+             }
+         }
 
-To define the default Dynamic Links Domain, configure the ``FIREBASE_DYNAMIC_LINKS_DEFAULT_DOMAIN`` environment variable.
+   .. tab-item:: Laravel
 
-.. code-block:: php
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
 
-    $dynamicLinks = app('firebase.dynamic_links');
+      To define the default Dynamic Links Domain, configure the ``FIREBASE_DYNAMIC_LINKS_DEFAULT_DOMAIN`` environment variable.
+
+      .. code-block:: php
+
+         $dynamicLinks = app('firebase.dynamic_links');
 
 
 *********************

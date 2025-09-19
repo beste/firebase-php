@@ -29,31 +29,37 @@ Before you start, please read about Firestore in the official documentation:
 Initializing the Firestore component
 ************************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $firestore = $factory->createFirestore();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $firestore = $factory->createFirestore();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\Firestore;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(Firestore $firestore)
-        {
-            $this->firestore = $firestore;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\Firestore;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(Firestore $firestore)
+             {
+                 $this->firestore = $firestore;
+             }
+         }
 
-    $firestore = app('firebase.firestore');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $firestore = app('firebase.firestore');
 
 ***************
 Getting started

@@ -1,0 +1,19 @@
+[project]
+name = "docs"
+version = "7"
+description = "Firebase Admin SDK for PHP Documentation"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "furo>=2025.7.19",
+    "linkify-it-py>=2.0.3",
+    "matplotlib>=3.10.6",
+    "myst-parser>=4.0.1",
+    "sphinx==7.2.6",
+    "sphinx-autobuild>=2025.8.25",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-design>=0.6.1",
+    "sphinx-inline-tabs>=2023.4.21",
+    "sphinx-sitemap>=2.8.0",
+    "sphinxext-opengraph>=0.13.0",
+]

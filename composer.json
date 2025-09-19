@@ -91,7 +91,24 @@
             "vendor/bin/php-cs-fixer fix --diff --verbose"
         ],
         "docs": [
-            "cd docs && uv run make html"
+            "@docs:clean",
+            "@docs:setup",
+            "@docs:build"
+        ],
+        "docs:build": [
+            "cd docs && uv run sphinx-build -b html . _build/html"
+        ],
+        "docs:clean": [
+            "cd docs && rm -rf _build/*"
+        ],
+        "docs:linkcheck": [
+            "cd docs && uv run sphinx-build -b linkcheck . _build/linkcheck"
+        ],
+        "docs:serve": [
+            "cd docs && uv run sphinx-autobuild . _build/html --host 0.0.0.0 --port 8000"
+        ],
+        "docs:setup": [
+            "cd docs && uv sync"
         ],
         "pre-push": [
             "@rector-fix",
@@ -117,21 +134,21 @@
         "test-bc": [
             "docker run -it --rm -v `pwd`:/app nyholm/roave-bc-check"
         ],
-        "test-dependencies": [
-            "vendor/bin/composer-dependency-analyser"
-        ],
         "test-coverage": [
             "Composer\\Config::disableProcessTimeout",
             "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html=.build/coverage"
         ],
+        "test-dependencies": [
+            "vendor/bin/composer-dependency-analyser"
+        ],
         "test-emulator": [
             "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'vendor/bin/phpunit --group=emulator'"
         ],
-        "test-units": [
-            "vendor/bin/phpunit --testsuite=unit"
-        ],
         "test-integration": [
             "vendor/bin/phpunit --testsuite=integration"
+        ],
+        "test-units": [
+            "vendor/bin/phpunit --testsuite=unit"
         ]
     },
     "extra": {

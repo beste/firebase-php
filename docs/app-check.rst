@@ -14,31 +14,37 @@ Before you start, please read about Firebase App Check in the official documenta
 Initializing the App Check component
 ************************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $appCheck = $factory->createAppCheck();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $appCheck = $factory->createAppCheck();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\AppCheck;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(AppCheck $appCheck)
-        {
-            $this->appCheck = $appCheck;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\AppCheck;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(AppCheck $appCheck)
+             {
+                 $this->appCheck = $appCheck;
+             }
+         }
 
-    $appCheck = app('firebase.app_check');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $appCheck = app('firebase.app_check');
 
 
 .. _verify-app-check-tokens:

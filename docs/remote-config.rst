@@ -22,35 +22,41 @@ For Firebase projects created before the March 7, 2018 release of the Remote Con
 2. When prompted, select your Firebase project. (Every Firebase project has a corresponding project in the Google APIs console.)
 3. Click Enable on the Firebase Remote Config API page.
 
-********************************************
-Initializing the Realtime Database component
-********************************************
+*****************************************
+Initializing the Remote Config component
+*****************************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $remoteConfig = $factory->createRemoteConfig();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $remoteConfig = $factory->createRemoteConfig();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\RemoteConfig;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(RemoteConfig $remoteConfig)
-        {
-            $this->remoteConfig = $remoteConfig;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\RemoteConfig;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(RemoteConfig $remoteConfig)
+             {
+                 $this->remoteConfig = $remoteConfig;
+             }
+         }
 
-    $remoteConfig = app('firebase.remote_config');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $remoteConfig = app('firebase.remote_config');
 
 *********************
 Get the Remote Config

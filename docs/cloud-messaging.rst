@@ -18,31 +18,37 @@ Before you start, please read about Firebase Cloud Messaging in the official doc
 Initializing the Messaging component
 ************************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $messaging = $factory->createMessaging();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $messaging = $factory->createMessaging();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\Messaging;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(Messaging $messaging)
-        {
-            $this->messaging = $messaging;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\Messaging;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(Messaging $messaging)
+             {
+                 $this->messaging = $messaging;
+             }
+         }
 
-    $messaging = app('firebase.messaging');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $messaging = app('firebase.messaging');
 
 ***************
 Getting started

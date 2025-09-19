@@ -33,31 +33,37 @@ limited by that rule.
 Initializing the Auth component
 *******************************
 
-**With the SDK**
+.. tab-set::
 
-.. code-block:: php
+   .. tab-item:: SDK
 
-    $auth = $factory->createAuth();
+      .. code-block:: php
 
-**With Dependency Injection** (`Symfony Bundle <https://github.com/kreait/firebase-bundle>`_/`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         $auth = $factory->createAuth();
 
-.. code-block:: php
+   .. tab-item:: Symfony
 
-    use Kreait\Firebase\Contract\Auth;
+      See the `Symfony Bundle documentation <https://github.com/kreait/firebase-bundle>`_ for configuration details.
 
-    class MyService
-    {
-        public function __construct(Auth $auth)
-        {
-            $this->auth = $auth;
-        }
-    }
+      .. code-block:: php
 
-**With the Laravel** ``app()`` **helper** (`Laravel/Lumen Package <https://github.com/kreait/laravel-firebase>`_)
+         use Kreait\Firebase\Contract\Auth;
 
-.. code-block:: php
+         class MyService
+         {
+             public function __construct(Auth $auth)
+             {
+                 $this->auth = $auth;
+             }
+         }
 
-    $auth = app('firebase.auth');
+   .. tab-item:: Laravel
+
+      See the `Laravel Package documentation <https://github.com/kreait/laravel-firebase>`_ for configuration details.
+
+      .. code-block:: php
+
+         $auth = app('firebase.auth');
 
 
 .. _create-custom-tokens:
