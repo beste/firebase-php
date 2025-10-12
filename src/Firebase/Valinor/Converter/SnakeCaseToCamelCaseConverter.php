@@ -13,6 +13,12 @@ use Traversable;
  */
 final class SnakeCaseToCamelCaseConverter
 {
+    /**
+     * @template T of object
+     * @param array<mixed> $value
+     * @param callable(array<mixed>): T $next
+     * @return T
+     */
     public function __invoke(mixed $values, callable $next): object
     {
         if ($values instanceof Traversable) {

@@ -31,7 +31,7 @@
         "beste/clock": "^3.0",
         "beste/in-memory-cache": "^1.3.1",
         "beste/json": "^1.5.1",
-        "cuyz/valinor": "^2.0",
+        "cuyz/valinor": "^2.2.1",
         "fig/http-message-util": "^1.1.5",
         "firebase/php-jwt": "^6.10.2",
         "google/auth": "^v1.45",
