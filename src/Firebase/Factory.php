@@ -638,11 +638,6 @@ final class Factory
             $config['credentialsFetcher'] = $credentials;
         }
 
-        $serviceAccount = $this->getServiceAccount();
-        if ($serviceAccount !== null) {
-            $config['keyFile'] = $this->normalizeServiceAccount($serviceAccount);
-        }
-
         return $config;
     }
 
