@@ -23,7 +23,7 @@ final class Firestore implements Contract\Firestore
     public static function fromConfig(array $config): Contract\Firestore
     {
         try {
-            return new self(new FirestoreClient($config));
+            return new self(new FirestoreClient($config)); // @phpstan-ignore method.deprecated
         } catch (Throwable $e) {
             throw new RuntimeException('Unable to create a FirestoreClient: '.$e->getMessage(), $e->getCode(), $e);
         }
