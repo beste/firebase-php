@@ -151,6 +151,21 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertIsInt($value['updatedAt']);
     }
 
+    /**
+     * @see https://github.com/kreait/firebase-php/issues/1031
+     */
+    #[Test]
+    public function useNonLatinCharacters(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+
+        $value = ['nested' => [['content' => 'لقد تعطل']]];
+
+        $ref->set($value);
+
+        $this->assertSame($value, $ref->getValue());
+    }
+
     public static function validValues(): Iterator
     {
         yield 'string' => ['string', 'value'];
