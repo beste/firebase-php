@@ -32,5 +32,13 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\ShortenLongDynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\ShortenLongDynamicLink\FailedToShortenLongDynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\SocialMetaTagInfo has been deleted
+[BC] REMOVED: Class Kreait\Firebase\RemoteConfig\ExplicitValue has been deleted
+[BC] REMOVED: Constant Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT was removed
 [BC] REMOVED: Method Kreait\Firebase\Factory#createDynamicLinksService() was removed
+[BC] REMOVED: Method Kreait\Firebase\Factory#getDebugInfo() was removed
+[BC] REMOVED: Method Kreait\Firebase\Factory#withFirestoreDatabase() was removed
+[BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#hasTarget() was removed
+[BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#target() was removed
+[BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#withChangedTarget() was removed
+[BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage::withTarget() was removed
 ```
