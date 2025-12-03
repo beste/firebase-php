@@ -9,7 +9,7 @@ on:
       - 'composer.json'
       - 'phpstan.neon.dist'
   push:
-    branches: ['7.x']
+    branches: ['8.x']
     paths:
       - 'src/**'
       - 'tests/**'
@@ -41,7 +41,7 @@ jobs:
 
     env:
       extensions: ctype, dom, grpc, json, mbstring, openssl, xml, zip, zlib
-      key: cache-static-analysis-7x-${{ matrix.php }}-v1
+      key: cache-static-analysis-8x-${{ matrix.php }}
 
     steps:
       - name: Checkout code

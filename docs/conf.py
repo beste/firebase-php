@@ -4,7 +4,7 @@
 project = 'Firebase Admin SDK for PHP'
 author = 'Jérôme Gamez'
 copyright = 'Jérôme Gamez'
-version = '7.x'
+version = '8.x'
 release = version  # This will be used by Furo for version display
 language = 'en'
 
@@ -42,7 +42,7 @@ html_logo = "_static/logo.svg"
 html_theme_options = {
     # GitHub integration
     "source_repository": "https://github.com/kreait/firebase-php/",
-    "source_branch": "7.x",
+    "source_branch": "8.x",
     "source_directory": "docs/",
 
     # Navigation

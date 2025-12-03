@@ -39,7 +39,7 @@ Composer is a dependency management tool for PHP that allows you to declare the 
 your project needs and installs them into your project.
 
 ```bash
-composer require "kreait/firebase-php:^7.0"
+composer require "kreait/firebase-php:^8.0"
 ```
 
 Please continue to the [Setup section](docs/setup.rst) to learn more about connecting your application to Firebase.
