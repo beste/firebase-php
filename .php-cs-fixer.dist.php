@@ -9,6 +9,7 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PER-CS3x0:risky' => true,
+        '@PHPUnit9x1Migration:risky' => true,
         'class_attributes_separation' => true,
         'class_definition' => [
             'single_line' => true,

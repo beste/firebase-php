@@ -41,10 +41,7 @@ trait EditUserTrait
     /** @var array<string, mixed>|null */
     protected ?array $multiFactor = null;
 
-    /**
-     * @param Stringable|mixed $uid
-     */
-    public function withUid($uid): self
+    public function withUid(Stringable|string $uid): self
     {
         $request = clone $this;
         $request->uid = Uid::fromString($uid)->value;

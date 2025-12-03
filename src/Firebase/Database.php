@@ -19,11 +19,11 @@ use function trim;
 /**
  * @internal
  */
-final class Database implements Contract\Database
+final readonly class Database implements Contract\Database
 {
     public function __construct(
-        private readonly UriInterface $uri,
-        private readonly ApiClient $client,
+        private UriInterface $uri,
+        private ApiClient $client,
     ) {
     }
 

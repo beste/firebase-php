@@ -16,9 +16,9 @@ use Throwable;
 /**
  * @internal
  */
-final class AppCheckApiExceptionConverter
+final readonly class AppCheckApiExceptionConverter
 {
-    public function __construct(private readonly ErrorResponseParser $responseParser)
+    public function __construct(private ErrorResponseParser $responseParser)
     {
     }
 

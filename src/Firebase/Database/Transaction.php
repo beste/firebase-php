@@ -15,14 +15,13 @@ class Transaction
     /**
      * @var array<string, string>
      */
-    private array $etags;
+    private array $etags = [];
 
     /**
      * @internal
      */
     public function __construct(private readonly ApiClient $apiClient)
     {
-        $this->etags = [];
     }
 
     /**

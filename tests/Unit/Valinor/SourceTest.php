@@ -9,7 +9,7 @@ use Kreait\Firebase\Valinor\Source;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class SourceTest extends TestCase
+final class SourceTest extends TestCase
 {
     #[Test]
     public function itSupportsJsonObjectStrings(): void

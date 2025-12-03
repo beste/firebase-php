@@ -20,7 +20,7 @@ final class DeleteUsersRequestTest extends TestCase
     #[Test]
     public function itRejectsTooManyUids(): void
     {
-        $uids = array_map('strval', range(0, 1001));
+        $uids = array_map(strval(...), range(0, 1001));
 
         $this->expectException(InvalidArgumentException::class);
         DeleteUsersRequest::withUids($uids);

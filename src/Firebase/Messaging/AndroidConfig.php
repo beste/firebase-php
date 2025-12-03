@@ -79,27 +79,27 @@ use function sprintf;
  */
 final class AndroidConfig implements JsonSerializable
 {
-    private const MESSAGE_PRIORITY_NORMAL = 'normal';
+    private const string MESSAGE_PRIORITY_NORMAL = 'normal';
 
-    private const MESSAGE_PRIORITY_HIGH = 'high';
+    private const string MESSAGE_PRIORITY_HIGH = 'high';
 
-    private const NOTIFICATION_PRIORITY_UNSPECIFIED = 'PRIORITY_UNSPECIFIED';
+    private const string NOTIFICATION_PRIORITY_UNSPECIFIED = 'PRIORITY_UNSPECIFIED';
 
-    private const NOTIFICATION_PRIORITY_MIN = 'PRIORITY_MIN';
+    private const string NOTIFICATION_PRIORITY_MIN = 'PRIORITY_MIN';
 
-    private const NOTIFICATION_PRIORITY_LOW = 'PRIORITY_LOW';
+    private const string NOTIFICATION_PRIORITY_LOW = 'PRIORITY_LOW';
 
-    private const NOTIFICATION_PRIORITY_DEFAULT = 'PRIORITY_DEFAULT';
+    private const string NOTIFICATION_PRIORITY_DEFAULT = 'PRIORITY_DEFAULT';
 
-    private const NOTIFICATION_PRIORITY_HIGH = 'PRIORITY_HIGH';
+    private const string NOTIFICATION_PRIORITY_HIGH = 'PRIORITY_HIGH';
 
-    private const NOTIFICATION_PRIORITY_MAX = 'PRIORITY_MAX';
+    private const string NOTIFICATION_PRIORITY_MAX = 'PRIORITY_MAX';
 
-    private const NOTIFICATION_VISIBILITY_PRIVATE = 'PRIVATE';
+    private const string NOTIFICATION_VISIBILITY_PRIVATE = 'PRIVATE';
 
-    private const NOTIFICATION_VISIBILITY_PUBLIC = 'PUBLIC';
+    private const string NOTIFICATION_VISIBILITY_PUBLIC = 'PUBLIC';
 
-    private const NOTIFICATION_VISIBILITY_SECRET = 'SECRET';
+    private const string NOTIFICATION_VISIBILITY_SECRET = 'SECRET';
 
     /**
      * @param AndroidConfigShape $config

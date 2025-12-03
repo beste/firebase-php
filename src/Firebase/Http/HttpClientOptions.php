@@ -11,15 +11,15 @@ use Psr\Http\Message\RequestInterface;
 
 use function is_callable;
 
-final class HttpClientOptions
+final readonly class HttpClientOptions
 {
     /**
      * @param array<non-empty-string, mixed> $guzzleConfig
      * @param list<array{middleware: callable|callable-string, name: string}> $guzzleMiddlewares
      */
     private function __construct(
-        private readonly array $guzzleConfig,
-        private readonly array $guzzleMiddlewares,
+        private array $guzzleConfig,
+        private array $guzzleMiddlewares,
     ) {
     }
 

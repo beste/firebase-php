@@ -22,6 +22,7 @@ abstract class DatabaseTestCase extends IntegrationTestCase
 
     protected static Client $apiClient;
 
+    #[\Override]
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();

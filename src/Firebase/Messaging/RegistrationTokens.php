@@ -16,12 +16,12 @@ use function is_string;
 /**
  * @implements IteratorAggregate<RegistrationToken>
  */
-final class RegistrationTokens implements Countable, IteratorAggregate
+final readonly class RegistrationTokens implements Countable, IteratorAggregate
 {
     /**
      * @var list<RegistrationToken>
      */
-    private readonly array $tokens;
+    private array $tokens;
 
     /**
      * @internal

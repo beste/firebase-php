@@ -12,11 +12,11 @@ use Psr\Http\Message\UriInterface;
 /**
  * @internal
  */
-final class LimitToFirst implements Filter
+final readonly class LimitToFirst implements Filter
 {
     use ModifierTrait;
 
-    private readonly int $limit;
+    private int $limit;
 
     public function __construct(int $limit)
     {

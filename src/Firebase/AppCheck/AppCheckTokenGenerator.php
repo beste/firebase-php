@@ -14,19 +14,19 @@ use Psr\Clock\ClockInterface;
  *
  * @todo Add #[SensitiveParameter] attribute to the private key once the minimum required PHP version is >=8.2
  */
-final class AppCheckTokenGenerator
+final readonly class AppCheckTokenGenerator
 {
-    private const APP_CHECK_AUDIENCE = 'https://firebaseappcheck.googleapis.com/google.firebase.appcheck.v1.TokenExchangeService';
+    private const string APP_CHECK_AUDIENCE = 'https://firebaseappcheck.googleapis.com/google.firebase.appcheck.v1.TokenExchangeService';
 
-    private readonly ClockInterface $clock;
+    private ClockInterface $clock;
 
     /**
      * @param non-empty-string $clientEmail
      * @param non-empty-string $privateKey
      */
     public function __construct(
-        private readonly string $clientEmail,
-        private readonly string $privateKey,
+        private string $clientEmail,
+        private string $privateKey,
         ?ClockInterface $clock = null,
     ) {
         $this->clock = $clock ?? SystemClock::create();

@@ -148,7 +148,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
     private function database(): Database
     {
         // If the RTDB Url is not set, the database tests are already skipped
-        assert(self::$rtdbUrl !== null);
+        $this->assertNotNull(self::$rtdbUrl);
 
         return self::$factory
             ->withDatabaseUri(self::$rtdbUrl)
@@ -162,7 +162,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
     private function databaseWithAuthOverride(?array $override): Database
     {
         // If the RTDB Url is not set, the database tests are already skipped
-        assert(self::$rtdbUrl !== null);
+        $this->assertNotNull(self::$rtdbUrl);
 
         return self::$factory
             ->withDatabaseUri(self::$rtdbUrl)

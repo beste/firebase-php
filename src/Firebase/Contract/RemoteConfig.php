@@ -75,7 +75,7 @@ interface RemoteConfig
      *
      * @throws RemoteConfigException if something went wrong
      *
-     * @return Traversable<Version>
+     * @return Traversable<int, Version>
      */
     public function listVersions($query = null): Traversable;
 }

@@ -10,8 +10,6 @@ use Kreait\Firebase\Tests\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 
-use function assert;
-
 /**
  * @internal
  */
@@ -34,7 +32,7 @@ final class FactoryTest extends IntegrationTestCase
             ->createDatabase()
         ;
 
-        assert(file_exists($sink) === false);
+        $this->assertFileDoesNotExist($sink);
 
         // We're only interested in the file, not the actual result
         $db->getReference(__FUNCTION__)->shallow()->getSnapshot();

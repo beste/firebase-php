@@ -11,9 +11,9 @@ use Throwable;
 /**
  * @internal
  */
-final class Firestore implements Contract\Firestore
+final readonly class Firestore implements Contract\Firestore
 {
-    private function __construct(private readonly FirestoreClient $client)
+    private function __construct(private FirestoreClient $client)
     {
     }
 
