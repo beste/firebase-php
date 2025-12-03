@@ -523,11 +523,6 @@ the email link. This also provides the user the ability to go back to the app af
 In addition, you can specify whether to handle the email action link directly from a mobile application
 when it is installed or from a browser.
 
-For links that are meant to be opened via a mobile app, you’ll need to enable Firebase Dynamic Links and perform some
-tasks to detect these links from your mobile app. Refer to the instructions on how to
-`configure Firebase Dynamic Links <https://firebase.google.com/docs/auth/web/passing-state-in-email-actions#configuring-hosting-links>`_
-for email actions.
-
 ========================= =========== ===========
 Parameter                 Type        Description
 ========================= =========== ===========
@@ -558,7 +553,6 @@ Example:
     $actionCodeSettings = [
         'continueUrl' => 'https://www.example.com/checkout?cartId=1234',
         'handleCodeInApp' => true,
-        'dynamicLinkDomain' => 'coolapp.page.link',
         'androidPackageName' => 'com.example.android',
         'androidMinimumVersion' => '12',
         'androidInstallApp' => true,
