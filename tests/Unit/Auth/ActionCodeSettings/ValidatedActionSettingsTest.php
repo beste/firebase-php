@@ -47,7 +47,6 @@ final class ValidatedActionSettingsTest extends TestCase
             [
                 'continueUrl' => $continueUrl,
                 'handleCodeInApp' => true,
-                'dynamicLinkDomain' => 'https://dynamic.example.com',
                 'androidPackageName' => 'locale.vendor.name',
                 'androidMinimumVersion' => '1.0',
                 'androidInstallApp' => true,
@@ -56,7 +55,6 @@ final class ValidatedActionSettingsTest extends TestCase
             [
                 'continueUrl' => $continueUrl,
                 'canHandleCodeInApp' => true,
-                'dynamicLinkDomain' => 'https://dynamic.example.com',
                 'androidPackageName' => 'locale.vendor.name',
                 'androidMinimumVersion' => '1.0',
                 'androidInstallApp' => true,

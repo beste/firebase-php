@@ -21,8 +21,6 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
 
     private ?bool $canHandleCodeInApp = null;
 
-    private ?UriInterface $dynamicLinkDomain = null;
-
     /**
      * @var non-empty-string|null
      */
@@ -73,13 +71,6 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
 
                     break;
 
-                case 'dynamiclinkdomain':
-                    $instance->dynamicLinkDomain = ($value !== null)
-                        ? Utils::uriFor(self::ensureNonEmptyString($value))
-                        : null;
-
-                    break;
-
                 case 'androidpackagename':
                     $instance->androidPackageName = self::ensureNonEmptyString($value);
 
@@ -114,12 +105,10 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
     public function toArray(): array
     {
         $continueUrl = $this->continueUrl !== null ? (string) $this->continueUrl : null;
-        $dynamicLinkDomain = $this->dynamicLinkDomain !== null ? (string) $this->dynamicLinkDomain : null;
 
         return array_filter([
             'continueUrl' => $continueUrl,
             'canHandleCodeInApp' => $this->canHandleCodeInApp,
-            'dynamicLinkDomain' => $dynamicLinkDomain,
             'androidPackageName' => $this->androidPackageName,
             'androidMinimumVersion' => $this->androidMinimumVersion,
             'androidInstallApp' => $this->androidInstallApp,
