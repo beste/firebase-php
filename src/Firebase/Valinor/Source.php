@@ -57,11 +57,17 @@ final readonly class Source implements IteratorAggregate
             throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
         }
 
-        $content = $file->fread($file->getSize());
+        $fileSize = $file->getSize();
         $pathName = $file->getPathname();
 
+        if (!is_int($fileSize)) {
+            throw new InvalidArgumentException("Unable to get filesize of `$pathName`");
+        }
+
+        $content = $file->fread($fileSize);
+
         if ($content === false) {
-            throw new InvalidArgumentException("Unable to parse `$pathName`");
+            throw new InvalidArgumentException("Unable to read `$pathName`");
         }
 
         return self::json($content);
