@@ -6,6 +6,7 @@ namespace Kreait\Firebase\Tests\Unit;
 
 use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Valinor\Mapper;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class ServiceAccountTest extends TestCase
@@ -13,6 +14,7 @@ final class ServiceAccountTest extends TestCase
     /**
      * @see https://github.com/kreait/firebase-php/pull/1034
      */
+    #[DoesNotPerformAssertions]
     public function testItCanBeMapped(): void
     {
         $mapper = (new Mapper())->allowSuperfluousKeys()->snakeToCamelCase();
@@ -24,8 +26,6 @@ final class ServiceAccountTest extends TestCase
             'private_key' => 'private-key',
         ];
 
-        $serviceAccount = $mapper->map(ServiceAccount::class, $input);
-
-        $this->assertInstanceOf(ServiceAccount::class, $serviceAccount);
+        $mapper->map(ServiceAccount::class, $input);
     }
 }

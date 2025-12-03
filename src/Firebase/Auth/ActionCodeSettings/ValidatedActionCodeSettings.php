@@ -60,9 +60,7 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
             switch (mb_strtolower($key)) {
                 case 'continueurl':
                 case 'url':
-                    $instance->continueUrl = ($value !== null)
-                        ? Utils::uriFor(self::ensureNonEmptyString($value))
-                        : null;
+                    $instance->continueUrl = Utils::uriFor(self::ensureNonEmptyString($value));
 
                     break;
 

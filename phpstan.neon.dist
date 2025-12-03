@@ -21,13 +21,12 @@ parameters:
 			identifier: staticMethod.dynamicCall
 			path: tests
 
-	checkUninitializedProperties: true
-
 	checkBenevolentUnionTypes: true
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
+	checkUninitializedProperties: true
 	reportAlwaysTrueInLastCondition: true
 	reportPossiblyNonexistentConstantArrayOffset: true
-	treatPhpDocTypesAsCertain: false
+
 includes:
 	- vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon

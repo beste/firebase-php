@@ -244,12 +244,12 @@ class Template implements JsonSerializable
         $valueType = ParameterValueType::tryFrom($data['valueType'] ?? '') ?? ParameterValueType::UNSPECIFIED;
 
         $parameter = Parameter::named($name)
-            ->withDescription((string) ($data['description'] ?? ''))
+            ->withDescription($data['description'] ?? '')
             ->withDefaultValue($data['defaultValue'] ?? null)
             ->withValueType($valueType)
         ;
 
-        foreach ((array) ($data['conditionalValues'] ?? []) as $key => $conditionalValueData) {
+        foreach (($data['conditionalValues'] ?? []) as $key => $conditionalValueData) {
             $parameter = $parameter->withConditionalValue(new ConditionalValue($key, ParameterValue::fromArray($conditionalValueData)));
         }
 
@@ -263,7 +263,7 @@ class Template implements JsonSerializable
     private static function buildParameterGroup(string $name, array $parameterGroupData): ParameterGroup
     {
         $group = ParameterGroup::named($name)
-            ->withDescription((string) ($parameterGroupData['description'] ?? ''))
+            ->withDescription($parameterGroupData['description'] ?? '')
         ;
 
         foreach ($parameterGroupData['parameters'] as $parameterName => $parameterData) {
