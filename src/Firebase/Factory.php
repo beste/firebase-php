@@ -481,33 +481,6 @@ final class Factory
     }
 
     /**
-     * @deprecated 7.14.0 Firebase Dynamic Links is deprecated and should not be used in new projects. The service will
-     *                    shut down on August 25, 2025. The component will remain in the SDK until then, but as the
-     *                    Firebase service is deprecated, this component is also deprecated
-     * @codeCoverageIgnore
-     *
-     * @see https://firebase.google.com/support/dynamic-links-faq Dynamic Links Deprecation FAQ
-     *
-     * @param Stringable|non-empty-string|null $defaultDynamicLinksDomain
-     */
-    public function createDynamicLinksService($defaultDynamicLinksDomain = null): Contract\DynamicLinks
-    {
-        $apiClient = new DynamicLink\ApiClient(
-            $this->createApiClient(),
-            $this->httpFactory,
-            $this->httpFactory,
-        );
-
-        $defaultDynamicLinksDomain = trim((string) $defaultDynamicLinksDomain);
-
-        if ($defaultDynamicLinksDomain !== '') {
-            return DynamicLinks::withApiClientAndDefaultDomain($apiClient, $defaultDynamicLinksDomain);
-        }
-
-        return DynamicLinks::withApiClient($apiClient);
-    }
-
-    /**
      * @param non-empty-string|null $databaseName
      */
     public function createFirestore(?string $databaseName = null): Contract\Firestore

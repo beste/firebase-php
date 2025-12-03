@@ -115,7 +115,6 @@ Your use of Firebase is governed by the `Terms of Service for Firebase Services 
    realtime-database
    authentication
    user-management
-   dynamic-links
    remote-config
    app-check
    testing
