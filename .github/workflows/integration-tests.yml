@@ -8,7 +8,7 @@ on:
       - 'tests/**'
       - 'phpstan.neon.dist'
   push:
-    branches: ['7.x']
+    branches: ['8.x']
     paths:
       - 'src/**'
       - 'tests/**'
@@ -29,7 +29,7 @@ jobs:
     env:
       php-version: '8.4'
       extensions: ctype, dom, grpc, json, mbstring, openssl, xml, zip, zlib
-      key: cache-integration-7x-83-v1
+      key: cache-integration-8x
 
     steps:
       - name: Checkout code
