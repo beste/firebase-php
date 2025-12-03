@@ -19,7 +19,7 @@ final class InvalidMessage extends RuntimeException implements MessagingExceptio
      */
     public function withErrors(array $errors): self
     {
-        $new = new self($this->getMessage(), $this->getCode(), $this->getPrevious());
+        $new = new self(message: $this->getMessage(), previous: $this->getPrevious());
         $new->errors = $errors;
 
         return $new;

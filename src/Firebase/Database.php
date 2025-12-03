@@ -38,7 +38,7 @@ final readonly class Database implements Contract\Database
         try {
             return new Reference($this->uri->withPath($path), $this->client);
         } catch (\InvalidArgumentException $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+            throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
         }
     }
 

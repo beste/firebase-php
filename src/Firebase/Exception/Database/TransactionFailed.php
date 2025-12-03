@@ -15,7 +15,7 @@ final class TransactionFailed extends RuntimeException implements DatabaseExcept
 {
     private readonly Reference $reference;
 
-    public function __construct(Reference $query, string $message = '', int $code = 0, ?Throwable $previous = null)
+    public function __construct(Reference $query, string $message = '', ?Throwable $previous = null)
     {
         if (trim($message) === '') {
             $queryPath = $query->getPath();
@@ -29,16 +29,14 @@ final class TransactionFailed extends RuntimeException implements DatabaseExcept
             }
         }
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct(message: $message, previous: $previous);
 
         $this->reference = $query;
     }
 
     public static function onReference(Reference $reference, ?Throwable $error = null): self
     {
-        $code = $error !== null ? $error->getCode() : 0;
-
-        return new self($reference, '', $code, $error);
+        return new self($reference, $error?->getMessage() ?? '', $error);
     }
 
     public function getReference(): Reference

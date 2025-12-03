@@ -43,10 +43,13 @@ class AuthApiExceptionConverter
         }
 
         if ($exception instanceof NetworkExceptionInterface) {
-            return new ApiConnectionFailed('Unable to connect to the API: '.$exception->getMessage(), $exception->getCode(), $exception);
+            return new ApiConnectionFailed(
+                message: 'Unable to connect to the API: '.$exception->getMessage(),
+                previous: $exception
+            );
         }
 
-        return new AuthError($exception->getMessage(), $exception->getCode(), $exception);
+        return new AuthError(message: $exception->getMessage(), previous: $exception);
     }
 
     private function convertGuzzleRequestException(RequestException $e): AuthException

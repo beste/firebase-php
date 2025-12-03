@@ -47,10 +47,13 @@ class MessagingApiExceptionConverter
         }
 
         if ($exception instanceof NetworkExceptionInterface) {
-            return new ApiConnectionFailed('Unable to connect to the API: '.$exception->getMessage(), $exception->getCode(), $exception);
+            return new ApiConnectionFailed(
+                message: 'Unable to connect to the API: '.$exception->getMessage(),
+                previous: $exception
+            );
         }
 
-        return new MessagingError($exception->getMessage(), $exception->getCode(), $exception);
+        return new MessagingError(message: $exception->getMessage(), previous: $exception);
     }
 
     public function convertResponse(ResponseInterface $response, ?Throwable $previous = null): MessagingException
@@ -142,7 +145,7 @@ class MessagingApiExceptionConverter
             return $this->convertResponse($response, $e);
         }
 
-        return new MessagingError($e->getMessage(), $e->getCode(), $e);
+        return new MessagingError(message: $e->getMessage(), previous: $e);
     }
 
     private function getRetryAfter(ResponseInterface $response): ?DateTimeImmutable

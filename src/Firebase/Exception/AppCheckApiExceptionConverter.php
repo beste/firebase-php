@@ -29,10 +29,13 @@ final readonly class AppCheckApiExceptionConverter
         }
 
         if ($exception instanceof NetworkExceptionInterface) {
-            return new ApiConnectionFailed('Unable to connect to the API: '.$exception->getMessage(), $exception->getCode(), $exception);
+            return new ApiConnectionFailed(
+                message: 'Unable to connect to the API: '.$exception->getMessage(),
+                previous: $exception
+            );
         }
 
-        return new AppCheckError($exception->getMessage(), $exception->getCode(), $exception);
+        return new AppCheckError(message: $exception->getMessage(), previous: $exception);
     }
 
     private function convertGuzzleRequestException(RequestException $e): AppCheckException

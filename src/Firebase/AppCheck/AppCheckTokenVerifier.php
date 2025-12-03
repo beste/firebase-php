@@ -61,9 +61,9 @@ final readonly class AppCheckTokenVerifier
             /** @var DecodedAppCheckTokenShape $payload */
             $payload = (array) JWT::decode($token, $this->keySet);
         } catch (LogicException $e) {
-            throw new InvalidAppCheckToken($e->getMessage(), $e->getCode(), $e);
+            throw new InvalidAppCheckToken(message: $e->getMessage(), previous: $e);
         } catch (Throwable $e) {
-            throw new FailedToVerifyAppCheckToken($e->getMessage(), $e->getCode(), $e);
+            throw new FailedToVerifyAppCheckToken(message: $e->getMessage(), previous: $e);
         }
 
         return DecodedAppCheckToken::fromArray($payload);

@@ -23,6 +23,7 @@ parameters:
 
 	checkUninitializedProperties: true
 
+	checkBenevolentUnionTypes: true
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	reportAlwaysTrueInLastCondition: true
 	reportPossiblyNonexistentConstantArrayOffset: true
