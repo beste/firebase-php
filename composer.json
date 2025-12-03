@@ -50,17 +50,17 @@
         "psr/log": "^3.0.2"
     },
     "require-dev": {
-        "php-cs-fixer/shim": "^3.88.2",
-        "google/cloud-firestore": "^1.54.2",
+        "php-cs-fixer/shim": "^3.91.2",
+        "google/cloud-firestore": "^1.54.3",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.31",
+        "phpstan/phpstan": "^2.1.32",
         "phpstan/phpstan-deprecation-rules": "^2.0.3",
         "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpstan/phpstan-phpunit": "^2.0.7",
-        "phpunit/phpunit": "^10.5.58",
-        "rector/rector": "^2.2.2",
-        "shipmonk/composer-dependency-analyser": "^1.8.3",
-        "symfony/var-dumper": "^6.4.15 || ^7.3.4",
+        "phpstan/phpstan-phpunit": "^2.0.8",
+        "phpunit/phpunit": "^12.4.5",
+        "rector/rector": "^2.2.11",
+        "shipmonk/composer-dependency-analyser": "^1.8.4",
+        "symfony/var-dumper": "^7.4.0",
         "vlucas/phpdotenv": "^5.6.2"
     },
     "suggest": {
