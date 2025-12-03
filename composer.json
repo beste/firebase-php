@@ -153,7 +153,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-7.x": "7.x-dev"
+            "dev-7.x": "7.x-dev",
+            "dev-8.x": "8.x-dev"
         }
     }
 }
