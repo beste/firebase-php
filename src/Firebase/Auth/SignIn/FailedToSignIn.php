@@ -37,7 +37,10 @@ final class FailedToSignIn extends RuntimeException implements AuthException
 
     public static function fromPrevious(Throwable $e): self
     {
-        return new self('Sign in failed: '.$e->getMessage(), $e->getCode(), $e);
+        return new self(
+            message: 'Sign in failed: '.$e->getMessage(),
+            previous: $e
+        );
     }
 
     public function action(): ?SignIn

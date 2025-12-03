@@ -31,10 +31,13 @@ class DatabaseApiExceptionConverter
         }
 
         if ($exception instanceof NetworkExceptionInterface) {
-            return new ApiConnectionFailed('Unable to connect to the API: '.$exception->getMessage(), $exception->getCode(), $exception);
+            return new ApiConnectionFailed(
+                message: 'Unable to connect to the API: '.$exception->getMessage(),
+                previous: $exception
+            );
         }
 
-        return new DatabaseError($exception->getMessage(), $exception->getCode(), $exception);
+        return new DatabaseError(message: $exception->getMessage(), previous: $exception);
     }
 
     private function convertGuzzleRequestException(RequestException $e): DatabaseException
