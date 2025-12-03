@@ -5,6 +5,11 @@ If it saves you or your team time, please consider [sponsoring its development](
 
 ## [Unreleased]
 
+### Breaking changes
+
+* [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
+  and has been removed from the SDK.
+
 See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x and 8.0.**
 
 ## 7.x Changelog

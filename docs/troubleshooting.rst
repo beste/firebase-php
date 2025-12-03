@@ -111,7 +111,6 @@ enabled for your project:
 - Firebase Services: https://console.cloud.google.com/apis/library/firebase.googleapis.com
 - Cloud Messaging (FCM): https://console.cloud.google.com/apis/library/fcm.googleapis.com
 - FCM Registration API: https://console.cloud.google.com/apis/library/fcmregistrations.googleapis.com
-- Dynamic Links: https://console.cloud.google.com/apis/library/firebasedynamiclinks.googleapis.com
 - Firestore: https://console.cloud.google.com/apis/library/firestore.googleapis.com
 - Realtime Database Rules: https://console.cloud.google.com/apis/library/firebaserules.googleapis.com
 - Remote Config: https://console.cloud.google.com/apis/library/firebaseremoteconfig.googleapis.com

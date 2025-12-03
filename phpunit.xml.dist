@@ -22,11 +22,6 @@
         <include>
             <directory>src/Firebase</directory>
         </include>
-
-        <exclude>
-            <!-- The Dynamic Links Component ist deprecated and the tests are brittle -->
-            <directory>src/Firebase/DynamicLink</directory>
-        </exclude>
     </source>
 
     <php>
