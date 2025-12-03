@@ -21,12 +21,23 @@ parameters:
 			identifier: staticMethod.dynamicCall
 			path: tests
 
+	editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+
+	exceptions:
+		checkedExceptionRegexes:
+			- '#^Kreait\\Firebase\\#'
+		check:
+			# missingCheckedExceptionInThrows: true
+			# tooWideThrowType: true
+
 	checkBenevolentUnionTypes: true
+	# checkMissingCallableSignature: true
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	reportAlwaysTrueInLastCondition: true
 	reportPossiblyNonexistentConstantArrayOffset: true
-
+	# reportPossiblyNonexistentGeneralArrayOffset: true
+	reportAnyTypeWideningInVarTag: true
 includes:
 	- vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
