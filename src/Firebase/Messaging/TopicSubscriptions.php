@@ -14,12 +14,12 @@ use function count;
 /**
  * @implements IteratorAggregate<TopicSubscription>
  */
-final class TopicSubscriptions implements Countable, IteratorAggregate
+final readonly class TopicSubscriptions implements Countable, IteratorAggregate
 {
     /**
      * @var list<TopicSubscription>
      */
-    private readonly array $subscriptions;
+    private array $subscriptions;
 
     public function __construct(TopicSubscription ...$subscriptions)
     {

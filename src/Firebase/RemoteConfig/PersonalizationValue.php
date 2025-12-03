@@ -13,12 +13,12 @@ use JsonSerializable;
  *
  * @see https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig#personalizationvalue
  */
-final class PersonalizationValue implements JsonSerializable
+final readonly class PersonalizationValue implements JsonSerializable
 {
     /**
      * @param RemoteConfigPersonalizationValueShape $data
      */
-    public function __construct(private readonly array $data)
+    public function __construct(private array $data)
     {
     }
 

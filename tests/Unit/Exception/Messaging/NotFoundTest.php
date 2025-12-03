@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class NotFoundTest extends TestCase
+final class NotFoundTest extends TestCase
 {
     #[Test]
     public function itProvidesTheToken(): void

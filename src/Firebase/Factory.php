@@ -50,7 +50,6 @@ use Psr\Clock\ClockInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Stringable;
 use Throwable;
 
 use function array_filter;
@@ -60,7 +59,7 @@ use function trim;
 
 final class Factory
 {
-    public const API_CLIENT_SCOPES = [
+    public const array API_CLIENT_SCOPES = [
         'https://www.googleapis.com/auth/iam',
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/firebase',

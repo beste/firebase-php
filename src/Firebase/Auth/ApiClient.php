@@ -246,7 +246,7 @@ class ApiClient
     public function unlinkProvider(string $uid, array $providers): ResponseInterface
     {
         $url = $this->awareAuthResourceUrlBuilder->getUrl('/accounts:update');
-        $providers = array_map('strval', $providers);
+        $providers = array_map(strval(...), $providers);
 
         return $this->requestApi($url, [
             'localId' => $uid,

@@ -16,11 +16,11 @@ use Traversable;
  *
  * @implements IteratorAggregate<mixed>
  */
-final class Source implements IteratorAggregate
+final readonly class Source implements IteratorAggregate
 {
     private function __construct(
         /** @var iterable<mixed> */
-        private readonly iterable $delegate,
+        private iterable $delegate,
     ) {
     }
 

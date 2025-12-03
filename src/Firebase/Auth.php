@@ -62,16 +62,16 @@ use function trim;
  *
  * @phpstan-import-type UserRecordResponseShape from UserRecord
  */
-final class Auth implements Contract\Auth, FederatedUserFetcher
+final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 {
-    private readonly Parser $jwtParser;
+    private Parser $jwtParser;
 
     public function __construct(
-        private readonly ApiClient $client,
-        private readonly ?CustomTokenViaGoogleCredentials $tokenGenerator,
-        private readonly IdTokenVerifier $idTokenVerifier,
-        private readonly SessionCookieVerifier $sessionCookieVerifier,
-        private readonly ClockInterface $clock,
+        private ApiClient $client,
+        private ?CustomTokenViaGoogleCredentials $tokenGenerator,
+        private IdTokenVerifier $idTokenVerifier,
+        private SessionCookieVerifier $sessionCookieVerifier,
+        private ClockInterface $clock,
     ) {
         $this->jwtParser = new Parser(new JoseEncoder());
     }
@@ -91,7 +91,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function getUsers(array $uids): array
     {
-        $uids = array_map(static fn($uid): string => Uid::fromString($uid)->value, $uids);
+        $uids = array_map(static fn(\Stringable|string $uid): string => Uid::fromString($uid)->value, $uids);
 
         $users = array_fill_keys($uids, null);
 
@@ -520,7 +520,7 @@ final class Auth implements Contract\Auth, FederatedUserFetcher
 
         $provider = array_values(
             array_filter(
-                array_map('strval', (array) $provider),
+                array_map(strval(...), (array) $provider),
                 static fn(string $value): bool => $value !== '',
             ),
         );

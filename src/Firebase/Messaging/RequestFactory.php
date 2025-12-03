@@ -12,13 +12,13 @@ use Psr\Http\Message\StreamFactoryInterface;
 /**
  * @internal
  */
-final class RequestFactory
+final readonly class RequestFactory
 {
-    private readonly bool $environmentSupportsHTTP2;
+    private bool $environmentSupportsHTTP2;
 
     public function __construct(
-        private readonly RequestFactoryInterface $requestFactory,
-        private readonly StreamFactoryInterface $streamFactory,
+        private RequestFactoryInterface $requestFactory,
+        private StreamFactoryInterface $streamFactory,
     ) {
         $this->environmentSupportsHTTP2 = self::environmentSupportsHTTP2();
     }

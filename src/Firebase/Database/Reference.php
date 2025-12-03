@@ -233,7 +233,7 @@ class Reference implements Stringable
         $snapshot = $this->shallow()->getSnapshot();
 
         if (is_array($value = $snapshot->getValue())) {
-            return array_map('strval', array_keys($value));
+            return array_map(strval(...), array_keys($value));
         }
 
         throw new OutOfRangeException(sprintf('%s has no children with keys', $this));

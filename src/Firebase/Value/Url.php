@@ -10,12 +10,12 @@ use Stringable;
 /**
  * @internal
  */
-final class Url
+final readonly class Url
 {
     /**
      * @var non-empty-string
      */
-    public readonly string $value;
+    public string $value;
 
     /**
      * @param non-empty-string $value

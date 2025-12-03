@@ -72,7 +72,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         $this->auth->changeUserPassword($user->uid, 'new password');
         $updatedUser = $this->auth->signInWithEmailAndPassword($email, 'new password');
 
-        assert($updatedUser->firebaseUserId() === $user->uid);
+        $this->assertSame($user->uid, $updatedUser->firebaseUserId());
 
         try {
             $this->expectException(FailedToSignIn::class);
@@ -331,7 +331,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         $signInResult = $this->auth->signInAnonymously();
 
         $uid = $signInResult->firebaseUserId();
-        assert($uid !== null);
+        $this->assertNotNull($uid);
 
         try {
             $idToken = $signInResult->idToken();
@@ -353,7 +353,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         $signInResult = $this->auth->signInAnonymously();
 
         $uid = $signInResult->firebaseUserId();
-        assert($uid !== null);
+        $this->assertNotNull($uid);
 
         try {
             $idToken = $signInResult->idToken();
