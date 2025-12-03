@@ -21,13 +21,13 @@ use function array_key_exists;
  *
  * @see https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig#remoteconfigparametervalue
  */
-final class ParameterValue implements JsonSerializable
+final readonly class ParameterValue implements JsonSerializable
 {
     private function __construct(
-        private readonly ?string $value = null,
-        private readonly ?bool $useInAppDefault = null,
-        private readonly ?PersonalizationValue $personalizationValue = null,
-        private readonly ?RolloutValue $rolloutValue = null,
+        private ?string $value = null,
+        private ?bool $useInAppDefault = null,
+        private ?PersonalizationValue $personalizationValue = null,
+        private ?RolloutValue $rolloutValue = null,
     ) {
     }
 

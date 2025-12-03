@@ -14,21 +14,21 @@ use function strtr;
 /**
  * @internal
  */
-final class AuthResourceUrlBuilder
+final readonly class AuthResourceUrlBuilder
 {
-    private const URL_FORMAT = 'https://identitytoolkit.googleapis.com/{version}{api}';
+    private const string URL_FORMAT = 'https://identitytoolkit.googleapis.com/{version}{api}';
 
-    private const EMULATOR_URL_FORMAT = 'http://{host}/identitytoolkit.googleapis.com/{version}{api}';
+    private const string EMULATOR_URL_FORMAT = 'http://{host}/identitytoolkit.googleapis.com/{version}{api}';
 
-    private const DEFAULT_API_VERSION = 'v1';
+    private const string DEFAULT_API_VERSION = 'v1';
 
     /**
      * @param non-empty-string $apiVersion
      * @param non-empty-string $urlFormat
      */
     private function __construct(
-        private readonly string $apiVersion,
-        private readonly string $urlFormat,
+        private string $apiVersion,
+        private string $urlFormat,
     ) {
     }
 

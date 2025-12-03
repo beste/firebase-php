@@ -13,12 +13,12 @@ use function count;
 /**
  * @implements IteratorAggregate<Message>
  */
-final class Messages implements Countable, IteratorAggregate
+final readonly class Messages implements Countable, IteratorAggregate
 {
     /**
      * @var Message[]
      */
-    private readonly array $messages;
+    private array $messages;
 
     public function __construct(Message ...$messages)
     {

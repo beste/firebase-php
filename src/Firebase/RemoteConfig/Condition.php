@@ -43,7 +43,7 @@ class Condition implements JsonSerializable
      */
     public static function named(string $name): self
     {
-        return new self($name, 'false', null);
+        return new self($name, 'false');
     }
 
     /**

@@ -35,12 +35,12 @@ use function array_map;
 /**
  * @internal
  */
-final class Messaging implements Contract\Messaging
+final readonly class Messaging implements Contract\Messaging
 {
     public function __construct(
-        private readonly ApiClient $messagingApi,
-        private readonly AppInstanceApiClient $appInstanceApi,
-        private readonly MessagingApiExceptionConverter $exceptionConverter,
+        private ApiClient $messagingApi,
+        private AppInstanceApiClient $appInstanceApi,
+        private MessagingApiExceptionConverter $exceptionConverter,
     ) {
     }
 

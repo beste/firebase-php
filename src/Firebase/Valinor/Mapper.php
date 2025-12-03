@@ -12,11 +12,11 @@ use Kreait\Firebase\Valinor\Converter\SnakeCaseToCamelCaseConverter;
 /**
  * @internal
  */
-final class Mapper
+final readonly class Mapper
 {
-    private readonly MapperBuilder $mapperBuilder;
+    private MapperBuilder $mapperBuilder;
 
-    public function __construct(private readonly mixed $cache = null, ?MapperBuilder $builder = null)
+    public function __construct(private mixed $cache = null, ?MapperBuilder $builder = null)
     {
         $builder ??= new MapperBuilder();
 

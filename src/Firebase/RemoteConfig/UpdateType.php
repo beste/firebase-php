@@ -7,17 +7,17 @@ namespace Kreait\Firebase\RemoteConfig;
 use JsonSerializable;
 use Stringable;
 
-final class UpdateType implements JsonSerializable, Stringable
+final readonly class UpdateType implements JsonSerializable, Stringable
 {
-    public const UNSPECIFIED = 'REMOTE_CONFIG_UPDATE_TYPE_UNSPECIFIED';
+    public const string UNSPECIFIED = 'REMOTE_CONFIG_UPDATE_TYPE_UNSPECIFIED';
 
-    public const INCREMENTAL_UPDATE = 'INCREMENTAL_UPDATE';
+    public const string INCREMENTAL_UPDATE = 'INCREMENTAL_UPDATE';
 
-    public const FORCED_UPDATE = 'FORCED_UPDATE';
+    public const string FORCED_UPDATE = 'FORCED_UPDATE';
 
-    public const ROLLBACK = 'ROLLBACK';
+    public const string ROLLBACK = 'ROLLBACK';
 
-    private function __construct(private readonly string $value)
+    private function __construct(private string $value)
     {
     }
 

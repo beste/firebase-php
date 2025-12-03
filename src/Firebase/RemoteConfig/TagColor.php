@@ -14,29 +14,29 @@ use function sprintf;
 
 class TagColor implements Stringable
 {
-    final public const BLUE = 'BLUE';
+    final public const string BLUE = 'BLUE';
 
-    final public const BROWN = 'BROWN';
+    final public const string BROWN = 'BROWN';
 
-    final public const CYAN = 'CYAN';
+    final public const string CYAN = 'CYAN';
 
-    final public const DEEP_ORANGE = 'DEEP_ORANGE';
+    final public const string DEEP_ORANGE = 'DEEP_ORANGE';
 
-    final public const GREEN = 'GREEN';
+    final public const string GREEN = 'GREEN';
 
-    final public const INDIGO = 'INDIGO';
+    final public const string INDIGO = 'INDIGO';
 
-    final public const LIME = 'LIME';
+    final public const string LIME = 'LIME';
 
-    final public const ORANGE = 'ORANGE';
+    final public const string ORANGE = 'ORANGE';
 
-    final public const PINK = 'PINK';
+    final public const string PINK = 'PINK';
 
-    final public const PURPLE = 'PURPLE';
+    final public const string PURPLE = 'PURPLE';
 
-    final public const TEAL = 'TEAL';
+    final public const string TEAL = 'TEAL';
 
-    final public const VALID_COLORS = [
+    final public const array VALID_COLORS = [
         self::BLUE, self::BROWN, self::CYAN, self::DEEP_ORANGE, self::GREEN, self::INDIGO, self::LIME,
         self::ORANGE, self::PINK, self::PURPLE, self::TEAL,
     ];
@@ -69,7 +69,7 @@ class TagColor implements Stringable
     /**
      * @return non-empty-string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->value;
     }

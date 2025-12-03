@@ -44,7 +44,7 @@ class ConditionalValue implements JsonSerializable
     /**
      * @return RemoteConfigParameterValueShape|non-empty-string
      */
-    public function value()
+    public function value(): string|array
     {
         $data = $this->value->toArray();
 

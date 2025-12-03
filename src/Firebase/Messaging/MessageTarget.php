@@ -8,20 +8,20 @@ use Kreait\Firebase\Exception\InvalidArgumentException;
 
 use function mb_strtolower;
 
-final class MessageTarget
+final readonly class MessageTarget
 {
-    public const CONDITION = 'condition';
+    public const string CONDITION = 'condition';
 
-    public const TOKEN = 'token';
+    public const string TOKEN = 'token';
 
-    public const TOPIC = 'topic';
+    public const string TOPIC = 'topic';
 
     /**
      * @internal
      */
-    public const UNKNOWN = 'unknown';
+    public const string UNKNOWN = 'unknown';
 
-    public const TYPES = [
+    public const array TYPES = [
         self::CONDITION, self::TOKEN, self::TOPIC, self::UNKNOWN,
     ];
 
@@ -30,8 +30,8 @@ final class MessageTarget
      * @param non-empty-string $value
      */
     private function __construct(
-        private readonly string $type,
-        private readonly string $value,
+        private string $type,
+        private string $value,
     ) {
     }
 

@@ -21,27 +21,27 @@ use function array_filter;
  */
 class UserQuery implements JsonSerializable
 {
-    final public const FIELD_CREATED_AT = 'CREATED_AT';
+    final public const string FIELD_CREATED_AT = 'CREATED_AT';
 
-    final public const FIELD_LAST_LOGIN_AT = 'LAST_LOGIN_AT';
+    final public const string FIELD_LAST_LOGIN_AT = 'LAST_LOGIN_AT';
 
-    final public const FIELD_NAME = 'NAME';
+    final public const string FIELD_NAME = 'NAME';
 
-    final public const FIELD_USER_EMAIL = 'USER_EMAIL';
+    final public const string FIELD_USER_EMAIL = 'USER_EMAIL';
 
-    final public const FIELD_USER_ID = 'USER_ID';
+    final public const string FIELD_USER_ID = 'USER_ID';
 
-    final public const FILTER_EMAIL = 'email';
+    final public const string FILTER_EMAIL = 'email';
 
-    final public const FILTER_PHONE_NUMBER = 'phoneNumber';
+    final public const string FILTER_PHONE_NUMBER = 'phoneNumber';
 
-    final public const FILTER_USER_ID = 'userId';
+    final public const string FILTER_USER_ID = 'userId';
 
-    final public const ORDER_ASC = 'ASC';
+    final public const string ORDER_ASC = 'ASC';
 
-    final public const ORDER_DESC = 'DESC';
+    final public const string ORDER_DESC = 'DESC';
 
-    final public const MAX_LIMIT = 500;
+    final public const int MAX_LIMIT = 500;
 
     /**
      * @var positive-int|null

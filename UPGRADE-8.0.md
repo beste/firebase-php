@@ -17,6 +17,12 @@ from 7.x to 8.0.
 The following list has been generated with [roave/backward-compatibility-check](https://github.com/Roave/BackwardCompatibilityCheck).
 
 ```
+[BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to Stringable|string
+[BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to a non-contravariant Stringable|string
+[BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to a non-contravariant Stringable|string
+[BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to a non-contravariant Stringable|string
+[BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\ConditionalValue#value() changed from no type to string|array
+[BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\TagColor#__toString() changed from no type to string
 [BC] REMOVED: Class Kreait\Firebase\Contract\DynamicLinks has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\AnalyticsInfo has been deleted

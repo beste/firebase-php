@@ -12,12 +12,12 @@ use function mb_strlen;
 /**
  * @internal
  */
-final class ClearTextPassword
+final readonly class ClearTextPassword
 {
     /**
      * @var non-empty-string
      */
-    public readonly string $value;
+    public string $value;
 
     private function __construct(string $value)
     {

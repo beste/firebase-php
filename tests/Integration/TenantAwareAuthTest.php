@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('emulator')]
 final class TenantAwareAuthTest extends AuthTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

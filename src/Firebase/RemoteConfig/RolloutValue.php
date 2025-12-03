@@ -15,12 +15,12 @@ use JsonSerializable;
  *
  * @see https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig#rolloutvalue
  */
-final class RolloutValue implements JsonSerializable
+final readonly class RolloutValue implements JsonSerializable
 {
     /**
      * @param RemoteConfigRolloutValueShape $data
      */
-    private function __construct(private readonly array $data)
+    private function __construct(private array $data)
     {
     }
 

@@ -27,10 +27,7 @@ use Throwable;
  */
 final class RemoteConfigTest extends IntegrationTestCase
 {
-    /**
-     * @var string
-     */
-    private const TEMPLATE_CONFIG = <<<'CONFIG'
+    private const string TEMPLATE_CONFIG = <<<'CONFIG'
         {
             "conditions": [
                 {
@@ -180,7 +177,7 @@ final class RemoteConfigTest extends IntegrationTestCase
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
-        assert($version !== null);
+        $this->assertInstanceOf(Version::class, $version);
 
         $check = $this->remoteConfig->get($version);
 
@@ -192,7 +189,7 @@ final class RemoteConfigTest extends IntegrationTestCase
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
-        assert($version !== null);
+        $this->assertInstanceOf(Version::class, $version);
 
         $check = $this->remoteConfig->get($version->versionNumber());
 
@@ -204,7 +201,7 @@ final class RemoteConfigTest extends IntegrationTestCase
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
-        assert($version !== null);
+        $this->assertInstanceOf(Version::class, $version);
 
         $check = $this->remoteConfig->get((string) $version->versionNumber());
 
