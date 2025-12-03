@@ -213,17 +213,6 @@ final class Factory
     }
 
     /**
-     * @deprecated 7.19.0 Use `createFirestore($database)` instead
-     * @see createFirestore()
-     *
-     * @param non-empty-string $database
-     */
-    public function withFirestoreDatabase(string $database): self
-    {
-        return $this->withFirestoreClientConfig(['database' => $database]);
-    }
-
-    /**
      * @param array<non-empty-string, mixed> $config
      */
     public function withFirestoreClientConfig(array $config): self
@@ -515,48 +504,6 @@ final class Factory
         }
 
         return new Storage($storageClient, $this->getStorageBucketName());
-    }
-
-    /**
-     * @deprecated 7.20.0
-     * @codeCoverageIgnore
-     *
-     * @return array<mixed>
-     */
-    public function getDebugInfo(): array
-    {
-        try {
-            $projectId = $this->getProjectId();
-        } catch (Throwable $e) {
-            $projectId = $e->getMessage();
-        }
-
-        try {
-            $credentials = $this->getGoogleAuthTokenCredentials();
-
-            if ($credentials !== null) {
-                $credentials = $credentials::class;
-            }
-        } catch (Throwable $e) {
-            $credentials = $e->getMessage();
-        }
-
-        try {
-            $databaseUrl = $this->getDatabaseUrl();
-        } catch (Throwable $e) {
-            $databaseUrl = $e->getMessage();
-        }
-
-        return [
-            'credentialsType' => $credentials,
-            'databaseUrl' => $databaseUrl,
-            'defaultStorageBucket' => $this->defaultStorageBucket,
-            'projectId' => $projectId,
-            'serviceAccount' => $this->getServiceAccount(),
-            'tenantId' => $this->tenantId,
-            'tokenCacheType' => $this->authTokenCache !== null ? $this->authTokenCache::class : $this->defaultCache::class,
-            'verifierCacheType' => $this->verifierCache !== null ? $this->verifierCache::class : $this->defaultCache::class,
-        ];
     }
 
     /**

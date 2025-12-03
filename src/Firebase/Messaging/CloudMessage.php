@@ -51,17 +51,6 @@ final class CloudMessage implements Message
         $this->fcmOptions = FcmOptions::fromArray([]);
     }
 
-    /**
-     * @deprecated 7.16.0 Use `CloudMessage::new()` and one of `toToken()`, `toTopic()`, or `toCondition()` instead.
-     *
-     * @param MessageTarget::CONDITION|MessageTarget::TOKEN|MessageTarget::TOPIC|MessageTarget::UNKNOWN $type
-     * @param non-empty-string $value
-     */
-    public static function withTarget(string $type, string $value): self
-    {
-        return new self(MessageTarget::with($type, $value));
-    }
-
     public static function new(): self
     {
         return new self(MessageTarget::with(MessageTarget::UNKNOWN, 'unknown'));
@@ -110,22 +99,6 @@ final class CloudMessage implements Message
         if ($fcmOptions !== null) {
             return $new->withFcmOptions($fcmOptions);
         }
-
-        return $new;
-    }
-
-    /**
-     * @deprecated 7.16.0 Use one of `toToken()`, `toTopic()`, or `toCondition()` instead.
-     *
-     * @param MessageTarget::CONDITION|MessageTarget::TOKEN|MessageTarget::TOPIC|MessageTarget::UNKNOWN $type
-     * @param non-empty-string $value
-     *
-     * @throws InvalidArgumentException if the target type or value is invalid
-     */
-    public function withChangedTarget(string $type, string $value): self
-    {
-        $new = clone $this;
-        $new->target = MessageTarget::with($type, $value);
 
         return $new;
     }
@@ -267,22 +240,6 @@ final class CloudMessage implements Message
         $new->target = MessageTarget::with(MessageTarget::CONDITION, $condition);
 
         return $new;
-    }
-
-    /**
-     * @deprecated 7.16.0
-     */
-    public function hasTarget(): bool
-    {
-        return $this->target->type() !== MessageTarget::UNKNOWN;
-    }
-
-    /**
-     * @deprecated 7.16.0
-     */
-    public function target(): MessageTarget
-    {
-        return $this->target;
     }
 
     public function jsonSerialize(): array
