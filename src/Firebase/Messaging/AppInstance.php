@@ -38,7 +38,7 @@ final readonly class AppInstance implements JsonSerializable
         $subscriptions = [];
 
         foreach ($rawData['rel']['topics'] ?? [] as $topicName => $subscriptionInfo) {
-            $topic = Topic::fromValue((string) $topicName);
+            $topic = Topic::fromValue($topicName);
             $addedAt = DT::toUTCDateTimeImmutable($subscriptionInfo['addDate'] ?? null);
             $subscriptions[] = new TopicSubscription($topic, $registrationToken, $addedAt);
         }

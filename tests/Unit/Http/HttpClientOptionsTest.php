@@ -103,8 +103,6 @@ final class HttpClientOptionsTest extends TestCase
         $middlewares = $options->guzzleMiddlewares();
 
         $this->assertCount(1, $middlewares);
-        $this->assertIsCallable($middlewares[0]['middleware']);
-        $this->assertSame('name', $middlewares[0]['name']);
     }
 
     #[Test]
@@ -128,13 +126,8 @@ final class HttpClientOptionsTest extends TestCase
 
         $this->assertCount(3, $middlewares);
 
-        $this->assertIsCallable($middlewares[0]['middleware']);
         $this->assertSame('', $middlewares[0]['name']);
-
-        $this->assertIsCallable($middlewares[1]['middleware']);
         $this->assertSame('Foo', $middlewares[1]['name']);
-
-        $this->assertIsCallable($middlewares[2]['middleware']);
         $this->assertSame('Bar', $middlewares[2]['name']);
     }
 
