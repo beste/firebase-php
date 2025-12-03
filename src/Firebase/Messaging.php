@@ -211,7 +211,10 @@ final readonly class Messaging implements Contract\Messaging
             throw NotFound::becauseTokenNotFound($token->value(), $e->errors());
         } catch (MessagingException $e) {
             // The token is invalid
-            throw new InvalidArgument("The registration token '{$token}' is invalid or not available", $e->getCode(), $e);
+            throw new InvalidArgument(
+                message: "The registration token '{$token}' is invalid or not available",
+                previous: $e
+            );
         }
     }
 

@@ -312,13 +312,13 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
             try {
                 $user = $this->getUserByEmail($email);
             } catch (Throwable $e) {
-                throw new FailedToSendActionLink($e->getMessage(), $e->getCode(), $e);
+                throw new FailedToSendActionLink(message: $e->getMessage(), previous: $e);
             }
 
             try {
                 $signInResult = $this->signInAsUser($user);
             } catch (Throwable $e) {
-                throw new FailedToSendActionLink($e->getMessage(), $e->getCode(), $e);
+                throw new FailedToSendActionLink(message: $e->getMessage(), previous: $e);
             }
 
             $idToken = $signInResult->idToken();

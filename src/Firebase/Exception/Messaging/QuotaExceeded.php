@@ -22,7 +22,7 @@ final class QuotaExceeded extends RuntimeException implements MessagingException
      */
     public function withErrors(array $errors): self
     {
-        $new = new self($this->getMessage(), $this->getCode(), $this->getPrevious());
+        $new = new self(message: $this->getMessage(), previous: $this->getPrevious());
         $new->errors = $errors;
         $new->retryAfter = $this->retryAfter;
 
@@ -31,7 +31,7 @@ final class QuotaExceeded extends RuntimeException implements MessagingException
 
     public function withRetryAfter(DateTimeImmutable $retryAfter): self
     {
-        $new = new self($this->getMessage(), $this->getCode(), $this->getPrevious());
+        $new = new self(message: $this->getMessage(), previous: $this->getPrevious());
         $new->errors = $this->errors;
         $new->retryAfter = $retryAfter;
 

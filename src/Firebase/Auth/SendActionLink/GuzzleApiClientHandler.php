@@ -39,7 +39,10 @@ final readonly class GuzzleApiClientHandler
         try {
             $response = $this->client->send($request, ['http_errors' => false]);
         } catch (ClientExceptionInterface $e) {
-            throw new FailedToSendActionLink('Failed to send action link: '.$e->getMessage(), $e->getCode(), $e);
+            throw new FailedToSendActionLink(
+                message: 'Failed to send action link: '.$e->getMessage(),
+                previous: $e
+            );
         }
 
         if ($response->getStatusCode() !== 200) {

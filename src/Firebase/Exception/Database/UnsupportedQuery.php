@@ -13,11 +13,10 @@ final class UnsupportedQuery extends RuntimeException implements DatabaseExcepti
 {
     public function __construct(
         private readonly Query $query,
-        string $message = '',
-        int $code = 0,
+        string $message,
         ?Throwable $previous = null,
     ) {
-        parent::__construct($message, $code, $previous);
+        parent::__construct(message: $message, previous: $previous);
     }
 
     public function getQuery(): Query

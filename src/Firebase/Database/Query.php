@@ -84,7 +84,11 @@ class Query implements Stringable
         } catch (DatabaseNotFound $e) {
             throw $e;
         } catch (DatabaseException $e) {
-            throw new UnsupportedQuery($this, $e->getMessage(), $e->getCode(), $e->getPrevious());
+            throw new UnsupportedQuery(
+                query: $this,
+                message: $e->getMessage(),
+                previous: $e->getPrevious()
+            );
         }
 
         if ($this->sorter !== null) {

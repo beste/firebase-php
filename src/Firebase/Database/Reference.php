@@ -106,7 +106,7 @@ class Reference implements Stringable
         try {
             return new self($this->uri->withPath($childPath), $this->apiClient);
         } catch (\InvalidArgumentException $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+            throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
         }
     }
 

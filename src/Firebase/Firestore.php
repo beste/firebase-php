@@ -25,7 +25,10 @@ final readonly class Firestore implements Contract\Firestore
         try {
             return new self(new FirestoreClient($config));
         } catch (Throwable $e) {
-            throw new RuntimeException('Unable to create a FirestoreClient: '.$e->getMessage(), $e->getCode(), $e);
+            throw new RuntimeException(
+                message: 'Unable to create a FirestoreClient: '.$e->getMessage(),
+                previous: $e
+            );
         }
     }
 

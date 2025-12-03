@@ -499,7 +499,10 @@ final class Factory
         try {
             $storageClient = new StorageClient($this->googleCloudClientConfig());
         } catch (Throwable $e) {
-            throw new RuntimeException('Unable to create a StorageClient: '.$e->getMessage(), $e->getCode(), $e);
+            throw new RuntimeException(
+                message: 'Unable to create a StorageClient: '.$e->getMessage(),
+                previous: $e
+            );
         }
 
         return new Storage($storageClient, $this->getStorageBucketName());
