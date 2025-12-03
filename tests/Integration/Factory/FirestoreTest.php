@@ -77,25 +77,6 @@ final class FirestoreTest extends IntegrationTestCase
         }
     }
 
-    /**
-     * @deprecated 7.19.0
-     */
-    #[Test]
-    public function itSupportsOverridingTheDefaultFirestoreDatabase(): void
-    {
-        $collection = __FUNCTION__;
-        $documentName = __FUNCTION__.self::randomString();
-
-        $database = self::$factory->withFirestoreDatabase($this->customDBName())->createFirestore()->database();
-
-        try {
-            $database->collection($collection)->document($documentName)->create();
-            $this->assertTrue($database->collection($collection)->document($documentName)->snapshot()->exists());
-        } finally {
-            $database->collection($collection)->document($documentName)->delete();
-        }
-    }
-
     #[Test]
     public function itSupportsAdditionalFirestoreConfig(): void
     {
