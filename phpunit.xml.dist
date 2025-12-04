@@ -19,7 +19,7 @@
 
     <coverage ignoreDeprecatedCodeUnits="true"/>
 
-    <source restrictDeprecations="true">
+    <source ignoreIndirectDeprecations="true">
         <include>
             <directory>src/Firebase</directory>
         </include>
