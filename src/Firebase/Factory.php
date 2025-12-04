@@ -103,16 +103,6 @@ final class Factory
     /**
      * @var callable|null
      */
-    private $httpLogMiddleware;
-
-    /**
-     * @var callable|null
-     */
-    private $httpDebugLogMiddleware;
-
-    /**
-     * @var callable|null
-     */
     private $databaseAuthVariableOverrideMiddleware;
 
     /**
@@ -317,33 +307,55 @@ final class Factory
     }
 
     /**
+     * @deprecated 7.25.0 Create the log middleware outside the factory and use `HttpClientOptions::withGuzzleMiddleware()` and `withClientOptions()` instead
+     *
+     * @see withHttpClientOptions()
+     * @see HttpClientOptions::withGuzzleMiddleware()
+     *
      * @param non-empty-string|null $logLevel
      * @param non-empty-string|null $errorLogLevel
      */
     public function withHttpLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
     {
-        $formatter ??= new MessageFormatter();
-        $logLevel ??= LogLevel::INFO;
-        $errorLogLevel ??= LogLevel::NOTICE;
+        $clientOptions = $this->httpClientOptions->withGuzzleMiddleware(
+            middleware: Middleware::log(
+                $logger,
+                $formatter ?? new MessageFormatter(),
+                $logLevel ?? LogLevel::INFO,
+                $errorLogLevel ?? LogLevel::NOTICE,
+            ),
+            name: 'http_logs'
+        );
 
         $factory = clone $this;
-        $factory->httpLogMiddleware = Middleware::log($logger, $formatter, $logLevel, $errorLogLevel);
+        $factory->httpClientOptions = $clientOptions;
 
         return $factory;
     }
 
     /**
+     * @deprecated 7.25.0 Create the log middleware outside the factory and use `HttpClientOptions::withGuzzleMiddleware()` and `withClientOptions()` instead
+     *
+     * @see withHttpClientOptions()
+     * @see HttpClientOptions::withGuzzleMiddleware()
+     *
      * @param non-empty-string|null $logLevel
      * @param non-empty-string|null $errorLogLevel
      */
     public function withHttpDebugLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
     {
-        $formatter ??= new MessageFormatter(MessageFormatter::DEBUG);
-        $logLevel ??= LogLevel::INFO;
-        $errorLogLevel ??= LogLevel::NOTICE;
+        $clientOptions = $this->httpClientOptions->withGuzzleMiddleware(
+            middleware: Middleware::log(
+                $logger,
+                $formatter ?? new MessageFormatter(MessageFormatter::DEBUG),
+                $logLevel ?? LogLevel::INFO,
+                $errorLogLevel ?? LogLevel::NOTICE,
+            ),
+            name: 'http_debug_logs'
+        );
 
         $factory = clone $this;
-        $factory->httpDebugLogMiddleware = Middleware::log($logger, $formatter, $logLevel, $errorLogLevel);
+        $factory->httpClientOptions = $clientOptions;
 
         return $factory;
     }
@@ -586,14 +598,6 @@ final class Factory
         $config = [...$this->httpClientOptions->guzzleConfig(), ...$config];
 
         $handler = HandlerStack::create($config['handler'] ?? null);
-
-        if ($this->httpLogMiddleware !== null) {
-            $handler->push($this->httpLogMiddleware, 'http_logs');
-        }
-
-        if ($this->httpDebugLogMiddleware !== null) {
-            $handler->push($this->httpDebugLogMiddleware, 'http_debug_logs');
-        }
 
         foreach ($this->httpClientOptions->guzzleMiddlewares() as $middleware) {
             $handler->push($middleware['middleware'], $middleware['name']);

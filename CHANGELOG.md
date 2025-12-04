@@ -5,6 +5,18 @@ If it saves you or your team time, please consider [sponsoring its development](
 
 ## [Unreleased]
 
+### Changed
+
+* `Factory::withHttpLogger()` and `Factory::withHttpDebugLogger()` have been deprecated. If you're using these methods,
+  you can use `HttpClientOptions` instead.
+  ([Documentation](https://firebase-php.readthedocs.io/en/latest/setup.html#logging))
+
+### Deprecated methods
+
+* `Kreait\Firebase\Factory::withHttpLogger()`
+* `Kreait\Firebase\Factory::withHttpDebugLogger()`
+* `Kreait\Firebase\Http\Middleware::log()`
+
 ## [7.24.0] - 2025-11-27
 
 ### Changed

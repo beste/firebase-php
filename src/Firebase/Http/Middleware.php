@@ -65,11 +65,13 @@ final class Middleware
     }
 
     /**
+     * @deprecated 7.25.0 Use the Log Middleware provided by the GuzzleHTTP library instead
+     *
      * @return callable(callable): Closure
      */
     public static function log(LoggerInterface $logger, MessageFormatter $formatter, string $logLevel, string $errorLogLevel): callable
     {
-        return static fn(callable $handler): Closure => static fn($request, array $options) => $handler($request, $options)->then(
+        return static fn(callable $handler): Closure => static fn(RequestInterface $request, array $options) => $handler($request, $options)->then(
             static function (ResponseInterface $response) use ($logger, $request, $formatter, $logLevel, $errorLogLevel): ResponseInterface {
                 $message = $formatter->format($request, $response);
                 $messageLogLevel = $response->getStatusCode() >= StatusCode::STATUS_BAD_REQUEST ? $errorLogLevel : $logLevel;

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Exception\Auth\UserNotFound;
+use Kreait\Firebase\Http\HttpClientOptions;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Throwable;
 
 /**
@@ -34,9 +38,19 @@ final class HttpLoggingTest extends IntegrationTestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->debugLogger = $this->createMock(LoggerInterface::class);
 
+        $logMiddleware = Middleware::log($this->logger, new MessageFormatter(), LogLevel::INFO);
+        $debugLogMiddleware = Middleware::log($this->debugLogger, new MessageFormatter(MessageFormatter::DEBUG), LogLevel::DEBUG);
+
+        $clientOptions = HttpClientOptions::default();
+
         $this->auth = self::$factory->createAuth();
-        $this->authWithLogger = self::$factory->withHttpLogger($this->logger)->createAuth();
-        $this->authWithDebugLogger = self::$factory->withHttpDebugLogger($this->debugLogger)->createAuth();
+        $this->authWithLogger = self::$factory
+            ->withHttpClientOptions($clientOptions->withGuzzleMiddleware($logMiddleware))
+            ->createAuth();
+
+        $this->authWithDebugLogger = self::$factory
+            ->withHttpClientOptions($clientOptions->withGuzzleMiddleware($debugLogMiddleware))
+            ->createAuth();
     }
 
     #[Test]

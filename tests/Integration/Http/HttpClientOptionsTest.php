@@ -14,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * @internal
  */
-class HttpClientOptionsTest extends IntegrationTestCase
+final class HttpClientOptionsTest extends IntegrationTestCase
 {
     #[Test]
     public function itWorksWithAFunctionMiddleware(): void
