@@ -19,6 +19,8 @@ final readonly class Firestore implements Contract\Firestore
 
     /**
      * @param array<non-empty-string, mixed> $config
+     *
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
      */
     public static function fromConfig(array $config): Contract\Firestore
     {

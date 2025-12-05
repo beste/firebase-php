@@ -21,7 +21,6 @@ use Kreait\Firebase\Auth\SignInWithIdpCredentials;
 use Kreait\Firebase\Auth\SignInWithRefreshToken;
 use Kreait\Firebase\Util;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Message\RequestInterface;
 use UnexpectedValueException;
 
 use function http_build_query;
@@ -77,7 +76,7 @@ final class GuzzleHandler
         return SignInResult::fromData($data);
     }
 
-    private function createApiRequest(SignIn $action): RequestInterface
+    private function createApiRequest(SignIn $action): Request
     {
         return match (true) {
             $action instanceof SignInAnonymously => $this->anonymous($action),

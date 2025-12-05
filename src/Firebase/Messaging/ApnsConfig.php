@@ -105,7 +105,7 @@ final readonly class ApnsConfig implements JsonSerializable
     /**
      * @param non-empty-string $name
      */
-    public function withDataField(string $name, mixed $value): self
+    public function withDataField(string $name, string $value): self
     {
         if ($name === 'aps') {
             throw new InvalidArgument('"aps" is a reserved field name');

@@ -271,7 +271,7 @@ final readonly class Messaging implements Contract\Messaging
             || array_key_exists(MessageTarget::TOPIC, $check);
     }
 
-    private function withChangedTarget(Message $message, string $target, string $value): Message
+    private function withChangedTarget(Message $message, string $target, string $value): RawMessageFromArray
     {
         $message = Json::decode(Json::encode($message), true);
 

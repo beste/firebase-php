@@ -303,6 +303,9 @@ final class Factory
         return $factory;
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createAppCheck(): Contract\AppCheck
     {
         $projectId = $this->getProjectId();
@@ -336,6 +339,9 @@ final class Factory
         );
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createAuth(): Contract\Auth
     {
         $projectId = $this->getProjectId();
@@ -358,6 +364,9 @@ final class Factory
         return new Auth($authApiClient, $customTokenGenerator, $idTokenVerifier, $sessionCookieVerifier, $this->clock);
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createDatabase(): Contract\Database
     {
         $middlewares = array_filter([
@@ -379,6 +388,9 @@ final class Factory
         );
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createRemoteConfig(): Contract\RemoteConfig
     {
         $http = $this->createApiClient([
@@ -394,6 +406,9 @@ final class Factory
         );
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createMessaging(): Contract\Messaging
     {
         $projectId = $this->getProjectId();
@@ -437,6 +452,9 @@ final class Factory
         return Firestore::fromConfig($config);
     }
 
+    /**
+     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     */
     public function createStorage(): Contract\Storage
     {
         try {
