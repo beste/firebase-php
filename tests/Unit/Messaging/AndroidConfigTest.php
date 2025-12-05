@@ -11,7 +11,6 @@ use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -20,14 +19,12 @@ use PHPUnit\Framework\Attributes\Test;
  */
 final class AndroidConfigTest extends UnitTestCase
 {
-    #[Test]
-    public function itIsEmptyWhenItIsEmpty(): void
+    public function testItIsEmptyWhenItIsEmpty(): void
     {
         $this->assertSame('[]', Json::encode(AndroidConfig::new()));
     }
 
-    #[Test]
-    public function itHasADefaultSound(): void
+    public function testItHasADefaultSound(): void
     {
         $expected = [
             'notification' => [
@@ -41,8 +38,7 @@ final class AndroidConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itCanHaveAPriority(): void
+    public function testItCanHaveAPriority(): void
     {
         $config = AndroidConfig::new()->withNormalMessagePriority();
         $this->assertSame('normal', $config->jsonSerialize()['priority']);
@@ -55,8 +51,7 @@ final class AndroidConfigTest extends UnitTestCase
      * @param AndroidConfigShape $data
      */
     #[DataProvider('validDataProvider')]
-    #[Test]
-    public function itCanBeCreatedFromAnArray(array $data): void
+    public function testItCanBeCreatedFromAnArray(array $data): void
     {
         $config = AndroidConfig::fromArray($data);
 
@@ -65,8 +60,7 @@ final class AndroidConfigTest extends UnitTestCase
 
     #[DoesNotPerformAssertions]
     #[DataProvider('validTtlValues')]
-    #[Test]
-    public function itAcceptsValidTTLs(int|string|null $ttl): void
+    public function testItAcceptsValidTTLs(int|string|null $ttl): void
     {
         AndroidConfig::fromArray([
             'ttl' => $ttl,
@@ -74,8 +68,7 @@ final class AndroidConfigTest extends UnitTestCase
     }
 
     #[DataProvider('invalidTtlValues')]
-    #[Test]
-    public function itRejectsInvalidTTLs(mixed $ttl): void
+    public function testItRejectsInvalidTTLs(mixed $ttl): void
     {
         $this->expectException(InvalidArgument::class);
 

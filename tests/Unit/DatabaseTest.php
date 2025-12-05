@@ -10,7 +10,6 @@ use Kreait\Firebase\Database\ApiClient;
 use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -32,36 +31,31 @@ final class DatabaseTest extends UnitTestCase
         $this->database = new Database(new Uri($this->url), $this->apiClient);
     }
 
-    #[Test]
-    public function getReference(): void
+    public function testGetReference(): void
     {
         $this->assertSame('any', $this->database->getReference('any')->getPath());
     }
 
-    #[Test]
-    public function getRootReference(): void
+    public function testGetRootReference(): void
     {
         $this->assertSame('/', $this->database->getReference()->getUri()->getPath());
     }
 
-    #[Test]
-    public function getReferenceFromUrl(): void
+    public function testGetReferenceFromUrl(): void
     {
         $url = $this->url.'/foo/bar';
 
         $this->assertSame($url, (string) $this->database->getReferenceFromUrl($url)->getUri());
     }
 
-    #[Test]
-    public function getReferenceFromNonMatchingUrl(): void
+    public function testGetReferenceFromNonMatchingUrl(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->database->getReferenceFromUrl('https://example.com');
     }
 
-    #[Test]
-    public function getRuleSet(): void
+    public function testGetRuleSet(): void
     {
         $this->apiClient
             ->method('get')

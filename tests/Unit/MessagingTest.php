@@ -12,7 +12,6 @@ use Kreait\Firebase\Messaging\ApiClient;
 use Kreait\Firebase\Messaging\AppInstanceApiClient;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -30,29 +29,25 @@ final class MessagingTest extends UnitTestCase
         $this->messaging = new Messaging($messagingApi, $appInstanceApi, $exceptionConverter);
     }
 
-    #[Test]
-    public function sendInvalidArray(): void
+    public function testSendInvalidArray(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->messaging->send([]);
     }
 
-    #[Test]
-    public function subscribeToTopicWithEmptyTokenList(): void
+    public function testSubscribeToTopicWithEmptyTokenList(): void
     {
         $this->expectException(InvalidArgument::class);
         $this->messaging->subscribeToTopic('topic', []);
     }
 
-    #[Test]
-    public function unsubscribeFromTopicWithEmptyTokenList(): void
+    public function testUnsubscribeFromTopicWithEmptyTokenList(): void
     {
         $this->expectException(InvalidArgument::class);
         $this->messaging->unsubscribeFromTopic('topic', []);
     }
 
-    #[Test]
-    public function itWillNotSendAMessageWithoutATarget(): void
+    public function testItWillNotSendAMessageWithoutATarget(): void
     {
         $message = CloudMessage::new();
 

@@ -8,7 +8,6 @@ use Closure;
 use Kreait\Firebase\Contract\Database;
 use Kreait\Firebase\Http\HttpClientOptions;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -16,8 +15,7 @@ use Psr\Http\Message\RequestInterface;
  */
 final class HttpClientOptionsTest extends IntegrationTestCase
 {
-    #[Test]
-    public function itWorksWithAFunctionMiddleware(): void
+    public function testItWorksWithAFunctionMiddleware(): void
     {
         $check = false;
 
@@ -37,8 +35,7 @@ final class HttpClientOptionsTest extends IntegrationTestCase
         $this->assertTrue($check);
     }
 
-    #[Test]
-    public function itWorksWithAFunctionMiddlewareInsideAnArrayDefinition(): void
+    public function testItWorksWithAFunctionMiddlewareInsideAnArrayDefinition(): void
     {
         $check = false;
 
@@ -63,8 +60,7 @@ final class HttpClientOptionsTest extends IntegrationTestCase
         $this->assertTrue($check);
     }
 
-    #[Test]
-    public function itWorksWithAMiddlewareClassWithAStaticMethod(): void
+    public function testItWorksWithAMiddlewareClassWithAStaticMethod(): void
     {
         $middleware = new class {
             public static bool $wasInvoked = false;
@@ -93,8 +89,7 @@ final class HttpClientOptionsTest extends IntegrationTestCase
         $this->assertTrue($middleware::$wasInvoked);
     }
 
-    #[Test]
-    public function itWorksWithAnInvokableMiddleware(): void
+    public function testItWorksWithAnInvokableMiddleware(): void
     {
         $middleware = new class {
             public bool $wasInvoked = false;

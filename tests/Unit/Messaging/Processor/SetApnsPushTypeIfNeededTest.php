@@ -9,7 +9,6 @@ use Iterator;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Processor\SetApnsPushTypeIfNeeded;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,8 +28,7 @@ final class SetApnsPushTypeIfNeededTest extends TestCase
      * @param array<mixed> $messageData
      */
     #[DataProvider('provideMessagesWithExpectedPushType')]
-    #[Test]
-    public function itSetsTheExpectedPushType(string $expected, array $messageData): void
+    public function testItSetsTheExpectedPushType(string $expected, array $messageData): void
     {
         $message = CloudMessage::fromArray($messageData);
 
@@ -42,8 +40,7 @@ final class SetApnsPushTypeIfNeededTest extends TestCase
         $this->assertSame($expected, $processed['apns']['headers']['apns-push-type']);
     }
 
-    #[Test]
-    public function itDoesNotSetThePushType(): void
+    public function testItDoesNotSetThePushType(): void
     {
         $message = CloudMessage::fromArray($given = ['topic' => 'test']);
 

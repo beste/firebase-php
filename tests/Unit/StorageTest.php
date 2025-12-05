@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Tests\Unit;
 
 use Google\Cloud\Storage\StorageClient;
 use Kreait\Firebase\Storage;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -15,8 +14,7 @@ use RuntimeException;
  */
 final class StorageTest extends TestCase
 {
-    #[Test]
-    public function itReturnsTheSameClientItWasGiven(): void
+    public function testItReturnsTheSameClientItWasGiven(): void
     {
         $client = $this->createMock(StorageClient::class);
         $storage = new Storage($client);
@@ -24,8 +22,7 @@ final class StorageTest extends TestCase
         $this->assertSame($client, $storage->getStorageClient());
     }
 
-    #[Test]
-    public function itComplainsWhenNoDefaultBucketWasProvided(): void
+    public function testItComplainsWhenNoDefaultBucketWasProvided(): void
     {
         $client = $this->createMock(StorageClient::class);
         $storage = new Storage($client);

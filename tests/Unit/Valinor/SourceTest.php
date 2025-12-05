@@ -6,29 +6,25 @@ namespace Kreait\Firebase\Tests\Unit\Valinor;
 
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Valinor\Source;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class SourceTest extends TestCase
 {
-    #[Test]
-    public function itSupportsJsonObjectStrings(): void
+    public function testItSupportsJsonObjectStrings(): void
     {
         $source = Source::parse('{"foo": "bar"}');
 
         $this->assertSame(['foo' => 'bar'], iterator_to_array($source));
     }
 
-    #[Test]
-    public function itSupportsJsonArrayStrings(): void
+    public function testItSupportsJsonArrayStrings(): void
     {
         $source = Source::parse('[{"foo": "bar"}]');
 
         $this->assertSame([['foo' => 'bar']], iterator_to_array($source));
     }
 
-    #[Test]
-    public function itRejectsInvalidJsonStrings(): void
+    public function testItRejectsInvalidJsonStrings(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid JSON source');
@@ -36,8 +32,7 @@ final class SourceTest extends TestCase
         Source::parse('{');
     }
 
-    #[Test]
-    public function itSupportsJsonFiles(): void
+    public function testItSupportsJsonFiles(): void
     {
         $path = sys_get_temp_dir().'/'.uniqid(base64_encode(__METHOD__), true).'.json';
         file_put_contents($path, '{"foo": "bar"}');
@@ -51,16 +46,14 @@ final class SourceTest extends TestCase
         }
     }
 
-    #[Test]
-    public function itSupportsJsonFilesWithFileExtensionsNotSuggestingJson(): void
+    public function testItSupportsJsonFilesWithFileExtensionsNotSuggestingJson(): void
     {
         $source = Source::parse(__DIR__.'/valid.txt');
 
         $this->assertSame(['foo' => 'bar'], iterator_to_array($source));
     }
 
-    #[Test]
-    public function itRejectsInvalidFiles(): void
+    public function testItRejectsInvalidFiles(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/no such file/i');
@@ -68,16 +61,14 @@ final class SourceTest extends TestCase
         Source::parse(sys_get_temp_dir().'/'.uniqid(base64_encode(__METHOD__), true).'.json');
     }
 
-    #[Test]
-    public function itSupportsArrays(): void
+    public function testItSupportsArrays(): void
     {
         $source = Source::parse(['foo' => 'bar']);
 
         $this->assertSame(['foo' => 'bar'], iterator_to_array($source));
     }
 
-    #[Test]
-    public function itSupportsIterables(): void
+    public function testItSupportsIterables(): void
     {
         $iterable = fn() => yield ['foo' => 'bar'];
 

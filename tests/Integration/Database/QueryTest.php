@@ -8,7 +8,6 @@ use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 use function current;
 
@@ -26,8 +25,7 @@ final class QueryTest extends DatabaseTestCase
         $this->ref = self::$db->getReference(self::$refPrefix);
     }
 
-    #[Test]
-    public function limitToLast(): void
+    public function testLimitToLast(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
@@ -48,8 +46,7 @@ final class QueryTest extends DatabaseTestCase
         $this->assertSame(['key' => 3], current($value));
     }
 
-    #[Test]
-    public function orderByChild(): void
+    public function testOrderByChild(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 

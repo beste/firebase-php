@@ -8,7 +8,6 @@ use Kreait\Firebase\Auth\UserQuery;
 use Kreait\Firebase\Auth\UserRecord;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 use function random_int;
 
@@ -27,8 +26,7 @@ final class UserQueryTest extends IntegrationTestCase
         $this->ensureNumberOfUsers(2);
     }
 
-    #[Test]
-    public function itReturnsResultsInAscendingOrder(): void
+    public function testItReturnsResultsInAscendingOrder(): void
     {
         $query = UserQuery::all()
             ->withLimit(2)
@@ -46,8 +44,7 @@ final class UserQueryTest extends IntegrationTestCase
         $this->assertGreaterThan($first->metadata->createdAt, $second->metadata->createdAt);
     }
 
-    #[Test]
-    public function itReturnsResultsInDescendingOrder(): void
+    public function testItReturnsResultsInDescendingOrder(): void
     {
         $query = UserQuery::all()
             ->withLimit(2)
@@ -65,16 +62,14 @@ final class UserQueryTest extends IntegrationTestCase
         $this->assertLessThan($first->metadata->createdAt, $second->metadata->createdAt);
     }
 
-    #[Test]
-    public function limit(): void
+    public function testLimit(): void
     {
         $result = $this->auth->queryUsers(UserQuery::all()->withLimit(1));
 
         $this->assertCount(1, $result);
     }
 
-    #[Test]
-    public function filterByUid(): void
+    public function testFilterByUid(): void
     {
         $user = $this->createUserWithEmailAndPassword();
 
@@ -95,8 +90,7 @@ final class UserQueryTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function filterByEmail(): void
+    public function testFilterByEmail(): void
     {
         $user = $this->createUserWithEmailAndPassword();
 
@@ -117,8 +111,7 @@ final class UserQueryTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function filterByPhoneNumber(): void
+    public function testFilterByPhoneNumber(): void
     {
         $user = $this->auth->createUser([
             'phoneNumber' => '+49'.random_int(90_000_000_000, 99_999_999_999),

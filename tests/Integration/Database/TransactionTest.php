@@ -9,7 +9,6 @@ use Kreait\Firebase\Database\Transaction;
 use Kreait\Firebase\Exception\Database\TransactionFailed;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -25,8 +24,7 @@ final class TransactionTest extends DatabaseTestCase
         $this->ref = self::$db->getReference(self::$refPrefix);
     }
 
-    #[Test]
-    public function aValueCanBeWritten(): void
+    public function testAValueCanBeWritten(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
@@ -39,8 +37,7 @@ final class TransactionTest extends DatabaseTestCase
         $this->assertSame('new value', $ref->getValue());
     }
 
-    #[Test]
-    public function aTransactionPreventsAChangeWhenTheRemoteHasChanged(): void
+    public function testATransactionPreventsAChangeWhenTheRemoteHasChanged(): void
     {
         $firstRef = $this->ref->getChild(__FUNCTION__);
         $firstRef->set(['key' => 'value']);
@@ -59,8 +56,7 @@ final class TransactionTest extends DatabaseTestCase
         });
     }
 
-    #[Test]
-    public function aTransactionKeepsTrackOfMultipleReferences(): void
+    public function testATransactionKeepsTrackOfMultipleReferences(): void
     {
         $firstRef = $this->ref->getChild(__FUNCTION__.'_first');
         $secondRef = $this->ref->getChild(__FUNCTION__.'_second');
@@ -96,8 +92,7 @@ final class TransactionTest extends DatabaseTestCase
         });
     }
 
-    #[Test]
-    public function aValueCanBeDeleted(): void
+    public function testAValueCanBeDeleted(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
         $ref->set('value');
@@ -112,8 +107,7 @@ final class TransactionTest extends DatabaseTestCase
         });
     }
 
-    #[Test]
-    public function aTransactionPreventsADeletionWhenTheRemoteHasChanged(): void
+    public function testATransactionPreventsADeletionWhenTheRemoteHasChanged(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
         $ref->set(['key' => 'value']);

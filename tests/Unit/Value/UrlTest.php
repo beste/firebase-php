@@ -8,7 +8,6 @@ use Iterator;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Value\Url;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,8 +16,7 @@ use PHPUnit\Framework\TestCase;
 final class UrlTest extends TestCase
 {
     #[DataProvider('validValues')]
-    #[Test]
-    public function withValidValue(string $value): void
+    public function testWithValidValue(string $value): void
     {
         $url = Url::fromString($value)->value;
 
@@ -28,8 +26,7 @@ final class UrlTest extends TestCase
     }
 
     #[DataProvider('invalidValues')]
-    #[Test]
-    public function withInvalidValue(string $value): void
+    public function testWithInvalidValue(string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
         Url::fromString($value);
