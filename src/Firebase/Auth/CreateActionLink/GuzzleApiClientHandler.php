@@ -13,7 +13,6 @@ use Kreait\Firebase\Auth\CreateActionLink;
 use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
 use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Message\RequestInterface;
 
 use function array_filter;
 
@@ -68,7 +67,7 @@ final readonly class GuzzleApiClientHandler
         return (string) $actionCode;
     }
 
-    private function createRequest(CreateActionLink $action): RequestInterface
+    private function createRequest(CreateActionLink $action): Request
     {
         $data = [
             'requestType' => $action->type(),

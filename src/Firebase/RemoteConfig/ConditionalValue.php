@@ -60,7 +60,7 @@ class ConditionalValue implements JsonSerializable
     /**
      * @param ParameterValue|RemoteConfigParameterValueShape|string $value
      */
-    public function withValue($value): self
+    public function withValue(ParameterValue|array|string $value): self
     {
         if (is_string($value)) {
             return new self($this->conditionName, ParameterValue::withValue($value));

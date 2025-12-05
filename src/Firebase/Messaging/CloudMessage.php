@@ -133,7 +133,7 @@ final class CloudMessage implements Message
      *
      * @throws InvalidArgumentException
      */
-    public function withAndroidConfig($config): self
+    public function withAndroidConfig(AndroidConfig|array $config): self
     {
         $new = clone $this;
         $new->androidConfig = $config instanceof AndroidConfig ? $config : AndroidConfig::fromArray($config);
@@ -146,7 +146,7 @@ final class CloudMessage implements Message
      *
      * @throws InvalidArgumentException
      */
-    public function withApnsConfig($config): self
+    public function withApnsConfig(ApnsConfig|array $config): self
     {
         $new = clone $this;
         $new->apnsConfig = $config instanceof ApnsConfig ? $config : ApnsConfig::fromArray($config);
