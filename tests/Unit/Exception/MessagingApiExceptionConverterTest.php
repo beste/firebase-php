@@ -22,7 +22,6 @@ use Kreait\Firebase\Exception\Messaging\ServerError;
 use Kreait\Firebase\Exception\Messaging\ServerUnavailable;
 use Kreait\Firebase\Exception\MessagingApiExceptionConverter;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use RuntimeException;
@@ -45,8 +44,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->converter = new MessagingApiExceptionConverter($this->clock);
     }
 
-    #[Test]
-    public function itConvertsAConnectException(): void
+    public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(
             'curl error xx',
@@ -60,8 +58,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
      * @param class-string<object> $expectedClass
      */
     #[DataProvider('exceptions')]
-    #[Test]
-    public function itConvertsExceptions(Throwable $e, string $expectedClass): void
+    public function testItConvertsExceptions(Throwable $e, string $expectedClass): void
     {
         $converted = $this->converter->convertException($e);
 
@@ -102,8 +99,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         );
     }
 
-    #[Test]
-    public function itKnowsWhenToRetryAfterWithSeconds(): void
+    public function testItKnowsWhenToRetryAfterWithSeconds(): void
     {
         $response = new Response(429, ['Retry-After' => '60']);
 
@@ -115,8 +111,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->assertSame($expected->getTimestamp(), $converted->retryAfter()->getTimestamp());
     }
 
-    #[Test]
-    public function itUsesTheRetryAfterHeaderOfABadGatewayResponse(): void
+    public function testItUsesTheRetryAfterHeaderOfABadGatewayResponse(): void
     {
         $response = new Response(502, ['Retry-After' => '60']);
 
@@ -128,8 +123,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->assertSame($expected->getTimestamp(), $converted->retryAfter()->getTimestamp());
     }
 
-    #[Test]
-    public function itUsesAFallbackRetryAfterOfABadGatewayResponse(): void
+    public function testItUsesAFallbackRetryAfterOfABadGatewayResponse(): void
     {
         $response = new Response(status: 502);
 
@@ -141,8 +135,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->assertSame($expected->getTimestamp(), $converted->retryAfter()->getTimestamp());
     }
 
-    #[Test]
-    public function itKnowsWhenToRetryAfterWithDateStrings(): void
+    public function testItKnowsWhenToRetryAfterWithDateStrings(): void
     {
         $expected = $this->clock->now()->modify('+60 seconds');
 
@@ -155,8 +148,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->assertSame($expected->getTimestamp(), $converted->retryAfter()->getTimestamp());
     }
 
-    #[Test]
-    public function itDoesNotKnowWhenToRetryWhenItDoesNotHaveTo(): void
+    public function testItDoesNotKnowWhenToRetryWhenItDoesNotHaveTo(): void
     {
         $response = new Response(503); // no Retry-After
 

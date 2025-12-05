@@ -9,7 +9,6 @@ use Iterator;
 use Kreait\Firebase\Database\Query\Filter\StartAt;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -17,8 +16,7 @@ use PHPUnit\Framework\Attributes\Test;
 final class StartAtTest extends UnitTestCase
 {
     #[DataProvider('valueProvider')]
-    #[Test]
-    public function modifyUri(mixed $given, string $expected): void
+    public function testModifyUri(mixed $given, string $expected): void
     {
         $filter = new StartAt($given);
 

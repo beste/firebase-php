@@ -9,7 +9,6 @@ use Iterator;
 use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Messaging\RegistrationTokens;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -19,8 +18,7 @@ use stdClass;
 final class RegistrationTokensTest extends TestCase
 {
     #[DataProvider('validValuesWithExpectedCounts')]
-    #[Test]
-    public function itCanBeCreatedFromValues(int $expectedCount, mixed $value): void
+    public function testItCanBeCreatedFromValues(int $expectedCount, mixed $value): void
     {
         $tokens = RegistrationTokens::fromValue($value);
 
@@ -28,15 +26,13 @@ final class RegistrationTokensTest extends TestCase
     }
 
     #[DataProvider('invalidValues')]
-    #[Test]
-    public function itRejectsInvalidValues(mixed $value): void
+    public function testItRejectsInvalidValues(mixed $value): void
     {
         $this->expectException(InvalidArgumentException::class);
         RegistrationTokens::fromValue($value);
     }
 
-    #[Test]
-    public function itReturnsStrings(): void
+    public function testItReturnsStrings(): void
     {
         $token = RegistrationToken::fromValue('foo');
 

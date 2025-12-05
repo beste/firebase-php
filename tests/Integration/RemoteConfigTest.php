@@ -19,7 +19,6 @@ use Kreait\Firebase\RemoteConfig\Version;
 use Kreait\Firebase\RemoteConfig\VersionNumber;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Test;
 use Throwable;
 
 /**
@@ -147,8 +146,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->template = Template::fromArray(Json::decode(self::TEMPLATE_CONFIG, true));
     }
 
-    #[Test]
-    public function forcePublishAndGet(): void
+    public function testForcePublishAndGet(): void
     {
         $this->remoteConfig->publish($this->template);
 
@@ -172,8 +170,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertSame(UpdateOrigin::REST_API, (string) $version?->updateOrigin());
     }
 
-    #[Test]
-    public function getTemplateWithVersion(): void
+    public function testGetTemplateWithVersion(): void
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
@@ -184,8 +181,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($version->versionNumber()->equalsTo($check->version()?->versionNumber()));
     }
 
-    #[Test]
-    public function getTemplateWithVersionNumber(): void
+    public function testGetTemplateWithVersionNumber(): void
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
@@ -196,8 +192,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($version->versionNumber()->equalsTo($check->version()?->versionNumber()));
     }
 
-    #[Test]
-    public function getTemplateWithVersionNumberString(): void
+    public function testGetTemplateWithVersionNumberString(): void
     {
         $template = $this->remoteConfig->get();
         $version = $template->version();
@@ -208,8 +203,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($version->versionNumber()->equalsTo($check->version()?->versionNumber()));
     }
 
-    #[Test]
-    public function publishOutdatedConfig(): void
+    public function testPublishOutdatedConfig(): void
     {
         $this->remoteConfig->publish($this->template);
 
@@ -224,15 +218,13 @@ final class RemoteConfigTest extends IntegrationTestCase
     }
 
     #[DoesNotPerformAssertions]
-    #[Test]
-    public function validateValidTemplate(): void
+    public function testValidateValidTemplate(): void
     {
         // This should not throw an exception
         $this->remoteConfig->validate($this->template);
     }
 
-    #[Test]
-    public function validateInvalidTemplate(): void
+    public function testValidateInvalidTemplate(): void
     {
         $template = $this->templateWithTooManyParameters();
 
@@ -240,8 +232,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->remoteConfig->validate($template);
     }
 
-    #[Test]
-    public function publishInvalidTemplate(): void
+    public function testPublishInvalidTemplate(): void
     {
         $version = $this->remoteConfig->get()->version();
 
@@ -272,8 +263,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         );
     }
 
-    #[Test]
-    public function rollback(): void
+    public function testRollback(): void
     {
         $initialVersion = $this->remoteConfig->get()->version();
 
@@ -321,8 +311,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($rollbackSource->equalsTo($targetVersionNumber));
     }
 
-    #[Test]
-    public function listVersionsWithoutFilters(): void
+    public function testListVersionsWithoutFilters(): void
     {
         $count = 0;
         // We only need to know that the first returned value is a version,
@@ -335,8 +324,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertSame(1, $count);
     }
 
-    #[Test]
-    public function findVersionsWithFilters(): void
+    public function testFindVersionsWithFilters(): void
     {
         $currentVersion = $this->remoteConfig->get()->version();
 
@@ -368,8 +356,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertLessThanOrEqual($limit, $counter);
     }
 
-    #[Test]
-    public function getVersion(): void
+    public function testGetVersion(): void
     {
         $currentVersion = $this->remoteConfig->get()->version();
 
@@ -384,8 +371,7 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($check->versionNumber()->equalsTo($currentVersionNumber));
     }
 
-    #[Test]
-    public function getNonExistingVersion(): void
+    public function testGetNonExistingVersion(): void
     {
         $currentVersion = $this->remoteConfig->get()->version();
 
@@ -406,8 +392,7 @@ final class RemoteConfigTest extends IntegrationTestCase
     }
 
     #[DoesNotPerformAssertions]
-    #[Test]
-    public function validateEmptyTemplate(): void
+    public function testValidateEmptyTemplate(): void
     {
         // This should not throw an exception
         $this->remoteConfig->validate(Template::new());

@@ -8,7 +8,6 @@ use Iterator;
 use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Value\ClearTextPassword;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,8 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class CreateUserTest extends TestCase
 {
-    #[Test]
-    public function createNew(): void
+    public function testCreateNew(): void
     {
         $request = CreateUser::new();
         $this->assertEmpty($request->jsonSerialize());
@@ -28,8 +26,7 @@ final class CreateUserTest extends TestCase
      * @param array<array<string|mixed>> $expected
      */
     #[DataProvider('propertiesProvider')]
-    #[Test]
-    public function withProperties(array $properties, array $expected): void
+    public function testWithProperties(array $properties, array $expected): void
     {
         $request = CreateUser::withProperties($properties);
 

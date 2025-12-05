@@ -10,7 +10,6 @@ use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Exception\Auth\UserNotFound;
 use Kreait\Firebase\Http\HttpClientOptions;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -53,8 +52,7 @@ final class HttpLoggingTest extends IntegrationTestCase
             ->createAuth();
     }
 
-    #[Test]
-    public function itLogsSuccesses(): void
+    public function testItLogsSuccesses(): void
     {
         $user = $this->auth->createAnonymousUser();
 
@@ -66,8 +64,7 @@ final class HttpLoggingTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function itLogsFailures(): void
+    public function testItLogsFailures(): void
     {
         $this->debugLogger->expects($this->atLeastOnce())->method('log');
 
@@ -78,8 +75,7 @@ final class HttpLoggingTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function itUsesAHttpDebugLogger(): void
+    public function testItUsesAHttpDebugLogger(): void
     {
         $user = $this->auth->createAnonymousUser();
 

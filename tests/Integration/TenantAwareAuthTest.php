@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Integration;
 
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -28,8 +27,7 @@ final class TenantAwareAuthTest extends AuthTestCase
         ;
     }
 
-    #[Test]
-    public function newUsersAreScopedToATenant(): void
+    public function testNewUsersAreScopedToATenant(): void
     {
         $user = $this->auth->createUserWithEmailAndPassword(
             self::randomEmail(__FUNCTION__),
@@ -43,8 +41,7 @@ final class TenantAwareAuthTest extends AuthTestCase
         }
     }
 
-    #[Test]
-    public function customTokensIncludeTheTenant(): void
+    public function testCustomTokensIncludeTheTenant(): void
     {
         $user = $this->auth->createAnonymousUser();
 
@@ -59,8 +56,7 @@ final class TenantAwareAuthTest extends AuthTestCase
         }
     }
 
-    #[Test]
-    public function itCanSignInAnonymously(): void
+    public function testItCanSignInAnonymously(): void
     {
         $user = $this->auth->createAnonymousUser();
         $result = $this->auth->signInAsUser($user);
@@ -72,8 +68,7 @@ final class TenantAwareAuthTest extends AuthTestCase
         }
     }
 
-    #[Test]
-    public function itCanSignInWithACustomToken(): void
+    public function testItCanSignInWithACustomToken(): void
     {
         $user = $this->auth->createAnonymousUser();
         $result = $this->auth->signInAsUser($user);

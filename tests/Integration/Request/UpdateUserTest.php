@@ -11,7 +11,6 @@ use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 use Kreait\Firebase\Util\DT;
-use PHPUnit\Framework\Attributes\Test;
 
 use function bin2hex;
 use function random_bytes;
@@ -29,8 +28,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth = self::$factory->createAuth();
     }
 
-    #[Test]
-    public function removePhotoUrl(): void
+    public function testRemovePhotoUrl(): void
     {
         $photoUrl = 'https://example.com/a_photo.jpg';
 
@@ -44,8 +42,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($user->uid);
     }
 
-    #[Test]
-    public function removeDisplayName(): void
+    public function testRemoveDisplayName(): void
     {
         $displayName = 'A display name';
 
@@ -59,8 +56,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($user->uid);
     }
 
-    #[Test]
-    public function markNonExistingEmailAsVerified(): void
+    public function testMarkNonExistingEmailAsVerified(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()
@@ -79,8 +75,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($updatedUser->uid);
     }
 
-    #[Test]
-    public function markExistingUnverifiedEmailAsVerified(): void
+    public function testMarkExistingUnverifiedEmailAsVerified(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()
@@ -99,8 +94,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($updatedUser->uid);
     }
 
-    #[Test]
-    public function markExistingVerifiedEmailAsUnverified(): void
+    public function testMarkExistingVerifiedEmailAsUnverified(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()
@@ -119,8 +113,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($updatedUser->uid);
     }
 
-    #[Test]
-    public function updateUserWithCustomAttributes(): void
+    public function testUpdateUserWithCustomAttributes(): void
     {
         $request = CreateUser::new()
             ->withUid($uid = bin2hex(random_bytes(5)))
@@ -149,8 +142,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($uid);
     }
 
-    #[Test]
-    public function removePhoneNumber(): void
+    public function testRemovePhoneNumber(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()
@@ -174,8 +166,7 @@ final class UpdateUserTest extends IntegrationTestCase
     /**
      * @see https://github.com/kreait/firebase-php/issues/196
      */
-    #[Test]
-    public function reEnable(): void
+    public function testReEnable(): void
     {
         $user = $this->auth->createUser([
             'disabled' => true,
@@ -190,8 +181,7 @@ final class UpdateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($user->uid);
     }
 
-    #[Test]
-    public function timeOfLastPasswordUpdateIsIncluded(): void
+    public function testTimeOfLastPasswordUpdateIsIncluded(): void
     {
         $user = $this->auth->createAnonymousUser();
 
@@ -206,8 +196,7 @@ final class UpdateUserTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function setMultiFactor(): void
+    public function testSetMultiFactor(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()->withVerifiedEmail(self::randomEmail(__FUNCTION__)),
@@ -235,8 +224,7 @@ final class UpdateUserTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function resetMultiFactor(): void
+    public function testResetMultiFactor(): void
     {
         $user = $this->auth->createUser(
             CreateUser::new()->withVerifiedEmail(self::randomEmail(__FUNCTION__)),

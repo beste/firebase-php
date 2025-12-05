@@ -30,7 +30,6 @@ use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 
@@ -46,8 +45,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
         $this->converter = new AuthApiExceptionConverter(new ErrorResponseParser());
     }
 
-    #[Test]
-    public function itConvertsARequestExceptionThatDoesNotIncludeValidJson(): void
+    public function testItConvertsARequestExceptionThatDoesNotIncludeValidJson(): void
     {
         $requestException = new RequestException(
             'Error without valid json',
@@ -61,8 +59,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
         $this->assertSame($responseBody, $convertedError->getMessage());
     }
 
-    #[Test]
-    public function itConvertsAConnectException(): void
+    public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(
             'curl error xx',
@@ -72,8 +69,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
         $this->assertInstanceOf(ApiConnectionFailed::class, $this->converter->convertException($connectException));
     }
 
-    #[Test]
-    public function itCanHandleUnknownExceptions(): void
+    public function testItCanHandleUnknownExceptions(): void
     {
         $this->assertInstanceOf(AuthError::class, $this->converter->convertException(new RuntimeException()));
     }
@@ -82,8 +78,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
      * @param class-string<object> $expectedClass
      */
     #[DataProvider('requestErrors')]
-    #[Test]
-    public function itConvertsRequestExceptionsBecause(string $identifier, string $expectedClass): void
+    public function testItConvertsRequestExceptionsBecause(string $identifier, string $expectedClass): void
     {
         $requestException = new RequestException(
             'Firebase Error Test',

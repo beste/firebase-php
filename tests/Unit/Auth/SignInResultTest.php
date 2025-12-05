@@ -8,7 +8,6 @@ use Iterator;
 use Kreait\Firebase\Auth\SignInResult;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -19,8 +18,7 @@ final class SignInResultTest extends UnitTestCase
      * @param array<string, mixed> $input
      */
     #[DataProvider('fullResponse')]
-    #[Test]
-    public function itCanBeCreated(array $input): void
+    public function testItCanBeCreated(array $input): void
     {
         $result = SignInResult::fromData($input);
 
@@ -40,8 +38,7 @@ final class SignInResultTest extends UnitTestCase
         ], $result->asTokenResponse());
     }
 
-    #[Test]
-    public function itUsesTheLocalIdWhenTheFirebaseUidIsNotPresent(): void
+    public function testItUsesTheLocalIdWhenTheFirebaseUidIsNotPresent(): void
     {
         $result = SignInResult::fromData(['localId' => 'some-id']);
 

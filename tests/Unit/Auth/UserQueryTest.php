@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Tests\Unit\Auth;
 
 use Beste\Json;
 use Kreait\Firebase\Auth\UserQuery;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UserQueryTest extends TestCase
 {
-    #[Test]
-    public function itCanBeComposed(): void
+    public function testItCanBeComposed(): void
     {
         $expected = [
             'returnUserInfo' => true,
@@ -35,8 +33,7 @@ final class UserQueryTest extends TestCase
         $this->assertJsonStringEqualsJsonString(Json::encode($expected), Json::encode($query));
     }
 
-    #[Test]
-    public function itCanSortInAscendingOrder(): void
+    public function testItCanSortInAscendingOrder(): void
     {
         $expected = [
             'returnUserInfo' => true,
@@ -48,8 +45,7 @@ final class UserQueryTest extends TestCase
         $this->assertJsonStringEqualsJsonString(Json::encode($expected), Json::encode($query));
     }
 
-    #[Test]
-    public function itCanSortInDescendingOrder(): void
+    public function testItCanSortInDescendingOrder(): void
     {
         $expected = [
             'returnUserInfo' => true,
@@ -61,8 +57,7 @@ final class UserQueryTest extends TestCase
         $this->assertJsonStringEqualsJsonString(Json::encode($expected), Json::encode($query));
     }
 
-    #[Test]
-    public function itCanBeCreatedFromAnArray(): void
+    public function testItCanBeCreatedFromAnArray(): void
     {
         $data = [
             'returnUserInfo' => true,
