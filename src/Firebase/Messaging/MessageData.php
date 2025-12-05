@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Messaging;
 
 use JsonSerializable;
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use Stringable;
 
 use function in_array;
 use function mb_detect_encoding;
@@ -24,15 +23,13 @@ final readonly class MessageData implements JsonSerializable
     }
 
     /**
-     * @param array<non-empty-string, Stringable|string> $data
+     * @param array<non-empty-string, string> $data
      */
     public static function fromArray(array $data): self
     {
         $validated = [];
 
         foreach ($data as $key => $value) {
-            $value = (string) $value;
-
             if (self::isBinary($value)) {
                 throw new InvalidArgumentException(
                     "The message data field '{$key}' seems to contain binary data. As this can lead to broken messages, "

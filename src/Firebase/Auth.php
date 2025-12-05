@@ -46,7 +46,6 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
-use Stringable;
 use Throwable;
 use Traversable;
 
@@ -76,7 +75,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         $this->jwtParser = new Parser(new JoseEncoder());
     }
 
-    public function getUser(Stringable|string $uid): UserRecord
+    public function getUser(string $uid): UserRecord
     {
         $uid = Uid::fromString($uid)->value;
 
@@ -91,7 +90,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function getUsers(array $uids): array
     {
-        $uids = array_map(static fn(\Stringable|string $uid): string => Uid::fromString($uid)->value, $uids);
+        $uids = array_map(static fn(string $uid): string => Uid::fromString($uid)->value, $uids);
 
         $users = array_fill_keys($uids, null);
 
@@ -161,7 +160,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
-    public function updateUser(Stringable|string $uid, array|UpdateUser $properties): UserRecord
+    public function updateUser(string $uid, array|UpdateUser $properties): UserRecord
     {
         $request = $properties instanceof UpdateUser
             ? $properties
@@ -174,7 +173,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
-    public function createUserWithEmailAndPassword(Stringable|string $email, Stringable|string $password): UserRecord
+    public function createUserWithEmailAndPassword(string $email, string $password): UserRecord
     {
         return $this->createUser(
             CreateUser::new()
@@ -183,9 +182,9 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         );
     }
 
-    public function getUserByEmail(Stringable|string $email): UserRecord
+    public function getUserByEmail(string $email): UserRecord
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
 
         $response = $this->client->getUserByEmail($email);
 
@@ -198,10 +197,8 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $userRecord;
     }
 
-    public function getUserByPhoneNumber(Stringable|string $phoneNumber): UserRecord
+    public function getUserByPhoneNumber(string $phoneNumber): UserRecord
     {
-        $phoneNumber = (string) $phoneNumber;
-
         $response = $this->client->getUserByPhoneNumber($phoneNumber);
 
         $userRecord = self::getFirstUserRecordFromUserListResponse($response);
@@ -213,11 +210,8 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $userRecord;
     }
 
-    public function getUserByProviderUid(Stringable|string $providerId, Stringable|string $providerUid): UserRecord
+    public function getUserByProviderUid(string $providerId, string $providerUid): UserRecord
     {
-        $providerId = (string) $providerId;
-        $providerUid = (string) $providerUid;
-
         $response = $this->client->getUserByProviderUid($providerId, $providerUid);
 
         $userRecord = self::getFirstUserRecordFromUserListResponse($response);
@@ -234,27 +228,27 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->createUser(CreateUser::new());
     }
 
-    public function changeUserPassword(Stringable|string $uid, Stringable|string $newPassword): UserRecord
+    public function changeUserPassword(string $uid, string $newPassword): UserRecord
     {
         return $this->updateUser($uid, UpdateUser::new()->withClearTextPassword($newPassword));
     }
 
-    public function changeUserEmail(Stringable|string $uid, Stringable|string $newEmail): UserRecord
+    public function changeUserEmail(string $uid, string $newEmail): UserRecord
     {
         return $this->updateUser($uid, UpdateUser::new()->withEmail($newEmail));
     }
 
-    public function enableUser(Stringable|string $uid): UserRecord
+    public function enableUser(string $uid): UserRecord
     {
         return $this->updateUser($uid, UpdateUser::new()->markAsEnabled());
     }
 
-    public function disableUser(Stringable|string $uid): UserRecord
+    public function disableUser(string $uid): UserRecord
     {
         return $this->updateUser($uid, UpdateUser::new()->markAsDisabled());
     }
 
-    public function deleteUser(Stringable|string $uid): void
+    public function deleteUser(string $uid): void
     {
         $uid = Uid::fromString($uid)->value;
 
@@ -277,9 +271,9 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return DeleteUsersResult::fromRequestAndResponse($request, $response);
     }
 
-    public function getEmailActionLink(string $type, Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): string
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
 
         if ($actionCodeSettings === null) {
             $actionCodeSettings = ValidatedActionCodeSettings::empty();
@@ -292,9 +286,9 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->client->getEmailActionLink($type, $email, $actionCodeSettings, $locale);
     }
 
-    public function sendEmailActionLink(string $type, Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): void
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
 
         if ($actionCodeSettings === null) {
             $actionCodeSettings = ValidatedActionCodeSettings::empty();
@@ -330,37 +324,37 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         $this->client->sendEmailActionLink($type, $email, $actionCodeSettings, $locale, $idToken);
     }
 
-    public function getEmailVerificationLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('VERIFY_EMAIL', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendEmailVerificationLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('VERIFY_EMAIL', $email, $actionCodeSettings, $locale);
     }
 
-    public function getPasswordResetLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('PASSWORD_RESET', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendPasswordResetLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('PASSWORD_RESET', $email, $actionCodeSettings, $locale);
     }
 
-    public function getSignInWithEmailLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('EMAIL_SIGNIN', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendSignInWithEmailLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('EMAIL_SIGNIN', $email, $actionCodeSettings, $locale);
     }
 
-    public function setCustomUserClaims(Stringable|string $uid, ?array $claims): void
+    public function setCustomUserClaims(string $uid, ?array $claims): void
     {
         $uid = Uid::fromString($uid)->value;
         $claims ??= [];
@@ -368,7 +362,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         $this->client->setCustomUserClaims($uid, $claims);
     }
 
-    public function createCustomToken(Stringable|string $uid, array $claims = [], $ttl = 3600): UnencryptedToken
+    public function createCustomToken(string $uid, array $claims = [], $ttl = 3600): UnencryptedToken
     {
         if ($this->tokenGenerator === null) {
             throw new AuthError('Custom Token Generation is disabled because the current credentials do not permit it');
@@ -507,7 +501,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $email;
     }
 
-    public function revokeRefreshTokens(Stringable|string $uid): void
+    public function revokeRefreshTokens(string $uid): void
     {
         $uid = Uid::fromString($uid)->value;
 
@@ -518,12 +512,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
     {
         $uid = Uid::fromString($uid)->value;
 
-        $provider = array_values(
-            array_filter(
-                array_map(strval(...), (array) $provider),
-                static fn(string $value): bool => $value !== '',
-            ),
-        );
+        $provider = array_map(strval(...), (array) $provider);
 
         $response = $this->client->unlinkProvider($uid, $provider);
 
@@ -533,7 +522,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
     public function signInAsUser($user, ?array $claims = null): SignInResult
     {
         $claims ??= [];
-        $uid = $user instanceof UserRecord ? $user->uid : (string) $user;
+        $uid = $user instanceof UserRecord ? $user->uid : $user;
 
         try {
             $customToken = $this->createCustomToken($uid, $claims);
@@ -560,7 +549,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function signInWithEmailAndPassword($email, $clearTextPassword): SignInResult
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
         $clearTextPassword = ClearTextPassword::fromString($clearTextPassword)->value;
 
         return $this->client->handleSignIn(SignInWithEmailAndPassword::fromValues($email, $clearTextPassword));
@@ -568,7 +557,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function signInWithEmailAndOobCode($email, string $oobCode): SignInResult
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
 
         return $this->client->handleSignIn(SignInWithEmailAndOobCode::fromValues($email, $oobCode));
     }
@@ -591,7 +580,6 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function signInWithIdpAccessToken($provider, string $accessToken, $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
     {
-        $provider = (string) $provider;
         $redirectUrl = trim((string) ($redirectUrl ?? 'http://localhost'));
         $linkingIdToken = trim((string) $linkingIdToken);
         $oauthTokenSecret = trim((string) $oauthTokenSecret);
@@ -620,7 +608,6 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
     public function signInWithIdpIdToken($provider, $idToken, $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
     {
-        $provider = trim((string) $provider);
         $redirectUrl = trim((string) ($redirectUrl ?? 'http://localhost'));
         $linkingIdToken = trim((string) $linkingIdToken);
         $rawNonce = trim((string) $rawNonce);
