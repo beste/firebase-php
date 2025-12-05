@@ -46,8 +46,7 @@
         "psr/clock": "^1.0",
         "psr/http-client": "^1.0.3",
         "psr/http-factory": "^1.1",
-        "psr/http-message": "^1.1 || ^2.0",
-        "psr/log": "^3.0.2"
+        "psr/http-message": "^1.1 || ^2.0"
     },
     "require-dev": {
         "php-cs-fixer/shim": "^3.91.2",
@@ -58,6 +57,7 @@
         "phpstan/phpstan-strict-rules": "^2.0.7",
         "phpstan/phpstan-phpunit": "^2.0.8",
         "phpunit/phpunit": "^12.4.5",
+        "psr/log": "^3.0.2",
         "rector/rector": "^2.2.11",
         "shipmonk/composer-dependency-analyser": "^1.8.4",
         "symfony/var-dumper": "^7.4.0",
