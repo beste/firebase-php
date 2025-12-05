@@ -9,7 +9,7 @@ on:
       - 'README.md'
       - 'lychee.toml'
   push:
-    branches: ['8.x']
+    branches: ['7.x']
     paths:
       - 'docs/**'
       - '.github/workflows/docs.yml'
