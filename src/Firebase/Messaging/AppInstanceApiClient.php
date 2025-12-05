@@ -85,7 +85,7 @@ class AppInstanceApiClient
                     break;
 
                 case 'rejected':
-                    $result[$topicName] = $response['reason']->getMessage();
+                    $result[$topicName] = $response['reason']->getMessage(); // @phpstan-ignore typePerfect.noMixedMethodCaller
 
                     break;
             }
@@ -152,7 +152,7 @@ class AppInstanceApiClient
                     break;
 
                 case 'rejected':
-                    $result[$topicName] = $response['reason']->getMessage();
+                    $result[$topicName] = $response['reason']->getMessage(); // @phpstan-ignore typePerfect.noMixedMethodCaller
 
                     break;
             }
