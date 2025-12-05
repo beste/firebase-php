@@ -50,6 +50,8 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] REMOVED: Method Kreait\Firebase\Factory#createDynamicLinksService() was removed
 [BC] REMOVED: Method Kreait\Firebase\Factory#getDebugInfo() was removed
 [BC] REMOVED: Method Kreait\Firebase\Factory#withFirestoreDatabase() was removed
+[BC] REMOVED: Method Kreait\Firebase\Factory#withHttpDebugLogger() was removed
+[BC] REMOVED: Method Kreait\Firebase\Factory#withHttpLogger() was removed
 [BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#hasTarget() was removed
 [BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#target() was removed
 [BC] REMOVED: Method Kreait\Firebase\Messaging\CloudMessage#withChangedTarget() was removed

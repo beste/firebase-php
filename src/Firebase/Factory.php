@@ -19,7 +19,6 @@ use Google\Auth\SignBlobInterface;
 use Google\Cloud\Storage\StorageClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Utils as GuzzleUtils;
 use Kreait\Firebase\AppCheck\AppCheckTokenGenerator;
@@ -48,8 +47,6 @@ use Kreait\Firebase\Valinor\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Throwable;
 
 use function array_filter;
@@ -290,60 +287,6 @@ final class Factory
     {
         $factory = clone $this;
         $factory->httpClientOptions = $options;
-
-        return $factory;
-    }
-
-    /**
-     * @deprecated 7.25.0 Create the log middleware outside the factory and use `HttpClientOptions::withGuzzleMiddleware()` and `withClientOptions()` instead
-     *
-     * @see withHttpClientOptions()
-     * @see HttpClientOptions::withGuzzleMiddleware()
-     *
-     * @param non-empty-string|null $logLevel
-     * @param non-empty-string|null $errorLogLevel
-     */
-    public function withHttpLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
-    {
-        $clientOptions = $this->httpClientOptions->withGuzzleMiddleware(
-            middleware: Middleware::log(
-                $logger,
-                $formatter ?? new MessageFormatter(),
-                $logLevel ?? LogLevel::INFO,
-                $errorLogLevel ?? LogLevel::NOTICE,
-            ),
-            name: 'http_logs'
-        );
-
-        $factory = clone $this;
-        $factory->httpClientOptions = $clientOptions;
-
-        return $factory;
-    }
-
-    /**
-     * @deprecated 7.25.0 Create the log middleware outside the factory and use `HttpClientOptions::withGuzzleMiddleware()` and `withClientOptions()` instead
-     *
-     * @see withHttpClientOptions()
-     * @see HttpClientOptions::withGuzzleMiddleware()
-     *
-     * @param non-empty-string|null $logLevel
-     * @param non-empty-string|null $errorLogLevel
-     */
-    public function withHttpDebugLogger(LoggerInterface $logger, ?MessageFormatter $formatter = null, ?string $logLevel = null, ?string $errorLogLevel = null): self
-    {
-        $clientOptions = $this->httpClientOptions->withGuzzleMiddleware(
-            middleware: Middleware::log(
-                $logger,
-                $formatter ?? new MessageFormatter(MessageFormatter::DEBUG),
-                $logLevel ?? LogLevel::INFO,
-                $errorLogLevel ?? LogLevel::NOTICE,
-            ),
-            name: 'http_debug_logs'
-        );
-
-        $factory = clone $this;
-        $factory->httpClientOptions = $clientOptions;
 
         return $factory;
     }
