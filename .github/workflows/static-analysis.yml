@@ -25,7 +25,6 @@ jobs:
   phpstan:
     name: "PHPStan (PHP ${{ matrix.php }})"
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
 
     strategy:
       fail-fast: false

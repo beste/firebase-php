@@ -24,7 +24,6 @@ jobs:
   emulator-tests:
     name: Emulator Tests
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
 
     env:
       php-version: '8.4'

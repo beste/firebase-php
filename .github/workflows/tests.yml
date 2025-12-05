@@ -25,7 +25,6 @@ jobs:
   tests:
     name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
 
     strategy:
       fail-fast: false
