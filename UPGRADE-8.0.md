@@ -12,26 +12,16 @@ from 7.x to 8.0.
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
 
-### Replaced `Stringable|string` argument types with `string`-only
+### Type simplifications to reduce runtime overhead
 
-Methods that previously accepted `Stringable|string` as argument types now only support `string`.
+Several argument types have been simplified to their most common forms to eliminate runtime type conversion overhead.
+For example, methods that previously accepted `Stringable|string` now only accept `string`.
 
-`Stringable` was added for convenience so that someone could do, for example
+The union types were originally added for convenience, but introduced overhead when processing arguments, requiring
+runtime type conversion and validation that could be replaced with static analysis.
 
-```php
-$user = $auth->getUser('uid');
-$auth->updateUser($user, [...]);
-```
-
-While convenient, this adds overhead when processing these arguments. For example, if a method expects a non-empty
-string, the SDK would have to do a `trim((string) $arg)` and check if it's empty. 
-
-With this change, we can rely only on a `@var non-empty-string $arg` docblock annotation.
-
-```php
-$user = $auth->getUser('uid');
-$auth->updateUser($user->uid, [...]);
-```
+**See the complete list of breaking changes below** to identify any adjustments needed. Most changes should (hopefully)
+be trivial (e.g., passing `$user->uid` instead of `$user`). Run your test suite to catch any breaking changes.
 
 ## Complete list of breaking changes
 
