@@ -25,7 +25,6 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
 
     env:
       php-version: '8.4'

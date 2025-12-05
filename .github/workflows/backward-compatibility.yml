@@ -21,7 +21,6 @@ jobs:
   bc-checks:
     name: Backward Compatibility Check
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
 
     steps:
       - uses: actions/checkout@v6
