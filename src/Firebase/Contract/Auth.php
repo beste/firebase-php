@@ -29,7 +29,6 @@ use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
-use Psr\Http\Message\UriInterface;
 use Traversable;
 
 /**
@@ -440,24 +439,24 @@ interface Auth
      * @see https://docs.cloud.google.com/identity-platform/docs/reference/rest/v1/accounts/signInWithIdp
      *
      * @param non-empty-string $provider
-     * @param non-empty-string $accessToken
-     * @param UriInterface|non-empty-string|null $redirectUrl
+     * @param Token|non-empty-string $accessToken
+     * @param non-empty-string|null $redirectUrl
      * @param non-empty-string|null $oauthTokenSecret
      * @param non-empty-string|null $linkingIdToken
      * @param non-empty-string|null $rawNonce
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpAccessToken(string $provider, string $accessToken, $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpAccessToken(string $provider, Token|string $accessToken, ?string $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
 
     /**
      * @param non-empty-string $provider
      * @param Token|non-empty-string $idToken
-     * @param UriInterface|non-empty-string|null $redirectUrl
+     * @param non-empty-string|null $redirectUrl
      * @param non-empty-string|null $linkingIdToken
      * @param non-empty-string|null $rawNonce
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpIdToken(string $provider, Token|string $idToken, $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpIdToken(string $provider, Token|string $idToken, ?string $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
 }
