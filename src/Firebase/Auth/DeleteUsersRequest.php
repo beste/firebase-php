@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Auth;
 
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Value\Uid;
-use Stringable;
 
 /**
  * @internal
@@ -23,7 +22,7 @@ final readonly class DeleteUsersRequest
     }
 
     /**
-     * @param iterable<Stringable|string> $uids
+     * @param iterable<string> $uids
      */
     public static function withUids(iterable $uids, bool $forceDeleteEnabledUsers = false): self
     {

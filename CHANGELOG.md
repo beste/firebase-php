@@ -12,6 +12,7 @@ If it saves you or your team time, please consider [sponsoring its development](
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
 * Deprecated classes, methods and class constants have been removed.
+* Replaced `Stringable|string` argument types with `string`-only
 
 See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x and 8.0.**
 

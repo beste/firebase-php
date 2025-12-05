@@ -7,9 +7,6 @@ namespace Kreait\Firebase\Request;
 use Beste\Json;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Request;
-use Stringable;
-
-use function array_reduce;
 use function array_unique;
 use function is_array;
 use function is_string;
@@ -146,11 +143,13 @@ final class UpdateUser implements Request
                 case 'deleteproviders':
                 case 'removeprovider':
                 case 'removeproviders':
-                    $request = array_reduce(
-                        (array) $value,
-                        static fn(self $request, $provider): UpdateUser => $request->withRemovedProvider($provider),
-                        $request,
-                    );
+                    if (is_string($value)) {
+                        $value = [$value];
+                    }
+
+                    foreach ($value as $provider) {
+                        $request = $request->withRemovedProvider($provider);
+                    }
 
                     break;
 
@@ -180,18 +179,12 @@ final class UpdateUser implements Request
     }
 
     /**
-     * @param Stringable|string $provider
+     * @param non-empty-string $provider
      */
-    public function withRemovedProvider($provider): self
+    public function withRemovedProvider(string $provider): self
     {
-        $providerString = trim((string) $provider);
-
-        if ($providerString === '') {
-            return $this;
-        }
-
         $request = clone $this;
-        $request->providersToDelete[] = $providerString;
+        $request->providersToDelete[] = $provider;
 
         return $request;
     }

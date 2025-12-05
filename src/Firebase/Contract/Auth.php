@@ -30,7 +30,6 @@ use Kreait\Firebase\Request\UpdateUser;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
 use Psr\Http\Message\UriInterface;
-use Stringable;
 use Traversable;
 
 /**
@@ -39,16 +38,16 @@ use Traversable;
 interface Auth
 {
     /**
-     * @param Stringable|non-empty-string $uid
+     * @param non-empty-string $uid
      *
      * @throws UserNotFound
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function getUser(Stringable|string $uid): UserRecord;
+    public function getUser(string $uid): UserRecord;
 
     /**
-     * @param non-empty-list<Stringable|non-empty-string> $uids
+     * @param non-empty-list<non-empty-string> $uids
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
@@ -91,38 +90,39 @@ interface Auth
     /**
      * Updates the given user with the given properties.
      *
+     * @param non-empty-string $uid
      * @param non-empty-array<non-empty-string, mixed>|UpdateUser $properties
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function updateUser(Stringable|string $uid, array|UpdateUser $properties): UserRecord;
+    public function updateUser(string $uid, array|UpdateUser $properties): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $email
-     * @param Stringable|non-empty-string $password
+     * @param non-empty-string $email
+     * @param non-empty-string $password
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function createUserWithEmailAndPassword(Stringable|string $email, Stringable|string $password): UserRecord;
+    public function createUserWithEmailAndPassword(string $email, string $password): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      *
      * @throws UserNotFound
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function getUserByEmail(Stringable|string $email): UserRecord;
+    public function getUserByEmail(string $email): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $phoneNumber
+     * @param non-empty-string $phoneNumber
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function getUserByPhoneNumber(Stringable|string $phoneNumber): UserRecord;
+    public function getUserByPhoneNumber(string $phoneNumber): UserRecord;
 
     /**
      * @throws Exception\AuthException
@@ -131,50 +131,50 @@ interface Auth
     public function createAnonymousUser(): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $uid
-     * @param Stringable|non-empty-string $newPassword
+     * @param non-empty-string $uid
+     * @param non-empty-string $newPassword
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function changeUserPassword(Stringable|string $uid, Stringable|string $newPassword): UserRecord;
+    public function changeUserPassword(string $uid, string $newPassword): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $uid
-     * @param Stringable|non-empty-string $newEmail
+     * @param non-empty-string $uid
+     * @param non-empty-string $newEmail
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function changeUserEmail(Stringable|string $uid, Stringable|string $newEmail): UserRecord;
+    public function changeUserEmail(string $uid, string $newEmail): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $uid
+     * @param non-empty-string $uid
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function enableUser(Stringable|string $uid): UserRecord;
+    public function enableUser(string $uid): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $uid
+     * @param non-empty-string $uid
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function disableUser(Stringable|string $uid): UserRecord;
+    public function disableUser(string $uid): UserRecord;
 
     /**
-     * @param Stringable|non-empty-string $uid
+     * @param non-empty-string $uid
      *
      * @throws UserNotFound
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function deleteUser(Stringable|string $uid): void;
+    public function deleteUser(string $uid): void;
 
     /**
-     * @param iterable<Stringable|non-empty-string> $uids
+     * @param iterable<non-empty-string> $uids
      * @param bool $forceDeleteEnabledUsers Whether to force deleting accounts that are not in disabled state. If false, only disabled accounts will be deleted, and accounts that are not disabled will be added to the errors.
      *
      * @throws Exception\AuthException
@@ -183,91 +183,91 @@ interface Auth
 
     /**
      * @param non-empty-string $type
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToCreateActionLink
      */
-    public function getEmailActionLink(string $type, Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
      * @param non-empty-string $type
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws UserNotFound
      * @throws FailedToSendActionLink
      */
-    public function sendEmailActionLink(string $type, Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToCreateActionLink
      */
-    public function getEmailVerificationLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToSendActionLink
      */
-    public function sendEmailVerificationLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToCreateActionLink
      */
-    public function getPasswordResetLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToSendActionLink
      */
-    public function sendPasswordResetLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToCreateActionLink
      */
-    public function getSignInWithEmailLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param ActionCodeSettings|array<non-empty-string, mixed>|null $actionCodeSettings
      * @param non-empty-string|null $locale
      *
      * @throws FailedToSendActionLink
      */
-    public function sendSignInWithEmailLink(Stringable|string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
      * Sets additional developer claims on an existing user identified by the provided UID.
      *
      * @see https://firebase.google.com/docs/auth/admin/custom-claims
      *
-     * @param Stringable|non-empty-string $uid
+     * @param non-empty-string $uid
      * @param array<non-empty-string, mixed>|null $claims
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function setCustomUserClaims(Stringable|string $uid, ?array $claims): void;
+    public function setCustomUserClaims(string $uid, ?array $claims): void;
 
     /**
      * @param array<non-empty-string, mixed> $claims
@@ -276,7 +276,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function createCustomToken(Stringable|string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken;
+    public function createCustomToken(string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken;
 
     /**
      * @param non-empty-string $tokenString
@@ -359,7 +359,7 @@ interface Auth
      * @see https://firebase.google.com/docs/reference/rest/auth#section-confirm-reset-password
      *
      * @param non-empty-string $oobCode the email action code sent to the user's email for resetting the password
-     * @param Stringable|non-empty-string $newPassword
+     * @param non-empty-string $newPassword
      * @param bool $invalidatePreviousSessions Invalidate sessions initialized with the previous credentials
      *
      * @throws ExpiredOobCode
@@ -369,7 +369,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function confirmPasswordReset(string $oobCode, Stringable|string $newPassword, bool $invalidatePreviousSessions = true): string;
+    public function confirmPasswordReset(string $oobCode, string $newPassword, bool $invalidatePreviousSessions = true): string;
 
     /**
      * Revokes all refresh tokens for the specified user identified by the uid provided.
@@ -377,29 +377,29 @@ interface Auth
      * before revocation will also be revoked on the Auth backend. Any request with an
      * ID token generated before revocation will be rejected with a token expired error.
      *
-     * @param Stringable|string $uid the user whose tokens are to be revoked
+     * @param string $uid the user whose tokens are to be revoked
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function revokeRefreshTokens(Stringable|string $uid): void;
+    public function revokeRefreshTokens(string $uid): void;
 
     /**
-     * @param Stringable|non-empty-string $uid
-     * @param list<Stringable|non-empty-string>|Stringable|non-empty-string $provider
+     * @param non-empty-string $uid
+     * @param list<non-empty-string>|non-empty-string $provider
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function unlinkProvider(Stringable|string $uid, array|Stringable|string $provider): UserRecord;
+    public function unlinkProvider(string $uid, array|string $provider): UserRecord;
 
     /**
-     * @param UserRecord|Stringable|non-empty-string $user
+     * @param UserRecord|non-empty-string $user
      * @param array<non-empty-string, mixed>|null $claims
      *
      * @throws FailedToSignIn
      */
-    public function signInAsUser(UserRecord|Stringable|string $user, ?array $claims = null): SignInResult;
+    public function signInAsUser(UserRecord|string $user, ?array $claims = null): SignInResult;
 
     /**
      * @param Token|non-empty-string $token
@@ -416,20 +416,20 @@ interface Auth
     public function signInWithRefreshToken(string $refreshToken): SignInResult;
 
     /**
-     * @param Stringable|non-empty-string $email
-     * @param Stringable|non-empty-string $clearTextPassword
+     * @param non-empty-string $email
+     * @param non-empty-string $clearTextPassword
      *
      * @throws FailedToSignIn
      */
-    public function signInWithEmailAndPassword(Stringable|string $email, Stringable|string $clearTextPassword): SignInResult;
+    public function signInWithEmailAndPassword(string $email, string $clearTextPassword): SignInResult;
 
     /**
-     * @param Stringable|non-empty-string $email
+     * @param non-empty-string $email
      * @param non-empty-string $oobCode
      *
      * @throws FailedToSignIn
      */
-    public function signInWithEmailAndOobCode(Stringable|string $email, string $oobCode): SignInResult;
+    public function signInWithEmailAndOobCode(string $email, string $oobCode): SignInResult;
 
     /**
      * @throws FailedToSignIn
@@ -439,7 +439,7 @@ interface Auth
     /**
      * @see https://docs.cloud.google.com/identity-platform/docs/reference/rest/v1/accounts/signInWithIdp
      *
-     * @param Stringable|non-empty-string $provider
+     * @param non-empty-string $provider
      * @param non-empty-string $accessToken
      * @param UriInterface|non-empty-string|null $redirectUrl
      * @param non-empty-string|null $oauthTokenSecret
@@ -448,10 +448,10 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpAccessToken(Stringable|string $provider, string $accessToken, $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpAccessToken(string $provider, string $accessToken, $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
 
     /**
-     * @param Stringable|non-empty-string $provider
+     * @param non-empty-string $provider
      * @param Token|non-empty-string $idToken
      * @param UriInterface|non-empty-string|null $redirectUrl
      * @param non-empty-string|null $linkingIdToken
@@ -459,5 +459,5 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpIdToken(Stringable|string $provider, Token|string $idToken, $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpIdToken(string $provider, Token|string $idToken, $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
 }
