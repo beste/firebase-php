@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Auth;
 
 use Kreait\Firebase\Value\Email;
-use Stringable;
 
 /**
  * @internal
@@ -21,9 +20,9 @@ final readonly class CreateActionLink
     ) {
     }
 
-    public static function new(string $type, Stringable|string $email, ActionCodeSettings $settings, ?string $tenantId = null, ?string $locale = null): self
+    public static function new(string $type, string $email, ActionCodeSettings $settings, ?string $tenantId = null, ?string $locale = null): self
     {
-        $email = Email::fromString((string) $email)->value;
+        $email = Email::fromString($email)->value;
 
         return new self($tenantId, $locale, $type, $email, $settings);
     }

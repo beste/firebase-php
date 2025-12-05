@@ -13,7 +13,6 @@ use Kreait\Firebase\Util\DT;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token\Parser;
-use Stringable;
 
 /**
  * @internal
@@ -31,13 +30,15 @@ final readonly class CustomTokenViaGoogleCredentials
     }
 
     /**
-     * @param Stringable|string $uid
+     * @param non-empty-string $uid
      * @param array<non-empty-string, mixed> $claims
      *
      * @throws AuthError
      */
-    public function createCustomToken($uid, array $claims = [], ?DateTimeInterface $expiresAt = null): Token
+    public function createCustomToken(string $uid, ?array $claims = null, ?DateTimeInterface $expiresAt = null): Token
     {
+        $claims ??= [];
+
         $now = new DateTimeImmutable();
         $expiresAt = ($expiresAt !== null)
             ? DT::toUTCDateTimeImmutable($expiresAt)
@@ -50,7 +51,7 @@ final readonly class CustomTokenViaGoogleCredentials
             'aud' => 'https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit',
             'iat' => $now->getTimestamp(),
             'exp' => $expiresAt->getTimestamp(),
-            'uid' => (string) $uid,
+            'uid' => $uid,
         ];
 
         if ($this->tenantId !== null) {

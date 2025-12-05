@@ -20,7 +20,6 @@ use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
-use Stringable;
 use Throwable;
 
 use function array_filter;
@@ -239,7 +238,7 @@ class ApiClient
     }
 
     /**
-     * @param list<Stringable|non-empty-string> $providers
+     * @param list<non-empty-string> $providers
      *
      * @throws AuthException
      */

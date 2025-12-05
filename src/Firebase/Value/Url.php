@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Value;
 
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use Stringable;
 
 /**
  * @internal
@@ -32,10 +31,8 @@ final readonly class Url
         $this->value = $value;
     }
 
-    public static function fromString(Stringable|string $value): self
+    public static function fromString(string $value): self
     {
-        $value = (string) $value;
-
         if ($value === '') {
             throw new InvalidArgumentException('The URL cannot be empty.');
         }

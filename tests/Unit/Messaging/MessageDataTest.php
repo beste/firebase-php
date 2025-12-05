@@ -11,7 +11,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Stringable;
 
 use function hex2bin;
 
@@ -21,7 +20,7 @@ use function hex2bin;
 final class MessageDataTest extends TestCase
 {
     /**
-     * @param array<non-empty-string, Stringable|string> $data
+     * @param array<non-empty-string, string> $data
      */
     #[DoesNotPerformAssertions]
     #[DataProvider('validData')]
@@ -32,7 +31,7 @@ final class MessageDataTest extends TestCase
     }
 
     /**
-     * @param array<non-empty-string, Stringable|string> $data
+     * @param array<non-empty-string, string> $data
      */
     #[DataProvider('invalidData')]
     #[Test]
@@ -57,29 +56,6 @@ final class MessageDataTest extends TestCase
 
     public static function validData(): Iterator
     {
-        yield 'integer' => [
-            ['key' => 1],
-        ];
-        yield 'float' => [
-            ['key' => 1.23],
-        ];
-        yield 'true' => [
-            ['key' => true],
-        ];
-        yield 'false' => [
-            ['key' => false],
-        ];
-        yield 'null' => [
-            ['key' => null],
-        ];
-        yield 'object with __toString()' => [
-            ['key' => new class {
-                public function __toString(): string
-                {
-                    return 'value';
-                }
-            }],
-        ];
         yield 'UTF-8 string' => [
             ['key' => 'Jérôme'],
         ];

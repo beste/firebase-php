@@ -10,7 +10,6 @@ use Kreait\Firebase\Value\Url;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Stringable;
 
 /**
  * @internal
@@ -19,11 +18,11 @@ final class UrlTest extends TestCase
 {
     #[DataProvider('validValues')]
     #[Test]
-    public function withValidValue(Stringable|string $value): void
+    public function withValidValue(string $value): void
     {
         $url = Url::fromString($value)->value;
 
-        $check = (string) $value;
+        $check = $value;
 
         $this->assertSame($check, $url);
     }

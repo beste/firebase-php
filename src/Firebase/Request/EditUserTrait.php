@@ -9,7 +9,6 @@ use Kreait\Firebase\Value\ClearTextPassword;
 use Kreait\Firebase\Value\Email;
 use Kreait\Firebase\Value\Uid;
 use Kreait\Firebase\Value\Url;
-use Stringable;
 
 use function array_filter;
 use function mb_strtolower;
@@ -41,7 +40,7 @@ trait EditUserTrait
     /** @var array<string, mixed>|null */
     protected ?array $multiFactor = null;
 
-    public function withUid(Stringable|string $uid): self
+    public function withUid(string $uid): self
     {
         $request = clone $this;
         $request->uid = Uid::fromString($uid)->value;
@@ -49,27 +48,27 @@ trait EditUserTrait
         return $request;
     }
 
-    public function withEmail(Stringable|string $email): self
+    public function withEmail(string $email): self
     {
         $request = clone $this;
-        $request->email = Email::fromString((string) $email)->value;
+        $request->email = Email::fromString($email)->value;
 
         return $request;
     }
 
-    public function withVerifiedEmail(Stringable|string $email): self
+    public function withVerifiedEmail(string $email): self
     {
         $request = clone $this;
-        $request->email = Email::fromString((string) $email)->value;
+        $request->email = Email::fromString($email)->value;
         $request->emailIsVerified = true;
 
         return $request;
     }
 
-    public function withUnverifiedEmail(Stringable|string $email): self
+    public function withUnverifiedEmail(string $email): self
     {
         $request = clone $this;
-        $request->email = Email::fromString((string) $email)->value;
+        $request->email = Email::fromString($email)->value;
         $request->emailIsVerified = false;
 
         return $request;
@@ -84,19 +83,17 @@ trait EditUserTrait
     }
 
     /**
-     * @param Stringable|string|null $phoneNumber
+     * @param non-empty-string|null $phoneNumber
      */
-    public function withPhoneNumber($phoneNumber): self
+    public function withPhoneNumber(string|null $phoneNumber): self
     {
-        $phoneNumber = $phoneNumber !== null ? (string) $phoneNumber : null;
-
         $request = clone $this;
         $request->phoneNumber = $phoneNumber;
 
         return $request;
     }
 
-    public function withPhotoUrl(Stringable|string $url): self
+    public function withPhotoUrl(string $url): self
     {
         $request = clone $this;
         $request->photoUrl = Url::fromString($url)->value;
@@ -138,7 +135,7 @@ trait EditUserTrait
         return $request;
     }
 
-    public function withClearTextPassword(Stringable|string $clearTextPassword): self
+    public function withClearTextPassword(string $clearTextPassword): self
     {
         $request = clone $this;
         $request->clearTextPassword = ClearTextPassword::fromString($clearTextPassword)->value;

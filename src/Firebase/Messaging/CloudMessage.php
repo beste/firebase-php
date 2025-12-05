@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Messaging;
 use Beste\Json;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
-use Stringable;
 
 use function array_filter;
 use function array_intersect;
@@ -104,7 +103,7 @@ final class CloudMessage implements Message
     }
 
     /**
-     * @param MessageData|array<non-empty-string, Stringable|string> $data
+     * @param MessageData|array<non-empty-string, string> $data
      *
      * @throws InvalidArgumentException
      */
