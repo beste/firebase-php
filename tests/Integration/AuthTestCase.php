@@ -865,7 +865,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         // I don't know how to retrieve a current user access token programmatically, so we'll
         // test the failure case only here
         $this->expectException(FailedToSignIn::class);
-        $this->auth->signInWithIdpAccessToken('google.com', 'invalid', Utils::uriFor('http://localhost'));
+        $this->auth->signInWithIdpAccessToken('google.com', 'invalid');
     }
 
     #[Test]
