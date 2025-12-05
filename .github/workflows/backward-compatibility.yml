@@ -1,0 +1,41 @@
+name: Backward Compatibility Check
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'composer.json'
+      - '.github/workflows/backward-compatibility.yml'
+  push:
+    branches: ['8.x']
+    paths:
+      - 'src/**'
+      - 'composer.json'
+      - '.github/workflows/backward-compatibility.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bc-checks:
+    name: Backward Compatibility Check
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: grpc
+
+      - name: Install roave/backward-compatibility-check
+        run: composer require --dev roave/backward-compatibility-check
+
+      - name: Check for BC breaks
+        run: vendor/bin/roave-backward-compatibility-check --format=github-actions
