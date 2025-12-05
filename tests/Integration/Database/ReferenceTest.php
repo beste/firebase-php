@@ -10,7 +10,6 @@ use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -27,8 +26,7 @@ final class ReferenceTest extends DatabaseTestCase
     }
 
     #[DataProvider('validValues')]
-    #[Test]
-    public function setAndGet(string $key, mixed $value): void
+    public function testSetAndGet(string $key, mixed $value): void
     {
         $ref = $this->ref->getChild(__FUNCTION__.'/'.$key);
         $ref->set($value);
@@ -36,8 +34,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertSame($value, $ref->getValue());
     }
 
-    #[Test]
-    public function update(): void
+    public function testUpdate(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
         $ref->set([
@@ -59,8 +56,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertEqualsCanonicalizing($expected, $ref->getValue());
     }
 
-    #[Test]
-    public function push(): void
+    public function testPush(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
         $value = 'a value';
@@ -71,8 +67,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertSame($value, $newRef->getValue());
     }
 
-    #[Test]
-    public function remove(): void
+    public function testRemove(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
@@ -86,8 +81,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertEqualsCanonicalizing(['second' => 'value'], $ref->getValue());
     }
 
-    #[Test]
-    public function removeChildren(): void
+    public function testRemoveChildren(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
@@ -113,8 +107,7 @@ final class ReferenceTest extends DatabaseTestCase
         ], $ref->getValue());
     }
 
-    #[Test]
-    public function pushToGetKey(): void
+    public function testPushToGetKey(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
         $key = $ref->push()->getKey();
@@ -123,8 +116,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertSame(0, $ref->getSnapshot()->numChildren());
     }
 
-    #[Test]
-    public function setWithNullIsSameAsRemove(): void
+    public function testSetWithNullIsSameAsRemove(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
@@ -138,8 +130,7 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertSame(0, $ref->getSnapshot()->numChildren());
     }
 
-    #[Test]
-    public function setServerTimestamp(): void
+    public function testSetServerTimestamp(): void
     {
         $value = $this->ref->getChild(__FUNCTION__)
             ->push(['updatedAt' => Database::SERVER_TIMESTAMP])
@@ -154,8 +145,7 @@ final class ReferenceTest extends DatabaseTestCase
     /**
      * @see https://github.com/kreait/firebase-php/issues/1031
      */
-    #[Test]
-    public function useNonLatinCharacters(): void
+    public function testUseNonLatinCharacters(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 

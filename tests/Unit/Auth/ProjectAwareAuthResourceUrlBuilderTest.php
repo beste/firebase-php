@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Unit\Auth;
 
 use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function putenv;
@@ -28,14 +27,12 @@ final class ProjectAwareAuthResourceUrlBuilderTest extends TestCase
         $this->builder = ProjectAwareAuthResourceUrlBuilder::forProject($this->projectId);
     }
 
-    #[Test]
-    public function itUsesTheGivenProjectId(): void
+    public function testItUsesTheGivenProjectId(): void
     {
         $this->assertStringContainsString($this->projectId, $this->builder->getUrl());
     }
 
-    #[Test]
-    public function itUsesAnEmulatorHostIfProvidedByEnvironmentVariable(): void
+    public function testItUsesAnEmulatorHostIfProvidedByEnvironmentVariable(): void
     {
         putenv('FIREBASE_AUTH_EMULATOR_HOST=localhost:1234');
 
@@ -44,8 +41,7 @@ final class ProjectAwareAuthResourceUrlBuilderTest extends TestCase
         $this->assertStringContainsString('localhost:1234', $builder->getUrl());
     }
 
-    #[Test]
-    public function itDoesNotUseTheEmulatorHostWhenItIsEmpty(): void
+    public function testItDoesNotUseTheEmulatorHostWhenItIsEmpty(): void
     {
         putenv('FIREBASE_AUTH_EMULATOR_HOST=');
 
@@ -54,29 +50,25 @@ final class ProjectAwareAuthResourceUrlBuilderTest extends TestCase
         $this->assertStringNotContainsString('{host}', $builder->getUrl());
     }
 
-    #[Test]
-    public function itReplacesTheApiWithAnEmptyStringWhenItIsNotProvided(): void
+    public function testItReplacesTheApiWithAnEmptyStringWhenItIsNotProvided(): void
     {
         $this->assertStringNotContainsString('{api}', $this->builder->getUrl());
     }
 
-    #[Test]
-    public function itUsesTheRequestedApi(): void
+    public function testItUsesTheRequestedApi(): void
     {
         $url = $this->builder->getUrl('foo');
         $this->assertStringNotContainsString('{api}', $url);
         $this->assertStringContainsString('foo', $url);
     }
 
-    #[Test]
-    public function itUsesTheGivenParameters(): void
+    public function testItUsesTheGivenParameters(): void
     {
         $url = $this->builder->getUrl('', ['first' => 'value', 'second' => 'value']);
         $this->assertStringContainsString('?first=value&second=value', $url);
     }
 
-    #[Test]
-    public function itDoesNotHaveQueryParamsWhenNoneAreProvided(): void
+    public function testItDoesNotHaveQueryParamsWhenNoneAreProvided(): void
     {
         $url = $this->builder->getUrl();
         $this->assertStringNotContainsString('?', $url);

@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Tests\Integration\Database;
 use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -16,8 +15,7 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('emulator')]
 final class RuleSetTest extends DatabaseTestCase
 {
-    #[Test]
-    public function default(): void
+    public function testDefault(): void
     {
         $ruleSet = RuleSet::default();
 
@@ -26,8 +24,7 @@ final class RuleSetTest extends DatabaseTestCase
         $this->assertEqualsCanonicalizing($ruleSet->getRules(), self::$db->getRuleSet()->getRules());
     }
 
-    #[Test]
-    public function public(): void
+    public function testPublic(): void
     {
         $ruleSet = RuleSet::public();
 
@@ -36,8 +33,7 @@ final class RuleSetTest extends DatabaseTestCase
         $this->assertEqualsCanonicalizing($ruleSet->getRules(), self::$db->getRuleSet()->getRules());
     }
 
-    #[Test]
-    public function private(): void
+    public function testPrivate(): void
     {
         $ruleSet = RuleSet::private();
 
@@ -49,8 +45,7 @@ final class RuleSetTest extends DatabaseTestCase
     /**
      * @see https://github.com/kreait/firebase-php/issues/705
      */
-    #[Test]
-    public function rulesAreProperlyEncoded(): void
+    public function testRulesAreProperlyEncoded(): void
     {
         $rules = RuleSet::private()->getRules();
         $rules['rules'][self::$refPrefix.__FUNCTION__] = [

@@ -12,7 +12,6 @@ use Kreait\Firebase\Exception\Database\DatabaseError;
 use Kreait\Firebase\Exception\Database\DatabaseNotFound;
 use Kreait\Firebase\Exception\Database\UnsupportedQuery;
 use Kreait\Firebase\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
@@ -41,14 +40,12 @@ final class QueryTest extends UnitTestCase
         $this->query = new Query($this->reference, $this->apiClient);
     }
 
-    #[Test]
-    public function getReference(): void
+    public function testGetReference(): void
     {
         $this->assertSame($this->reference, $this->query->getReference());
     }
 
-    #[Test]
-    public function getSnapshot(): void
+    public function testGetSnapshot(): void
     {
         $this->apiClient->method('get')->with($this->anything())->willReturn('value');
 
@@ -57,24 +54,21 @@ final class QueryTest extends UnitTestCase
         $this->assertSame('value', $snapshot->getValue());
     }
 
-    #[Test]
-    public function getValue(): void
+    public function testGetValue(): void
     {
         $this->apiClient->method('get')->with($this->anything())->willReturn('value');
 
         $this->assertSame('value', $this->query->getValue());
     }
 
-    #[Test]
-    public function getUri(): void
+    public function testGetUri(): void
     {
         $uri = $this->query->getUri();
 
         $this->assertSame((string) $uri, (string) $this->query);
     }
 
-    #[Test]
-    public function onlyOneSorterIsAllowed(): void
+    public function testOnlyOneSorterIsAllowed(): void
     {
         try {
             $this->query->orderByKey()->orderByValue();
@@ -83,8 +77,7 @@ final class QueryTest extends UnitTestCase
         }
     }
 
-    #[Test]
-    public function wrapsApiExceptions(): void
+    public function testWrapsApiExceptions(): void
     {
         $exception = new DatabaseError();
 
@@ -98,8 +91,7 @@ final class QueryTest extends UnitTestCase
         $this->query->getSnapshot();
     }
 
-    #[Test]
-    public function indexNotDefined(): void
+    public function testIndexNotDefined(): void
     {
         $this->apiClient
             ->method('get')->with($this->anything())
@@ -111,8 +103,7 @@ final class QueryTest extends UnitTestCase
         $this->query->getSnapshot();
     }
 
-    #[Test]
-    public function withNonExistingDatabase(): void
+    public function testWithNonExistingDatabase(): void
     {
         $this->apiClient
             ->method('get')->with($this->anything())

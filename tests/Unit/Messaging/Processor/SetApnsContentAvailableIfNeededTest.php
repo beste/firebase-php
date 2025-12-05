@@ -9,7 +9,6 @@ use Iterator;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Processor\SetApnsContentAvailableIfNeeded;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,8 +29,7 @@ final class SetApnsContentAvailableIfNeededTest extends TestCase
      * @see https://github.com/kreait/firebase-php/pull/762
      */
     #[DataProvider('provideMessagesWithExpectedContentAvailable')]
-    #[Test]
-    public function itSetsTheExpectedPushType(array $messageData): void
+    public function testItSetsTheExpectedPushType(array $messageData): void
     {
         $message = CloudMessage::fromArray($messageData);
 
@@ -44,8 +42,7 @@ final class SetApnsContentAvailableIfNeededTest extends TestCase
         $this->assertSame(1, $processed['apns']['payload']['aps']['content-available']);
     }
 
-    #[Test]
-    public function itDoesNotSetThePushType(): void
+    public function testItDoesNotSetThePushType(): void
     {
         $message = CloudMessage::fromArray($given = ['topic' => 'test']);
 

@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Tests\Integration\Factory;
 use Exception;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 use Kreait\Firebase\Util;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
@@ -18,8 +17,7 @@ final class FirestoreTest extends IntegrationTestCase
      * If we write a document into the instance created without an explicit database name,
      * we should be able to read it from the instance created with an explicit database name.
      */
-    #[Test]
-    public function itUsesTheDefaultDatabaseByDefault(): void
+    public function testItUsesTheDefaultDatabaseByDefault(): void
     {
         // @see https://github.com/grpc/grpc/issues/38184
         // @see https://github.com/googleapis/gax-php/issues/584
@@ -42,7 +40,6 @@ final class FirestoreTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
     public function testItCannotConnectToAnUnknownDatabase(): void
     {
         // @see https://github.com/grpc/grpc/issues/38184
@@ -61,8 +58,7 @@ final class FirestoreTest extends IntegrationTestCase
         $database->collection('foo')->document(__FUNCTION__)->create();
     }
 
-    #[Test]
-    public function itCanConnectToACustomDatabase(): void
+    public function testItCanConnectToACustomDatabase(): void
     {
         $collection = __FUNCTION__;
         $documentName = __FUNCTION__.self::randomString();
@@ -77,8 +73,7 @@ final class FirestoreTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function itSupportsAdditionalFirestoreConfig(): void
+    public function testItSupportsAdditionalFirestoreConfig(): void
     {
         $collection = __FUNCTION__;
         $documentName = __FUNCTION__.self::randomString();

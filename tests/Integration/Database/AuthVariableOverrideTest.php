@@ -10,7 +10,6 @@ use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Exception\Database\PermissionDenied;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 
 use function assert;
 use function is_string;
@@ -35,8 +34,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
         parent::tearDown();
     }
 
-    #[Test]
-    public function itCanAccessAReferenceThatBelongsToTheSameUser(): void
+    public function testItCanAccessAReferenceThatBelongsToTheSameUser(): void
     {
         $uid = $this->auth->signInAnonymously()->firebaseUserId();
         assert(is_string($uid));
@@ -56,8 +54,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
         }
     }
 
-    #[Test]
-    public function itCanNotSetTheValueOfAReferenceIfItIsOnlyAllowedToRead(): void
+    public function testItCanNotSetTheValueOfAReferenceIfItIsOnlyAllowedToRead(): void
     {
         $uid = $this->auth->signInAnonymously()->firebaseUserId();
         assert(is_string($uid));
@@ -74,8 +71,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
         }
     }
 
-    #[Test]
-    public function itCanNotAccessAReferenceThatRequiresAnotherUser(): void
+    public function testItCanNotAccessAReferenceThatRequiresAnotherUser(): void
     {
         $uid = $this->auth->signInAnonymously()->firebaseUserId();
         assert(is_string($uid));
@@ -92,8 +88,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
         }
     }
 
-    #[Test]
-    public function itCanAccessAPublicReferenceWhenAuthOverrideIsSetToBeUnauthenticated(): void
+    public function testItCanAccessAPublicReferenceWhenAuthOverrideIsSetToBeUnauthenticated(): void
     {
         $uid = $this->auth->signInAnonymously()->firebaseUserId();
         assert(is_string($uid));
@@ -114,8 +109,7 @@ final class AuthVariableOverrideTest extends DatabaseTestCase
         }
     }
 
-    #[Test]
-    public function whenUnauthenticatedItCanNotAccessAReferenceThatRequiresAuthentication(): void
+    public function testWhenUnauthenticatedItCanNotAccessAReferenceThatRequiresAuthentication(): void
     {
         $uid = $this->auth->signInAnonymously()->firebaseUserId();
         assert(is_string($uid));

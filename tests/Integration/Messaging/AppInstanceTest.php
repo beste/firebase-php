@@ -8,7 +8,6 @@ use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Messaging\AppInstance;
 use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 use function bin2hex;
 use function random_bytes;
@@ -25,8 +24,7 @@ final class AppInstanceTest extends IntegrationTestCase
         $this->messaging = self::$factory->createMessaging();
     }
 
-    #[Test]
-    public function itIsSubscribedToTopics(): void
+    public function testItIsSubscribedToTopics(): void
     {
         $token = $this->getTestRegistrationToken();
 

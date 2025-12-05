@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Tests\Unit\Auth;
 
 use Kreait\Firebase\Auth\DeleteUsersRequest;
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function array_map;
@@ -17,8 +16,7 @@ use function range;
  */
 final class DeleteUsersRequestTest extends TestCase
 {
-    #[Test]
-    public function itRejectsTooManyUids(): void
+    public function testItRejectsTooManyUids(): void
     {
         $uids = array_map(strval(...), range(0, 1001));
 
@@ -26,8 +24,7 @@ final class DeleteUsersRequestTest extends TestCase
         DeleteUsersRequest::withUids($uids);
     }
 
-    #[Test]
-    public function itRejectsInvalidUids(): void
+    public function testItRejectsInvalidUids(): void
     {
         $this->expectException(InvalidArgumentException::class);
         DeleteUsersRequest::withUids(['']);

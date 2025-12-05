@@ -9,7 +9,6 @@ use Iterator;
 use Kreait\Firebase\Messaging\MessageData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function hex2bin;
@@ -24,7 +23,6 @@ final class MessageDataTest extends TestCase
      */
     #[DoesNotPerformAssertions]
     #[DataProvider('validData')]
-    #[Test]
     public function itAcceptsValidData(array $data): void
     {
         MessageData::fromArray($data);
@@ -34,7 +32,6 @@ final class MessageDataTest extends TestCase
      * @param array<non-empty-string, string> $data
      */
     #[DataProvider('invalidData')]
-    #[Test]
     public function itRejectsInvalidData(array $data): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -44,8 +41,7 @@ final class MessageDataTest extends TestCase
     /**
      * @see https://github.com/kreait/firebase-php/issues/709
      */
-    #[Test]
-    public function itDoesNotLowerCaseKeys(): void
+    public function testItDoesNotLowerCaseKeys(): void
     {
         $input = $output = ['notificationType' => 'email'];
 

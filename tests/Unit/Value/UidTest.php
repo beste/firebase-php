@@ -8,7 +8,6 @@ use Iterator;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Value\Uid;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function str_repeat;
@@ -19,15 +18,13 @@ use function str_repeat;
 final class UidTest extends TestCase
 {
     #[DataProvider('validValues')]
-    #[Test]
-    public function withValidValue(string $uid): void
+    public function testWithValidValue(string $uid): void
     {
         $this->assertSame($uid, Uid::fromString($uid)->value);
     }
 
     #[DataProvider('invalidValues')]
-    #[Test]
-    public function withInvalidValue(string $uid): void
+    public function testWithInvalidValue(string $uid): void
     {
         $this->expectException(InvalidArgumentException::class);
         Uid::fromString($uid);

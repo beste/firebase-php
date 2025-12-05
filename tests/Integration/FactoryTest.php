@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Tests\Integration;
 use Closure;
 use Kreait\Firebase\Http\HttpClientOptions;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -15,8 +14,7 @@ use Psr\Http\Message\RequestInterface;
  */
 final class FactoryTest extends IntegrationTestCase
 {
-    #[Test]
-    public function itSupportsExtendingTheHttpClientConfig(): void
+    public function testItSupportsExtendingTheHttpClientConfig(): void
     {
         if (self::$rtdbUrl === null) {
             $this->markTestSkipped('The HTTP client Config extension test requires a database URL');
@@ -44,8 +42,7 @@ final class FactoryTest extends IntegrationTestCase
         }
     }
 
-    #[Test]
-    public function itSupportsAddingAdditionalHttpClientMiddlewares(): void
+    public function testItSupportsAddingAdditionalHttpClientMiddlewares(): void
     {
         if (self::$rtdbUrl === null) {
             $this->markTestSkipped('The HTTP client middleware extension test requires a database URL');

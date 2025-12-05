@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Tests\Integration\Request;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Tests\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 use function bin2hex;
 use function random_bytes;
@@ -25,8 +24,7 @@ final class CreateUserTest extends IntegrationTestCase
         $this->auth = self::$factory->createAuth();
     }
 
-    #[Test]
-    public function createUser(): void
+    public function testCreateUser(): void
     {
         $request = CreateUser::new()
             ->withUid($uid = bin2hex(random_bytes(5)))
@@ -51,8 +49,7 @@ final class CreateUserTest extends IntegrationTestCase
         $this->auth->deleteUser($user->uid);
     }
 
-    #[Test]
-    public function createUserWithoutEmailButMarkTheEmailAsUnverified(): void
+    public function testCreateUserWithoutEmailButMarkTheEmailAsUnverified(): void
     {
         $request = CreateUser::new()
             ->withUid($uid = bin2hex(random_bytes(5)))

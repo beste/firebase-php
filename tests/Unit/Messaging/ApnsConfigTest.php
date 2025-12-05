@@ -9,21 +9,18 @@ use Iterator;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
  */
 final class ApnsConfigTest extends UnitTestCase
 {
-    #[Test]
-    public function itIsEmptyWhenItIsEmpty(): void
+    public function testItIsEmptyWhenItIsEmpty(): void
     {
         $this->assertSame('[]', Json::encode(ApnsConfig::new()));
     }
 
-    #[Test]
-    public function itHasADefaultSound(): void
+    public function testItHasADefaultSound(): void
     {
         $config = ApnsConfig::fromArray([
             'payload' => [
@@ -39,8 +36,7 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itHasABadge(): void
+    public function testItHasABadge(): void
     {
         $config = ApnsConfig::fromArray([
             'payload' => [
@@ -60,8 +56,7 @@ final class ApnsConfigTest extends UnitTestCase
      * @param array<string, mixed> $data
      */
     #[DataProvider('validDataProvider')]
-    #[Test]
-    public function itCanBeCreatedFromAnArray(array $data): void
+    public function testItCanBeCreatedFromAnArray(array $data): void
     {
         $this->assertJsonStringEqualsJsonString(
             Json::encode($data),
@@ -69,9 +64,9 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    public function itCanBeGivenData(): void
+    public function testItCanBeGivenData(): void
     {
-        $config = ApnsConfig::fromArray(['data' => ['key' => 'value']]);
+        $config = ApnsConfig::fromArray(['payload' => ['key' => 'value']]);
 
         $this->assertJsonStringEqualsJsonString(
             Json::encode($config),
@@ -79,8 +74,7 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itCanHaveAnImmediatePriority(): void
+    public function testItCanHaveAnImmediatePriority(): void
     {
         $config = ApnsConfig::fromArray(['headers' => ['apns-priority' => '10']]);
 
@@ -90,8 +84,7 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itCanHaveAPowerConservingPriority(): void
+    public function testItCanHaveAPowerConservingPriority(): void
     {
         $config = ApnsConfig::fromArray(['headers' => ['apns-priority' => '5']]);
 
@@ -101,8 +94,7 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itCanBeGivenALiveActivityTokenInsideAnArray(): void
+    public function testItCanBeGivenALiveActivityTokenInsideAnArray(): void
     {
         $config = ApnsConfig::fromArray(['live_activity_token' => 'token']);
 
@@ -112,8 +104,7 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
-    #[Test]
-    public function itHasASubtitle(): void
+    public function testItHasASubtitle(): void
     {
         $config = ApnsConfig::fromArray([
             'payload' => ['aps' => ['subtitle' => 'subtitle']],

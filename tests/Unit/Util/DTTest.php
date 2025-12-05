@@ -10,7 +10,6 @@ use InvalidArgumentException;
 use Iterator;
 use Kreait\Firebase\Util\DT;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -23,8 +22,7 @@ use function time;
 final class DTTest extends TestCase
 {
     #[DataProvider('validFixedValues')]
-    #[Test]
-    public function convertWithFixedValues(string $expected, mixed $value): void
+    public function testConvertWithFixedValues(string $expected, mixed $value): void
     {
         $dt = DT::toUTCDateTimeImmutable($value);
 
@@ -33,8 +31,7 @@ final class DTTest extends TestCase
     }
 
     #[DataProvider('validVariableValues')]
-    #[Test]
-    public function convertWithVariableValues(mixed $value): void
+    public function testConvertWithVariableValues(mixed $value): void
     {
         $dt = DT::toUTCDateTimeImmutable($value);
 
@@ -42,8 +39,7 @@ final class DTTest extends TestCase
     }
 
     #[DataProvider('invalidValues')]
-    #[Test]
-    public function convertInvalid(mixed $value): void
+    public function testConvertInvalid(mixed $value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
