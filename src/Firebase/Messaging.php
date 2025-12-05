@@ -15,6 +15,7 @@ use Kreait\Firebase\Messaging\ApiClient;
 use Kreait\Firebase\Messaging\AppInstance;
 use Kreait\Firebase\Messaging\AppInstanceApiClient;
 use Kreait\Firebase\Messaging\Message;
+use Kreait\Firebase\Messaging\Messages;
 use Kreait\Firebase\Messaging\MessageTarget;
 use Kreait\Firebase\Messaging\MulticastSendReport;
 use Kreait\Firebase\Messaging\Processor\SetApnsContentAvailableIfNeeded;
@@ -66,7 +67,7 @@ final readonly class Messaging implements Contract\Messaging
         throw $error;
     }
 
-    public function sendMulticast($message, $registrationTokens, bool $validateOnly = false): MulticastSendReport
+    public function sendMulticast(Message|array $message, RegistrationTokens|RegistrationToken|array|string $registrationTokens, bool $validateOnly = false): MulticastSendReport
     {
         $message = $message instanceof Message ? $message : new RawMessageFromArray($message);
         $registrationTokens = RegistrationTokens::fromValue($registrationTokens);
@@ -80,7 +81,7 @@ final readonly class Messaging implements Contract\Messaging
         return $this->sendAll($messages, $validateOnly);
     }
 
-    public function sendAll($messages, bool $validateOnly = false): MulticastSendReport
+    public function sendAll(array|Messages $messages, bool $validateOnly = false): MulticastSendReport
     {
         $messages = $this->ensureMessages($messages);
         $requests = $this->createSendRequests($messages, $validateOnly);
@@ -113,12 +114,12 @@ final readonly class Messaging implements Contract\Messaging
         return MulticastSendReport::withItems($sendReports);
     }
 
-    public function validate($message): array
+    public function validate(Message|array $message): array
     {
         return $this->send($message, true);
     }
 
-    public function validateRegistrationTokens($registrationTokenOrTokens): array
+    public function validateRegistrationTokens(RegistrationTokens|RegistrationToken|array|string $registrationTokenOrTokens): array
     {
         $tokens = RegistrationTokens::fromValue($registrationTokenOrTokens);
 
@@ -136,7 +137,7 @@ final readonly class Messaging implements Contract\Messaging
         return $this->subscribeToTopics([$topic], $registrationTokenOrTokens);
     }
 
-    public function subscribeToTopics(iterable $topics, $registrationTokenOrTokens): array
+    public function subscribeToTopics(iterable $topics, RegistrationTokens|RegistrationToken|array|string $registrationTokenOrTokens): array
     {
         $topicObjects = [];
 
@@ -166,7 +167,7 @@ final readonly class Messaging implements Contract\Messaging
         return $this->appInstanceApi->unsubscribeFromTopics($topics, $tokens);
     }
 
-    public function unsubscribeFromAllTopics($registrationTokenOrTokens): array
+    public function unsubscribeFromAllTopics(RegistrationTokens|RegistrationToken|array|string $registrationTokenOrTokens): array
     {
         $tokens = RegistrationTokens::fromValue($registrationTokenOrTokens);
 

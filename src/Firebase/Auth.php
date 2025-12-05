@@ -362,7 +362,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         $this->client->setCustomUserClaims($uid, $claims);
     }
 
-    public function createCustomToken(string $uid, array $claims = [], $ttl = 3600): UnencryptedToken
+    public function createCustomToken(string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken
     {
         if ($this->tokenGenerator === null) {
             throw new AuthError('Custom Token Generation is disabled because the current credentials do not permit it');
@@ -395,7 +395,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $parsedToken;
     }
 
-    public function verifyIdToken($idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
+    public function verifyIdToken(Token|string $idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
     {
         $verifier = $this->idTokenVerifier;
 
@@ -481,7 +481,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $responseData['email'];
     }
 
-    public function confirmPasswordReset(string $oobCode, $newPassword, bool $invalidatePreviousSessions = true): string
+    public function confirmPasswordReset(string $oobCode, string $newPassword, bool $invalidatePreviousSessions = true): string
     {
         $newPassword = ClearTextPassword::fromString($newPassword)->value;
 
@@ -508,7 +508,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         $this->client->revokeRefreshTokens($uid);
     }
 
-    public function unlinkProvider($uid, $provider): UserRecord
+    public function unlinkProvider(string $uid, array|string $provider): UserRecord
     {
         $uid = Uid::fromString($uid)->value;
 
@@ -519,7 +519,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
-    public function signInAsUser($user, ?array $claims = null): SignInResult
+    public function signInAsUser(UserRecord|string $user, ?array $claims = null): SignInResult
     {
         $claims ??= [];
         $uid = $user instanceof UserRecord ? $user->uid : $user;
@@ -533,7 +533,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->client->handleSignIn(SignInWithCustomToken::fromValue($customToken->toString()));
     }
 
-    public function signInWithCustomToken($token): SignInResult
+    public function signInWithCustomToken(Token|string $token): SignInResult
     {
         $token = $token instanceof Token ? $token->toString() : $token;
 
@@ -547,7 +547,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->client->handleSignIn(SignInWithRefreshToken::fromValue($refreshToken));
     }
 
-    public function signInWithEmailAndPassword($email, $clearTextPassword): SignInResult
+    public function signInWithEmailAndPassword(string $email, string $clearTextPassword): SignInResult
     {
         $email = Email::fromString($email)->value;
         $clearTextPassword = ClearTextPassword::fromString($clearTextPassword)->value;
@@ -555,7 +555,7 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         return $this->client->handleSignIn(SignInWithEmailAndPassword::fromValues($email, $clearTextPassword));
     }
 
-    public function signInWithEmailAndOobCode($email, string $oobCode): SignInResult
+    public function signInWithEmailAndOobCode(string $email, string $oobCode): SignInResult
     {
         $email = Email::fromString($email)->value;
 
@@ -578,39 +578,33 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
         throw new FailedToSignIn('Failed to sign in anonymously: No ID token or UID available');
     }
 
-    public function signInWithIdpAccessToken($provider, string $accessToken, $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
+    public function signInWithIdpAccessToken(string $provider, Token|string $accessToken, ?string $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
     {
-        $redirectUrl = trim((string) ($redirectUrl ?? 'http://localhost'));
-        $linkingIdToken = trim((string) $linkingIdToken);
-        $oauthTokenSecret = trim((string) $oauthTokenSecret);
-        $rawNonce = trim((string) $rawNonce);
+        $accessToken = $accessToken instanceof Token ? $accessToken->toString() : $accessToken;
+        $redirectUrl = trim($redirectUrl ?? 'http://localhost');
 
-        if ($oauthTokenSecret !== '') {
+        if ($oauthTokenSecret !== null) {
             $action = SignInWithIdpCredentials::withAccessTokenAndOauthTokenSecret($provider, $accessToken, $oauthTokenSecret);
         } else {
             $action = SignInWithIdpCredentials::withAccessToken($provider, $accessToken);
         }
 
-        if ($linkingIdToken !== '') {
+        if ($linkingIdToken !== null) {
             $action = $action->withLinkingIdToken($linkingIdToken);
         }
 
-        if ($rawNonce !== '') {
+        if ($rawNonce !== null) {
             $action = $action->withRawNonce($rawNonce);
         }
 
-        if ($redirectUrl !== '') {
-            $action = $action->withRequestUri($redirectUrl);
-        }
+        $action = $action->withRequestUri($redirectUrl);
 
         return $this->client->handleSignIn($action);
     }
 
-    public function signInWithIdpIdToken($provider, $idToken, $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
+    public function signInWithIdpIdToken(string $provider, Token|string $idToken, ?string $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
     {
-        $redirectUrl = trim((string) ($redirectUrl ?? 'http://localhost'));
-        $linkingIdToken = trim((string) $linkingIdToken);
-        $rawNonce = trim((string) $rawNonce);
+        $redirectUrl = trim(($redirectUrl ?? 'http://localhost'));
 
         if ($idToken instanceof Token) {
             $idToken = $idToken->toString();
@@ -618,22 +612,20 @@ final readonly class Auth implements Contract\Auth, FederatedUserFetcher
 
         $action = SignInWithIdpCredentials::withIdToken($provider, $idToken);
 
-        if ($rawNonce !== '') {
+        if ($rawNonce !== null) {
             $action = $action->withRawNonce($rawNonce);
         }
 
-        if ($linkingIdToken !== '') {
+        if ($linkingIdToken !== null) {
             $action = $action->withLinkingIdToken($linkingIdToken);
         }
 
-        if ($redirectUrl !== '') {
-            $action = $action->withRequestUri($redirectUrl);
-        }
+        $action = $action->withRequestUri($redirectUrl);
 
         return $this->client->handleSignIn($action);
     }
 
-    public function createSessionCookie($idToken, $ttl): string
+    public function createSessionCookie(Token|string $idToken, DateInterval|int $ttl): string
     {
         if ($idToken instanceof Token) {
             $idToken = $idToken->toString();

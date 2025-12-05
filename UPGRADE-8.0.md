@@ -41,6 +41,7 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from 0 to NULL
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2
+[BC] CHANGED: The parameter $accessToken of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from string to Lcobucci\JWT\Token|string
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Contract\Auth#signInWithEmailAndPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Contract\Auth#signInWithEmailAndPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Request\EditUserTrait#withClearTextPassword() changed from Stringable|string to a non-contravariant string
@@ -110,6 +111,10 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $providerId of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to string
 [BC] CHANGED: The parameter $providerUid of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $providerUid of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to string
+[BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to a non-contravariant string|null
+[BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to string|null
+[BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpIdToken() changed from no type to a non-contravariant string|null
+[BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpIdToken() changed from no type to string|null
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserPassword() changed from Stringable|string to a non-contravariant string
