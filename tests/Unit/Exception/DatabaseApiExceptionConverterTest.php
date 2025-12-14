@@ -119,7 +119,7 @@ final class DatabaseApiExceptionConverterTest extends UnitTestCase
         $e = new ClientException(
             'Foo',
             $this->request,
-            new Response(500, [], $body = '<html><body>Some server exception</body></html>'),
+            new Response(500, [], $body = '<html lang="en"><body>Some server exception</body></html>'),
         );
         $result = $this->converter->convertException($e);
 
