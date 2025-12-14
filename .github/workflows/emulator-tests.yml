@@ -70,7 +70,7 @@ jobs:
       - name: Set Up Node
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
