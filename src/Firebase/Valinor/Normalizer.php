@@ -15,7 +15,7 @@ use Kreait\Firebase\Valinor\Transformer\CamelToSnakeCaseTransformer;
  */
 final class Normalizer
 {
-    private const DEFAULT_JSON_OPTIONS = JSON_UNESCAPED_SLASHES
+    private const int DEFAULT_JSON_OPTIONS = JSON_UNESCAPED_SLASHES
         | JSON_UNESCAPED_UNICODE
         | JSON_UNESCAPED_SLASHES
         | JSON_UNESCAPED_UNICODE
@@ -64,7 +64,7 @@ final class Normalizer
     }
 
     /**
-     * @param int $options JSON encoding options
+     * @param int|null $options JSON encoding options
      *
      * @return non-empty-string
      */
