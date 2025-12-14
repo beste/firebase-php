@@ -24,7 +24,6 @@ use Kreait\Firebase\Auth\SignInWithIdpCredentials;
 use Kreait\Firebase\Auth\SignInWithRefreshToken;
 use Kreait\Firebase\Auth\UserQuery;
 use Kreait\Firebase\Auth\UserRecord;
-use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
 use Kreait\Firebase\Exception\Auth\AuthError;
 use Kreait\Firebase\Exception\Auth\FailedToVerifySessionCookie;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
@@ -61,7 +60,7 @@ use function trim;
  *
  * @phpstan-import-type UserRecordResponseShape from UserRecord
  */
-final readonly class Auth implements Contract\Auth, FederatedUserFetcher
+final readonly class Auth implements Contract\Auth
 {
     private Parser $jwtParser;
 
