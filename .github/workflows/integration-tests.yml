@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - '.github/workflows/integration-tests.yml'
       - 'phpstan.neon.dist'
   push:
     branches: ['7.x']
