@@ -28,6 +28,7 @@ be trivial (e.g., passing `$user->uid` instead of `$user`). Run your test suite 
 The following list has been generated with [roave/backward-compatibility-check](https://github.com/Roave/BackwardCompatibilityCheck).
 
 ```
+[BC] ADDED: Method getUserByProviderUid() was added to interface Kreait\Firebase\Contract\Auth
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from 0 to NULL
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2
@@ -99,10 +100,6 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Contract\Auth#unlinkProvider() changed from array|Stringable|string to a non-contravariant array|string
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Contract\Auth#unlinkProvider() changed from array|Stringable|string to array|string
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Request\UpdateUser#withRemovedProvider() changed from no type to a non-contravariant string
-[BC] CHANGED: The parameter $providerId of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to a non-contravariant string
-[BC] CHANGED: The parameter $providerId of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to string
-[BC] CHANGED: The parameter $providerUid of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to a non-contravariant string
-[BC] CHANGED: The parameter $providerUid of Kreait\Firebase\Contract\Transitional\FederatedUserFetcher#getUserByProviderUid() changed from Stringable|string to string
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to a non-contravariant string|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to string|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpIdToken() changed from no type to a non-contravariant string|null
@@ -145,6 +142,7 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\ConditionalValue#value() changed from no type to string|array
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\TagColor#__toString() changed from no type to string
 [BC] REMOVED: Class Kreait\Firebase\Contract\DynamicLinks has been deleted
+[BC] REMOVED: Class Kreait\Firebase\Contract\Transitional\FederatedUserFetcher has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\AnalyticsInfo has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\AnalyticsInfo\GooglePlayAnalytics has been deleted

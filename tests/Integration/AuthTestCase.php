@@ -13,7 +13,6 @@ use Kreait\Firebase\Auth\SendActionLink\FailedToSendActionLink;
 use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
 use Kreait\Firebase\Auth\UserRecord;
 use Kreait\Firebase\Contract\Auth;
-use Kreait\Firebase\Contract\Transitional\FederatedUserFetcher;
 use Kreait\Firebase\Exception\Auth\InvalidOobCode;
 use Kreait\Firebase\Exception\Auth\RevokedIdToken;
 use Kreait\Firebase\Exception\Auth\RevokedSessionCookie;
@@ -496,10 +495,6 @@ abstract class AuthTestCase extends IntegrationTestCase
         }
 
         $auth = $this->auth;
-        if (!($auth instanceof FederatedUserFetcher)) {
-            $this->markTestSkipped('This test requires a FederatedUserFetcher implementation.');
-        }
-
         $phoneNumber = '+1234567'.random_int(1000, 9999);
 
         $user = $this->auth->createUser([
@@ -523,9 +518,6 @@ abstract class AuthTestCase extends IntegrationTestCase
         }
 
         $auth = $this->auth;
-        if (!($auth instanceof FederatedUserFetcher)) {
-            $this->markTestSkipped('This test requires a FederatedUserFetcher implementation.');
-        }
 
         $this->expectException(UserNotFound::class);
         $auth->getUserByProviderUid('phone', '+192837465');
