@@ -6,6 +6,7 @@ namespace Kreait\Firebase\Tests\Integration;
 
 use Iterator;
 use Kreait\Firebase\Contract\Messaging;
+use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Kreait\Firebase\Exception\Messaging\InvalidMessage;
 use Kreait\Firebase\Exception\Messaging\NotFound;
@@ -114,6 +115,12 @@ final class MessagingTest extends IntegrationTestCase
         $result = $this->messaging->send($message);
 
         $this->assertArrayHasKey('name', $result);
+    }
+
+    public function testSendEmptyMessage(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->messaging->send([]);
     }
 
     public function testSendRawMessage(): void
@@ -397,6 +404,28 @@ final class MessagingTest extends IntegrationTestCase
                 ],
             ]))
             ->toToken($this->getTestRegistrationToken());
+
+        $this->messaging->send($message);
+    }
+
+    public function testSubscribeToTopicWithEmptyTokenList(): void
+    {
+        $this->expectException(InvalidArgument::class);
+        $this->messaging->subscribeToTopic('topic', []);
+    }
+
+    public function testUnsubscribeFromTopicWithEmptyTokenList(): void
+    {
+        $this->expectException(InvalidArgument::class);
+        $this->messaging->unsubscribeFromTopic('topic', []);
+    }
+
+    public function testItWillNotSendAMessageWithoutATarget(): void
+    {
+        $message = CloudMessage::new();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/missing a target/');
 
         $this->messaging->send($message);
     }

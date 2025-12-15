@@ -6,9 +6,9 @@ namespace Kreait\Firebase\Tests\Integration\Database;
 
 use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Database\RuleSet;
+use Kreait\Firebase\Exception\Database\UnsupportedQuery;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
-
 use function current;
 
 /**
@@ -29,13 +29,7 @@ final class QueryTest extends DatabaseTestCase
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
-        $rules = self::$db->getRuleSet()->getRules();
-
-        $rules['rules'][$this->ref->getPath()]
-            = [__FUNCTION__ => ['.indexOn' => ['key']],
-            ];
-
-        self::$db->updateRules(RuleSet::fromArray($rules));
+        $this->updateRules(__FUNCTION__, ['.indexOn' => ['key']]);
 
         $ref->push(['key' => 1]);
         $ref->push(['key' => 3]);
@@ -46,18 +40,36 @@ final class QueryTest extends DatabaseTestCase
         $this->assertSame(['key' => 3], current($value));
     }
 
+    public function testOrderByKey(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+
+        $ref->set(['b' => 1, 'a' => 2]);
+
+        $snapshot = $ref->orderByKey()->getSnapshot();
+
+        $this->assertSame(['a' => 2, 'b' => 1], $snapshot->getValue());
+    }
+
+    public function testOrderByValue(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+
+        $this->updateRules(__FUNCTION__, ['.indexOn' => '.value']);
+
+        $ref->push(2);
+        $ref->push(1);
+
+        $snapshot = $ref->orderByValue()->getSnapshot();
+
+        $this->assertSame([1, 2], array_values($snapshot->getValue()));
+    }
+
     public function testOrderByChild(): void
     {
         $ref = $this->ref->getChild(__FUNCTION__);
 
-        $rules = self::$db->getRuleSet()->getRules();
-
-        $rules['rules'][$this->ref->getPath()] = [
-            __FUNCTION__ => [
-                '.indexOn' => ['child/grandchild']
-            ],
-        ];
-        self::$db->updateRules(RuleSet::fromArray($rules));
+        $this->updateRules(__FUNCTION__, ['.indexOn' => ['child/grandchild']]);
 
         $ref->getChild('first')->set(['child' => ['grandchild' => 3]]);
         $ref->getChild('second')->set(['child' => ['grandchild' => 4]]);
@@ -68,5 +80,36 @@ final class QueryTest extends DatabaseTestCase
         $keys = array_keys($check);
 
         $this->assertSame(['third', 'fourth', 'first', 'second'], $keys);
+    }
+
+    public function testOnlyOneSorterIsAllowed(): void
+    {
+        $this->expectException(UnsupportedQuery::class);
+        $this->expectExceptionMessage('already ordered');
+
+        $this->ref->orderByKey()->orderByValue();
+    }
+
+    public function testUndefinedIndex(): void
+    {
+        $this->expectException(UnsupportedQuery::class);
+        $this->expectExceptionMessage('Index not defined');
+
+        $this->ref->orderByValue()->getSnapshot();
+    }
+
+    /**
+     * @param non-empty-string $childPath
+     * @param array<non-empty-string, mixed> $rule
+     */
+    private function updateRules(string $childPath, array $rule): void
+    {
+        $rules = self::$db->getRuleSet()->getRules();
+
+        $rules['rules'][$this->ref->getPath()] = [
+            $childPath => $rule,
+        ];
+
+        self::$db->updateRules(RuleSet::fromArray($rules));
     }
 }

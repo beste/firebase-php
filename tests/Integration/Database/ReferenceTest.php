@@ -7,6 +7,7 @@ namespace Kreait\Firebase\Tests\Integration\Database;
 use Iterator;
 use Kreait\Firebase\Contract\Database;
 use Kreait\Firebase\Database\Reference;
+use Kreait\Firebase\Exception\OutOfRangeException;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -23,6 +24,65 @@ final class ReferenceTest extends DatabaseTestCase
     protected function setUp(): void
     {
         $this->ref = self::$db->getReference(self::$refPrefix);
+    }
+
+    public function testGetKey(): void
+    {
+        $this->assertSame(self::$refPrefix, $this->ref->getKey());
+    }
+
+    public function testGetPath(): void
+    {
+        $ref = $this->ref->getChild('child');
+
+        $this->assertSame(self::$refPrefix.'/child', $ref->getPath());
+        $this->assertSame('/'.self::$refPrefix.'/child', $ref->getUri()->getPath());
+    }
+
+    public function testGetChild(): void
+    {
+        $ref = $this->ref->getChild('parent/key');
+
+        $this->assertSame(self::$refPrefix.'/parent/key', $ref->getPath());
+    }
+
+    public function testGetParent(): void
+    {
+        $ref = $this->ref->getChild('parent/key');
+
+        $this->assertSame(self::$refPrefix.'/parent', $ref->getParent()->getPath());
+    }
+
+    public function testGetParentOfRoot(): void
+    {
+        $this->expectException(OutOfRangeException::class);
+
+        self::$db->getReference('/')->getParent()->getPath();
+    }
+
+    public function testGetRoot(): void
+    {
+        $root = $this->ref->getRoot();
+
+        $this->assertSame('/', $root->getUri()->getPath());
+    }
+
+    public function testGetChildKeys(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+        $ref->set(['a' => true, 'b' => true, 'c' => true]);
+
+        $this->assertSame(['a', 'b', 'c'], $ref->getChildKeys());
+    }
+
+    public function testGetChildKeysWhenNoChildrenAreSet(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+        $ref->set('scalar value');
+
+        $this->expectException(OutOfRangeException::class);
+
+        $ref->getChildKeys();
     }
 
     #[DataProvider('validValues')]

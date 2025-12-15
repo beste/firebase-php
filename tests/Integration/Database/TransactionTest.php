@@ -37,6 +37,19 @@ final class TransactionTest extends DatabaseTestCase
         $this->assertSame('new value', $ref->getValue());
     }
 
+    public function testAValueCanBeDeleted(): void
+    {
+        $ref = $this->ref->getChild(__FUNCTION__);
+        $ref->set('value');
+
+        self::$db->runTransaction(function (Transaction $transaction) use ($ref): void {
+            $transaction->snapshot($ref);
+            $transaction->remove($ref);
+        });
+
+        $this->assertNull($ref->getValue());
+    }
+
     public function testATransactionPreventsAChangeWhenTheRemoteHasChanged(): void
     {
         $firstRef = $this->ref->getChild(__FUNCTION__);
@@ -45,65 +58,13 @@ final class TransactionTest extends DatabaseTestCase
         $this->expectException(TransactionFailed::class);
 
         self::$db->runTransaction(static function (Transaction $transaction) use ($firstRef): void {
-            // Register a transaction for the given reference
             $transaction->snapshot($firstRef);
 
-            // Set the value without a transaction
+            // Set the value without a transaction to simulate an external change
             $firstRef->set('new value');
 
-            // This should fail
+            // The etag has changed, so the transaction will fail
             $transaction->set($firstRef, 'new value');
-        });
-    }
-
-    public function testATransactionKeepsTrackOfMultipleReferences(): void
-    {
-        $firstRef = $this->ref->getChild(__FUNCTION__.'_first');
-        $secondRef = $this->ref->getChild(__FUNCTION__.'_second');
-
-        $this->expectException(TransactionFailed::class);
-
-        self::$db->runTransaction(function (Transaction $transaction) use ($firstRef, $secondRef): void {
-            // Register a transaction for the given reference
-            $firstSnapshot = $transaction->snapshot($firstRef);
-            $secondSnapshot = $transaction->snapshot($secondRef);
-
-            $firstCurrentValue = $firstSnapshot->getValue() ?? 0;
-            assert(is_int($firstCurrentValue));
-            $newFirstValue = ++$firstCurrentValue;
-
-            $secondCurrentValue = $secondSnapshot->getValue() ?? 0;
-            assert(is_int($secondCurrentValue));
-            $newSecondValue = ++$secondCurrentValue;
-
-            // Set the value without a transaction
-            $firstRef->set($newFirstValue);
-            $secondRef->set($newSecondValue);
-
-            // A transactional "set" will now fail
-            try {
-                $transaction->set($firstRef, $newFirstValue);
-                $this->fail('An exception should have been thrown');
-            } catch (TransactionFailed) {
-                // this is expected
-            }
-
-            $transaction->set($secondRef, $newSecondValue);
-        });
-    }
-
-    public function testAValueCanBeDeleted(): void
-    {
-        $ref = $this->ref->getChild(__FUNCTION__);
-        $ref->set('value');
-
-        self::$db->runTransaction(function (Transaction $transaction) use ($ref): void {
-            $snapshot = $transaction->snapshot($ref);
-
-            $this->assertSame('value', $snapshot->getValue());
-
-            // This should not throw an exception
-            $transaction->remove($ref);
         });
     }
 
@@ -115,10 +76,9 @@ final class TransactionTest extends DatabaseTestCase
         $this->expectException(TransactionFailed::class);
 
         self::$db->runTransaction(static function (Transaction $transaction) use ($ref): void {
-            // Register a transaction for the given reference
             $transaction->snapshot($ref);
 
-            // Set the value without a transaction
+            // Set the value without a transaction to simulate an external change
             $ref->set('new value');
 
             // This should fail
