@@ -13,12 +13,12 @@ use Psr\Http\Message\RequestInterface;
 /**
  * @internal
  */
-class ApiClient
+final readonly class ApiClient
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly string $projectId,
-        private readonly RequestFactory $requestFactory,
+        private ClientInterface $client,
+        private string $projectId,
+        private RequestFactory $requestFactory,
     ) {
     }
 

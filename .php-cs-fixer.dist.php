@@ -17,6 +17,7 @@ return (new PhpCsFixer\Config())
         'concat_space' => [
             'spacing' => 'none',
         ],
+        'final_internal_class' => true,
         'fully_qualified_strict_types' => [
             'import_symbols' => true,
             'leading_backslash_in_global_namespace' => true,

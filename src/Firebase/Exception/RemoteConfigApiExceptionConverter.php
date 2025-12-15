@@ -20,9 +20,9 @@ use function mb_stripos;
 /**
  * @internal
  */
-class RemoteConfigApiExceptionConverter
+final readonly class RemoteConfigApiExceptionConverter
 {
-    public function __construct(private readonly ErrorResponseParser $responseParser)
+    public function __construct(private ErrorResponseParser $responseParser)
     {
     }
 

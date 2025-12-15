@@ -14,7 +14,7 @@ use function ksort;
 /**
  * @internal
  */
-final class OrderByKey implements Sorter
+final readonly class OrderByKey implements Sorter
 {
     use ModifierTrait;
 

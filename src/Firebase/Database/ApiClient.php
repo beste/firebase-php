@@ -17,12 +17,12 @@ use Throwable;
 /**
  * @internal
  */
-class ApiClient
+final readonly class ApiClient
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly UrlBuilder $resourceUrlBuilder,
-        private readonly DatabaseApiExceptionConverter $errorHandler,
+        private ClientInterface $client,
+        private UrlBuilder $resourceUrlBuilder,
+        private DatabaseApiExceptionConverter $errorHandler,
     ) {
     }
 

@@ -17,11 +17,11 @@ use Throwable;
 /**
  * @internal
  */
-class AppInstanceApiClient
+final readonly class AppInstanceApiClient
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly MessagingApiExceptionConverter $errorHandler,
+        private ClientInterface $client,
+        private MessagingApiExceptionConverter $errorHandler,
     ) {
     }
 

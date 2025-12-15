@@ -30,9 +30,9 @@ use function mb_stripos;
 /**
  * @internal
  */
-class AuthApiExceptionConverter
+final readonly class AuthApiExceptionConverter
 {
-    public function __construct(private readonly ErrorResponseParser $responseParser)
+    public function __construct(private ErrorResponseParser $responseParser)
     {
     }
 

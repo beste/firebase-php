@@ -18,9 +18,9 @@ use Throwable;
 /**
  * @internal
  */
-class DatabaseApiExceptionConverter
+final readonly class DatabaseApiExceptionConverter
 {
-    public function __construct(private readonly ErrorResponseParser $responseParser)
+    public function __construct(private ErrorResponseParser $responseParser)
     {
     }
 

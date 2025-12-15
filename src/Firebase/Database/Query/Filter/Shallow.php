@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @internal
  */
-final class Shallow implements Filter
+final readonly class Shallow implements Filter
 {
     use ModifierTrait;
 

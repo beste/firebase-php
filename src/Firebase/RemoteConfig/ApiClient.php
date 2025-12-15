@@ -16,14 +16,14 @@ use function array_filter;
 /**
  * @internal
  */
-class ApiClient
+final readonly class ApiClient
 {
-    private readonly string $baseUri;
+    private string $baseUri;
 
     public function __construct(
         string $projectId,
-        private readonly ClientInterface $client,
-        private readonly RemoteConfigApiExceptionConverter $errorHandler,
+        private ClientInterface $client,
+        private RemoteConfigApiExceptionConverter $errorHandler,
     ) {
         $this->baseUri = "https://firebaseremoteconfig.googleapis.com/v1/projects/{$projectId}/remoteConfig";
     }

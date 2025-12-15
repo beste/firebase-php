@@ -31,23 +31,23 @@ use function time;
 /**
  * @internal
  */
-class ApiClient
+final readonly class ApiClient
 {
-    private readonly ProjectAwareAuthResourceUrlBuilder|TenantAwareAuthResourceUrlBuilder $awareAuthResourceUrlBuilder;
+    private ProjectAwareAuthResourceUrlBuilder|TenantAwareAuthResourceUrlBuilder $awareAuthResourceUrlBuilder;
 
-    private readonly AuthResourceUrlBuilder $authResourceUrlBuilder;
+    private AuthResourceUrlBuilder $authResourceUrlBuilder;
 
     /**
      * @param non-empty-string $projectId
      * @param non-empty-string|null $tenantId
      */
     public function __construct(
-        private readonly string $projectId,
-        private readonly ?string $tenantId,
-        private readonly ClientInterface $client,
-        private readonly GuzzleHandler $signInHandler,
-        private readonly ClockInterface $clock,
-        private readonly AuthApiExceptionConverter $errorHandler,
+        private string $projectId,
+        private ?string $tenantId,
+        private ClientInterface $client,
+        private GuzzleHandler $signInHandler,
+        private ClockInterface $clock,
+        private AuthApiExceptionConverter $errorHandler,
     ) {
         $this->awareAuthResourceUrlBuilder = $tenantId !== null
             ? TenantAwareAuthResourceUrlBuilder::forProjectAndTenant($projectId, $tenantId)
