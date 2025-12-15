@@ -14,6 +14,7 @@ use Kreait\Firebase\Database\Query\Filter\Shallow;
 use Kreait\Firebase\Database\Query\Filter\StartAfter;
 use Kreait\Firebase\Database\Query\Filter\StartAt;
 use Kreait\Firebase\Database\Query\Sorter;
+use Kreait\Firebase\Database\Query\Sorter\Noop;
 use Kreait\Firebase\Database\Query\Sorter\OrderByChild;
 use Kreait\Firebase\Database\Query\Sorter\OrderByKey;
 use Kreait\Firebase\Database\Query\Sorter\OrderByValue;
@@ -34,19 +35,19 @@ use Stringable;
  * {@see getSnapshot()} or {@see getValue()} method. You will only receive
  * Snapshots for the subset of the data that matches your query.
  */
-class Query implements Stringable
+final readonly class Query implements Stringable
 {
     /**
-     * @var Filter[]
-     */
-    private array $filters = [];
-
-    private ?Sorter $sorter = null;
-
-    /**
      * @internal
+     *
+     * @param list<Filter> $filters
      */
-    public function __construct(private readonly Reference $reference, private readonly ApiClient $apiClient)
+    public function __construct(
+        private Reference $reference,
+        private ApiClient $apiClient,
+        private array $filters,
+        private Sorter $sorter,
+    )
     {
     }
 
@@ -91,9 +92,7 @@ class Query implements Stringable
             );
         }
 
-        if ($this->sorter !== null) {
-            $value = $this->sorter->modifyValue($value);
-        }
+        $value = $this->sorter->modifyValue($value);
 
         foreach ($this->filters as $filter) {
             $value = $filter->modifyValue($value);
@@ -253,10 +252,7 @@ class Query implements Stringable
     public function getUri(): UriInterface
     {
         $uri = $this->reference->getUri();
-
-        if ($this->sorter !== null) {
-            $uri = $this->sorter->modifyUri($uri);
-        }
+        $uri = $this->sorter->modifyUri($uri);
 
         foreach ($this->filters as $filter) {
             $uri = $filter->modifyUri($uri);
@@ -267,21 +263,25 @@ class Query implements Stringable
 
     private function withAddedFilter(Filter $filter): self
     {
-        $query = clone $this;
-        $query->filters[] = $filter;
-
-        return $query;
+        return new self(
+            $this->reference,
+            $this->apiClient,
+            [...$this->filters, $filter],
+            $this->sorter
+        );
     }
 
     private function withSorter(Sorter $sorter): self
     {
-        if ($this->sorter !== null) {
+        if (!($this->sorter instanceof Noop)) {
             throw new UnsupportedQuery($this, 'This query is already ordered.');
         }
 
-        $query = clone $this;
-        $query->sorter = $sorter;
-
-        return $query;
+        return new self(
+            $this->reference,
+            $this->apiClient,
+            $this->filters,
+            $sorter
+        );
     }
 }

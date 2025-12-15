@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Database;
 
+use Kreait\Firebase\Database\Query\Sorter\Noop;
 use Kreait\Firebase\Exception\DatabaseException;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\OutOfRangeException;
@@ -24,14 +25,14 @@ use function trim;
  * A Reference represents a specific location in your database and can be used
  * for reading or writing data to that database location.
  */
-class Reference implements Stringable
+final readonly class Reference implements Stringable
 {
     /**
      * @internal
      */
     public function __construct(
-        private readonly UriInterface $uri,
-        private readonly ApiClient $apiClient,
+        private UriInterface $uri,
+        private ApiClient $apiClient,
     ) {
     }
 
@@ -42,7 +43,7 @@ class Reference implements Stringable
      */
     public function __toString(): string
     {
-        return (string) $this->getUri();
+        return (string) $this->uri;
     }
 
     /**
@@ -74,11 +75,11 @@ class Reference implements Stringable
      */
     public function getParent(): self
     {
-        $parentPath = dirname($this->getPath());
-
-        if ($parentPath === '.') {
+        if ($this->getPath() === '') {
             throw new OutOfRangeException('Cannot get parent of root reference');
         }
+
+        $parentPath = dirname($this->getPath());
 
         return new self($this->uri->withPath('/'.ltrim($parentPath, '/')), $this->apiClient);
     }
@@ -388,6 +389,6 @@ class Reference implements Stringable
      */
     private function query(): Query
     {
-        return new Query($this, $this->apiClient);
+        return new Query($this, $this->apiClient, [], new Noop());
     }
 }

@@ -11,6 +11,7 @@ from 7.x to 8.0.
   supported versions are 8.3, 8.4, and 8.5.
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
+* Realtime Database objects considered value objects have been made final and readonly 
 
 ### Type simplifications to reduce runtime overhead
 
@@ -29,6 +30,10 @@ The following list has been generated with [roave/backward-compatibility-check](
 
 ```
 [BC] ADDED: Method getUserByProviderUid() was added to interface Kreait\Firebase\Contract\Auth
+[BC] CHANGED: Class Kreait\Firebase\Database\Query became final
+[BC] CHANGED: Class Kreait\Firebase\Database\Reference became final
+[BC] CHANGED: Class Kreait\Firebase\Database\RuleSet became final
+[BC] CHANGED: Class Kreait\Firebase\Database\Snapshot became final
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from 0 to NULL
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2

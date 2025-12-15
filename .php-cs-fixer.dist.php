@@ -25,6 +25,9 @@ return (new PhpCsFixer\Config())
         'method_argument_space' => [
             'attribute_placement' => 'standalone', // same_line can break PHP <8.2
         ],
+        'no_blank_lines_after_phpdoc' => true,
+        'no_empty_phpdoc' => true,
+        'no_unneeded_braces' => true,
         'no_unused_imports' => true,
         'ordered_imports' => [
             'imports_order' => [
@@ -33,6 +36,9 @@ return (new PhpCsFixer\Config())
                 'const',
             ],
             'sort_algorithm' => 'alpha',
+        ],
+        'phpdoc_align' => [
+            'align' => 'left',
         ],
         'php_unit_method_casing' => [
             'case' => 'camel_case',

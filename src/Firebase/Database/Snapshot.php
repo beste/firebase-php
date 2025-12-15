@@ -24,12 +24,12 @@ use function trim;
  * Alternatively, you can traverse into the snapshot by calling {@see getChild()}
  * to return child snapshots (which you could then call {@see getValue()} on).
  */
-class Snapshot
+final readonly class Snapshot
 {
     /**
      * @internal
      */
-    public function __construct(private readonly Reference $reference, private readonly mixed $value)
+    public function __construct(private Reference $reference, private mixed $value)
     {
     }
 

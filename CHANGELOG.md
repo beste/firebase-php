@@ -15,6 +15,7 @@ If it saves you or your team time, please consider [sponsoring its development](
 * Type declarations have been simplified to reduce runtime overhead (e.g., `Stringable|string` to `string`).
 * The transitional `Kreait\Firebase\Contract\Transitional\FederatedUserFetcher::getUserByProviderUid()` method
   has been moved into the `Kreait\Firebase\Contract\Auth` interface
+* Realtime Database objects considered value objects have been made final and readonly
 
 See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x and 8.0.**
 
