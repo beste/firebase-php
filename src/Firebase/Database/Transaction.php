@@ -10,7 +10,7 @@ use Kreait\Firebase\Exception\DatabaseException;
 
 use function array_key_exists;
 
-class Transaction
+final class Transaction
 {
     /**
      * @var array<string, string>

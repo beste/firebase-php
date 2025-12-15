@@ -34,6 +34,7 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: Class Kreait\Firebase\Database\Reference became final
 [BC] CHANGED: Class Kreait\Firebase\Database\RuleSet became final
 [BC] CHANGED: Class Kreait\Firebase\Database\Snapshot became final
+[BC] CHANGED: Class Kreait\Firebase\Database\Transaction became final
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from 0 to NULL
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2
