@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase;
 
-use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Firestore\V1\Client\FirestoreClient;
 use Kreait\Firebase\Exception\RuntimeException;
 use Throwable;
 
