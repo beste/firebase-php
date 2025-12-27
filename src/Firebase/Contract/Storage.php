@@ -11,5 +11,8 @@ interface Storage
 {
     public function getStorageClient(): StorageClient;
 
+    /**
+     * @param non-empty-string|null $name
+     */
     public function getBucket(?string $name = null): Bucket;
 }
