@@ -15,6 +15,7 @@ use Kreait\Firebase\Exception\AppCheck\AppCheckError;
 use Kreait\Firebase\Exception\AppCheck\PermissionDenied;
 use Kreait\Firebase\Exception\AppCheckApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -33,6 +34,7 @@ final class AppCheckApiExceptionConverterTest extends TestCase
         $this->converter = new AppCheckApiExceptionConverter(new ErrorResponseParser());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(

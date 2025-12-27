@@ -21,6 +21,7 @@ use Kreait\Firebase\Exception\Messaging\QuotaExceeded;
 use Kreait\Firebase\Exception\Messaging\ServerError;
 use Kreait\Firebase\Exception\Messaging\ServerUnavailable;
 use Kreait\Firebase\Exception\MessagingApiExceptionConverter;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -44,6 +45,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->converter = new MessagingApiExceptionConverter($this->clock);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(

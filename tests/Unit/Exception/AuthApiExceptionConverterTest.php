@@ -29,6 +29,7 @@ use Kreait\Firebase\Exception\Auth\WeakPassword;
 use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\RequestInterface;
 use RuntimeException;
@@ -59,6 +60,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
         $this->assertSame($responseBody, $convertedError->getMessage());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(

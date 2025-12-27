@@ -16,6 +16,7 @@ use Kreait\Firebase\Auth\SignIn\GuzzleHandler;
 use Kreait\Firebase\Auth\SignInAnonymously;
 use Kreait\Firebase\Tests\UnitTestCase;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use const JSON_FORCE_OBJECT;
 
 /**
@@ -37,12 +38,14 @@ final class GuzzleHandlerTest extends UnitTestCase
         $this->handler = new GuzzleHandler('my-project', new Client(['handler' => $this->httpResponses]));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItFailsOnAnUnsupportedAction(): void
     {
         $this->expectException(FailedToSignIn::class);
         $this->handler->handle($this->createMock(SignIn::class));
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItFailsWhenGuzzleFails(): void
     {
         $client = $this->createMock(ClientInterface::class);

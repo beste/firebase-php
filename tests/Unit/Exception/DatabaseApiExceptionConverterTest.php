@@ -17,6 +17,7 @@ use Kreait\Firebase\Exception\Database\PermissionDenied;
 use Kreait\Firebase\Exception\DatabaseApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * @internal
@@ -47,6 +48,7 @@ final class DatabaseApiExceptionConverterTest extends UnitTestCase
         $this->assertSame($responseBody, $convertedError->getMessage());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testItConvertsAConnectException(): void
     {
         $connectException = new ConnectException(
