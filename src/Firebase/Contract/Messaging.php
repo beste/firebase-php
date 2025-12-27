@@ -17,13 +17,10 @@ use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Messaging\RegistrationTokens;
 use Kreait\Firebase\Messaging\Topic;
 
-/**
- * @phpstan-import-type MessageInputShape from Message
- */
 interface Messaging
 {
     /**
-     * @param Message|MessageInputShape $message
+     * @param Message|array<mixed> $message
      *
      * @throws MessagingException
      * @throws FirebaseException
@@ -34,7 +31,7 @@ interface Messaging
     public function send(Message|array $message, bool $validateOnly = false): array;
 
     /**
-     * @param Message|MessageInputShape $message
+     * @param Message|array<mixed> $message
      * @param RegistrationTokens|RegistrationToken|list<RegistrationToken|string>|non-empty-string $registrationTokens
      *
      * @throws InvalidArgumentException if the message is invalid or the list of registration tokens is empty
@@ -44,7 +41,7 @@ interface Messaging
     public function sendMulticast(Message|array $message, RegistrationTokens|RegistrationToken|array|string $registrationTokens, bool $validateOnly = false): MulticastSendReport;
 
     /**
-     * @param list<Message|MessageInputShape>|Messages $messages
+     * @param list<Message|array<mixed>>|Messages $messages
      *
      * @throws InvalidArgumentException if the message is invalid
      * @throws MessagingException if the API request failed
@@ -53,7 +50,7 @@ interface Messaging
     public function sendAll(array|Messages $messages, bool $validateOnly = false): MulticastSendReport;
 
     /**
-     * @param Message|MessageInputShape $message
+     * @param Message|array<mixed> $message
      *
      * @throws InvalidMessage
      * @throws MessagingException

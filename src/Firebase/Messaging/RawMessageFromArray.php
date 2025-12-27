@@ -6,19 +6,18 @@ namespace Kreait\Firebase\Messaging;
 
 use Beste\Json;
 
-/**
- * @phpstan-import-type MessageInputShape from Message
- * @phpstan-import-type MessageOutputShape from Message
- */
 final readonly class RawMessageFromArray implements Message
 {
     /**
-     * @param MessageInputShape $data
+     * @param array<mixed> $data
      */
     public function __construct(private array $data)
     {
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function jsonSerialize(): array
     {
         return Json::decode(Json::encode($this->data), true);
