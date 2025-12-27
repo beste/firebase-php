@@ -140,7 +140,7 @@ final class MessagingTest extends IntegrationTestCase
     {
         $message = CloudMessage::new()
             ->withData([])
-            ->toToken($this->getTestRegistrationToken());
+            ->toToken($this->getTestRegistrationToken())
         ;
 
         $result = $this->messaging->send($message);
@@ -158,7 +158,7 @@ final class MessagingTest extends IntegrationTestCase
     {
         $message = CloudMessage::new()
             ->withData([$keyword => 'value'])
-            ->toToken($this->getTestRegistrationToken());
+            ->toToken($this->getTestRegistrationToken())
         ;
 
         $result = $this->messaging->send($message);
