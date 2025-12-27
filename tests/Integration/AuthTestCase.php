@@ -560,7 +560,7 @@ abstract class AuthTestCase extends IntegrationTestCase
 
         $uids = [$enabledOne->uid, $disabled->uid, $enabledTwo->uid];
 
-        $result = $this->auth->deleteUsers($uids, false);
+        $result = $this->auth->deleteUsers($uids);
 
         $this->assertSame(1, $result->successCount());
         $this->assertSame(2, $result->failureCount());
@@ -669,7 +669,7 @@ abstract class AuthTestCase extends IntegrationTestCase
 
         parse_str((string) $queryString, $query);
 
-        $email = $this->auth->confirmPasswordReset($query['oobCode'], 'newPassword123', true);
+        $email = $this->auth->confirmPasswordReset($query['oobCode'], 'newPassword123');
         sleep(1); // wait for a second
 
         try {
