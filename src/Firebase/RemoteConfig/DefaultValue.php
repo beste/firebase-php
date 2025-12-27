@@ -13,9 +13,9 @@ use JsonSerializable;
  *
  * @see ParameterValue
  */
-class DefaultValue implements JsonSerializable
+readonly class DefaultValue implements JsonSerializable
 {
-    private function __construct(private readonly ParameterValue $value)
+    private function __construct(private ParameterValue $value)
     {
     }
 

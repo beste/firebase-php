@@ -12,14 +12,14 @@ use function is_string;
 /**
  * @phpstan-import-type RemoteConfigParameterValueShape from ParameterValue
  */
-class ConditionalValue implements JsonSerializable
+readonly class ConditionalValue implements JsonSerializable
 {
     /**
      * @internal
      *
      * @param non-empty-string $conditionName
      */
-    public function __construct(private readonly string $conditionName, private readonly ParameterValue $value)
+    public function __construct(private string $conditionName, private ParameterValue $value)
     {
     }
 

@@ -19,18 +19,18 @@ use function is_string;
  *     valueType?: non-empty-string|null
  * }
  */
-class Parameter implements JsonSerializable
+readonly class Parameter implements JsonSerializable
 {
     /**
      * @param non-empty-string $name
      * @param list<ConditionalValue> $conditionalValues
      */
     private function __construct(
-        private readonly string $name,
-        private readonly string $description,
-        private readonly ?ParameterValue $defaultValue,
-        private readonly array $conditionalValues,
-        private readonly ParameterValueType $valueType,
+        private string $name,
+        private string $description,
+        private ?ParameterValue $defaultValue,
+        private array $conditionalValues,
+        private ParameterValueType $valueType,
     ) {
     }
 
