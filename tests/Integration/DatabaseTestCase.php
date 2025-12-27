@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use Kreait\Firebase\Contract\Database;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 
+use Override;
 use function bin2hex;
 use function random_bytes;
 
@@ -22,7 +23,7 @@ abstract class DatabaseTestCase extends IntegrationTestCase
 
     protected static Client $apiClient;
 
-    #[\Override]
+    #[Override]
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
