@@ -383,7 +383,7 @@ abstract class AuthTestCase extends IntegrationTestCase
 
         $sessionCookie = $this->auth->createSessionCookie($idToken, new DateInterval('PT5M'));
 
-        $verifiedCookie = $this->auth->verifySessionCookie($sessionCookie, $checkIfRevoked = false);
+        $verifiedCookie = $this->auth->verifySessionCookie($sessionCookie);
 
         $uid = $verifiedCookie->claims()->get('sub');
 
@@ -393,7 +393,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         $this->expectException(RevokedSessionCookie::class);
 
         try {
-            $this->auth->verifySessionCookie($sessionCookie, $checkIfRevoked = true);
+            $this->auth->verifySessionCookie($sessionCookie, true);
         } finally {
             $this->auth->deleteUser($uid);
         }

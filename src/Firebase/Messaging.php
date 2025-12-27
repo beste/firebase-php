@@ -55,16 +55,22 @@ final readonly class Messaging implements Contract\Messaging
 
         $reports = $this->sendAll([$message], $validateOnly)->getItems();
         $report = array_shift($reports);
-        assert($report instanceof SendReport);
+
+        if (!($report instanceof SendReport)) {
+            return [];
+        }
+
+        $error = $report->error();
+
+        if ($error !== null) {
+            throw $error;
+        }
 
         if ($report->isSuccess()) {
             return $report->result() ?? [];
         }
 
-        $error = $report->error();
-        assert($error instanceof MessagingException);
-
-        throw $error;
+        return [];
     }
 
     public function sendMulticast(Message|array $message, RegistrationTokens|RegistrationToken|array|string $registrationTokens, bool $validateOnly = false): MulticastSendReport

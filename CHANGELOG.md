@@ -12,6 +12,7 @@ If it saves you or your team time, please consider [sponsoring its development](
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
 * Deprecated classes, methods and class constants have been removed.
+* Method arguments are now fully type-hinted
 * Type declarations have been simplified to reduce runtime overhead (e.g., `Stringable|string` to `string`).
 * The transitional `Kreait\Firebase\Contract\Transitional\FederatedUserFetcher::getUserByProviderUid()` method
   has been moved into the `Kreait\Firebase\Contract\Auth` interface

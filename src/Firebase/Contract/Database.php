@@ -34,12 +34,11 @@ interface Database
     /**
      * Returns a reference to the root or the path specified in url.
      *
-     * @param string|UriInterface $uri
      *
      * @throws InvalidArgumentException If the URL is invalid
      * @throws OutOfRangeException If the URL is not in the same domain as the current database
      */
-    public function getReferenceFromUrl($uri): Reference;
+    public function getReferenceFromUrl(UriInterface|string $uri): Reference;
 
     /**
      * Retrieve Firebase Database Rules.

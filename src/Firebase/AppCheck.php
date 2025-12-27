@@ -25,7 +25,7 @@ final readonly class AppCheck implements Contract\AppCheck
     ) {
     }
 
-    public function createToken(string $appId, $options = null): AppCheckToken
+    public function createToken(string $appId, AppCheckTokenOptions|array|null $options = null): AppCheckToken
     {
         if (is_array($options)) {
             $options = AppCheckTokenOptions::fromArray($options);

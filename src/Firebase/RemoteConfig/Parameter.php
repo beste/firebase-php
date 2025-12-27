@@ -38,7 +38,7 @@ readonly class Parameter implements JsonSerializable
      * @param non-empty-string $name
      * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    public static function named(string $name, $defaultValue = null, ?ParameterValueType $valueType = null): self
+    public static function named(string $name, DefaultValue|array|string|bool|null $defaultValue = null, ?ParameterValueType $valueType = null): self
     {
         $defaultValue = self::mapDefaultValue($defaultValue);
 
@@ -54,7 +54,7 @@ readonly class Parameter implements JsonSerializable
     /**
      * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    private static function mapDefaultValue($defaultValue): ?ParameterValue
+    private static function mapDefaultValue(DefaultValue|array|string|bool|null $defaultValue): ?ParameterValue
     {
         if ($defaultValue === null) {
             return null;
@@ -102,7 +102,7 @@ readonly class Parameter implements JsonSerializable
     /**
      * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    public function withDefaultValue($defaultValue): self
+    public function withDefaultValue(DefaultValue|array|string|bool|null $defaultValue): self
     {
         $defaultValue = self::mapDefaultValue($defaultValue);
 

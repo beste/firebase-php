@@ -198,7 +198,7 @@ interface Auth
      *
      * @throws FailedToCreateActionLink
      */
-    public function getEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getEmailActionLink(string $type, string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
      * @param non-empty-string $type
@@ -209,7 +209,7 @@ interface Auth
      * @throws UserNotFound
      * @throws FailedToSendActionLink
      */
-    public function sendEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendEmailActionLink(string $type, string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
      * @param non-empty-string $email
@@ -218,7 +218,7 @@ interface Auth
      *
      * @throws FailedToCreateActionLink
      */
-    public function getEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getEmailVerificationLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
      * @param non-empty-string $email
@@ -227,7 +227,7 @@ interface Auth
      *
      * @throws FailedToSendActionLink
      */
-    public function sendEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendEmailVerificationLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
      * @param non-empty-string $email
@@ -236,7 +236,7 @@ interface Auth
      *
      * @throws FailedToCreateActionLink
      */
-    public function getPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getPasswordResetLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
      * @param non-empty-string $email
@@ -245,7 +245,7 @@ interface Auth
      *
      * @throws FailedToSendActionLink
      */
-    public function sendPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendPasswordResetLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
      * @param non-empty-string $email
@@ -254,7 +254,7 @@ interface Auth
      *
      * @throws FailedToCreateActionLink
      */
-    public function getSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): string;
+    public function getSignInWithEmailLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string;
 
     /**
      * @param non-empty-string $email
@@ -263,7 +263,7 @@ interface Auth
      *
      * @throws FailedToSendActionLink
      */
-    public function sendSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): void;
+    public function sendSignInWithEmailLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void;
 
     /**
      * Sets additional developer claims on an existing user identified by the provided UID.
@@ -284,6 +284,7 @@ interface Auth
      *
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
+     * @throws Exception\InvalidArgumentException
      */
     public function createCustomToken(string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken;
 

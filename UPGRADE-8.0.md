@@ -11,7 +11,8 @@ from 7.x to 8.0.
   supported versions are 8.3, 8.4, and 8.5.
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
-* Realtime Database objects considered value objects have been made final and readonly 
+* Realtime Database objects considered value objects have been made final and readonly
+* Method arguments are now fully type-hinted
 
 ### Type simplifications to reduce runtime overhead
 
@@ -39,6 +40,22 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2
 [BC] CHANGED: The parameter $accessToken of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from string to Lcobucci\JWT\Token|string
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getEmailActionLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getEmailActionLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getEmailVerificationLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getEmailVerificationLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getPasswordResetLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getPasswordResetLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getSignInWithEmailLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getSignInWithEmailLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendEmailActionLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendEmailActionLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendEmailVerificationLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendEmailVerificationLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendPasswordResetLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendPasswordResetLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendSignInWithEmailLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null
+[BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#sendSignInWithEmailLink() changed from no type to a non-contravariant Kreait\Firebase\Auth\ActionCodeSettings|array|null
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Contract\Auth#signInWithEmailAndPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Contract\Auth#signInWithEmailAndPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Request\EditUserTrait#withClearTextPassword() changed from Stringable|string to a non-contravariant string
@@ -47,8 +64,15 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $clearTextPassword of Kreait\Firebase\Request\EditUserTrait#withClearTextPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from int to a non-contravariant Throwable|null
 [BC] CHANGED: The parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from int to a non-contravariant Throwable|null
+[BC] CHANGED: The parameter $condition of Kreait\Firebase\RemoteConfig\ConditionalValue::basedOn() changed from no type to Kreait\Firebase\RemoteConfig\Condition|string
+[BC] CHANGED: The parameter $condition of Kreait\Firebase\RemoteConfig\ConditionalValue::basedOn() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\Condition|string
 [BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withAndroidConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\AndroidConfig|array
 [BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withApnsConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\ApnsConfig|array
+[BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withWebPushConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\WebPushConfig|array
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#getEmailActionLink() changed from Stringable|string to a non-contravariant string
@@ -85,12 +109,19 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Request\EditUserTrait#withVerifiedEmail() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Request\EditUserTrait#withVerifiedEmail() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Request\EditUserTrait#withVerifiedEmail() changed from Stringable|string to string
+[BC] CHANGED: The parameter $error of Kreait\Firebase\Messaging\SendReport::failure() changed from Throwable to a non-contravariant Kreait\Firebase\Exception\MessagingException
 [BC] CHANGED: The parameter $newEmail of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $newEmail of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to string
 [BC] CHANGED: The parameter $newPassword of Kreait\Firebase\Contract\Auth#changeUserPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $newPassword of Kreait\Firebase\Contract\Auth#changeUserPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $newPassword of Kreait\Firebase\Contract\Auth#confirmPasswordReset() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $newPassword of Kreait\Firebase\Contract\Auth#confirmPasswordReset() changed from Stringable|string to string
+[BC] CHANGED: The parameter $options of Kreait\Firebase\Contract\AppCheck#createToken() changed from no type to Kreait\Firebase\AppCheck\AppCheckTokenOptions|array|null
+[BC] CHANGED: The parameter $options of Kreait\Firebase\Contract\AppCheck#createToken() changed from no type to a non-contravariant Kreait\Firebase\AppCheck\AppCheckTokenOptions|array|null
+[BC] CHANGED: The parameter $options of Kreait\Firebase\Messaging\CloudMessage#withFcmOptions() changed from no type to a non-contravariant Kreait\Firebase\Messaging\FcmOptions|array
+[BC] CHANGED: The parameter $other of Kreait\Firebase\RemoteConfig\UpdateOrigin#equalsTo() changed from no type to a non-contravariant self|string
+[BC] CHANGED: The parameter $other of Kreait\Firebase\RemoteConfig\UpdateType#equalsTo() changed from no type to a non-contravariant self|string
+[BC] CHANGED: The parameter $other of Kreait\Firebase\RemoteConfig\VersionNumber#equalsTo() changed from no type to a non-contravariant self|string
 [BC] CHANGED: The parameter $password of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $password of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $phoneNumber of Kreait\Firebase\Contract\Auth#getUserByPhoneNumber() changed from Stringable|string to a non-contravariant string
@@ -106,10 +137,19 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Contract\Auth#unlinkProvider() changed from array|Stringable|string to a non-contravariant array|string
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Contract\Auth#unlinkProvider() changed from array|Stringable|string to array|string
 [BC] CHANGED: The parameter $provider of Kreait\Firebase\Request\UpdateUser#withRemovedProvider() changed from no type to a non-contravariant string
+[BC] CHANGED: The parameter $query of Kreait\Firebase\Contract\RemoteConfig#listVersions() changed from no type to Kreait\Firebase\RemoteConfig\FindVersions|array|null
+[BC] CHANGED: The parameter $query of Kreait\Firebase\Contract\RemoteConfig#listVersions() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\FindVersions|array|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to a non-contravariant string|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from no type to string|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpIdToken() changed from no type to a non-contravariant string|null
 [BC] CHANGED: The parameter $redirectUrl of Kreait\Firebase\Contract\Auth#signInWithIdpIdToken() changed from no type to string|null
+[BC] CHANGED: The parameter $tagColor of Kreait\Firebase\RemoteConfig\Condition#withTagColor() changed from no type to Kreait\Firebase\RemoteConfig\TagColor|string
+[BC] CHANGED: The parameter $tagColor of Kreait\Firebase\RemoteConfig\Condition#withTagColor() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\TagColor|string
+[BC] CHANGED: The parameter $template of Kreait\Firebase\Contract\RemoteConfig#publish() changed from no type to Kreait\Firebase\RemoteConfig\Template|array
+[BC] CHANGED: The parameter $template of Kreait\Firebase\Contract\RemoteConfig#publish() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\Template|array
+[BC] CHANGED: The parameter $template of Kreait\Firebase\Contract\RemoteConfig#validate() changed from no type to Kreait\Firebase\RemoteConfig\Template|array
+[BC] CHANGED: The parameter $template of Kreait\Firebase\Contract\RemoteConfig#validate() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\Template|array
+[BC] CHANGED: The parameter $token of Kreait\Firebase\Messaging\RegistrationTokens#has() changed from no type to a non-contravariant Kreait\Firebase\Messaging\RegistrationToken|string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserEmail() changed from Stringable|string to string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Contract\Auth#changeUserPassword() changed from Stringable|string to a non-contravariant string
@@ -136,15 +176,29 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to a non-contravariant string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to a non-contravariant string
 [BC] CHANGED: The parameter $uid of Kreait\Firebase\Request\EditUserTrait#withUid() changed from no type to string
+[BC] CHANGED: The parameter $uri of Kreait\Firebase\Contract\Database#getReferenceFromUrl() changed from no type to Psr\Http\Message\UriInterface|string
+[BC] CHANGED: The parameter $uri of Kreait\Firebase\Contract\Database#getReferenceFromUrl() changed from no type to a non-contravariant Psr\Http\Message\UriInterface|string
 [BC] CHANGED: The parameter $url of Kreait\Firebase\Request\EditUserTrait#withPhotoUrl() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $url of Kreait\Firebase\Request\EditUserTrait#withPhotoUrl() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $url of Kreait\Firebase\Request\EditUserTrait#withPhotoUrl() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $url of Kreait\Firebase\Request\EditUserTrait#withPhotoUrl() changed from Stringable|string to string
 [BC] CHANGED: The parameter $user of Kreait\Firebase\Contract\Auth#signInAsUser() changed from Kreait\Firebase\Auth\UserRecord|Stringable|string to Kreait\Firebase\Auth\UserRecord|string
 [BC] CHANGED: The parameter $user of Kreait\Firebase\Contract\Auth#signInAsUser() changed from Kreait\Firebase\Auth\UserRecord|Stringable|string to a non-contravariant Kreait\Firebase\Auth\UserRecord|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#endAt() changed from no type to a non-contravariant float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#endAt() changed from no type to float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#endBefore() changed from no type to a non-contravariant float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#endBefore() changed from no type to float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#equalTo() changed from no type to a non-contravariant float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#equalTo() changed from no type to float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#startAfter() changed from no type to a non-contravariant float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#startAfter() changed from no type to float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#startAt() changed from no type to a non-contravariant float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Query#startAt() changed from no type to float|bool|int|string
+[BC] CHANGED: The parameter $value of Kreait\Firebase\Database\Reference#push() changed from no type to mixed
 [BC] CHANGED: The parameter $value of Kreait\Firebase\Messaging\ApnsConfig#withDataField() changed from mixed to a non-contravariant string
 [BC] CHANGED: The parameter $value of Kreait\Firebase\RemoteConfig\ConditionalValue#withValue() changed from no type to Kreait\Firebase\RemoteConfig\ParameterValue|array|string
 [BC] CHANGED: The parameter $value of Kreait\Firebase\RemoteConfig\ConditionalValue#withValue() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\ParameterValue|array|string
+[BC] CHANGED: The parameter $values of Kreait\Firebase\Messaging\RegistrationTokens::fromValue() changed from no type to a non-contravariant Kreait\Firebase\Messaging\RegistrationToken|Kreait\Firebase\Messaging\RegistrationTokens|array|string
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\ConditionalValue#value() changed from no type to string|array
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\TagColor#__toString() changed from no type to string
 [BC] REMOVED: Class Kreait\Firebase\Contract\DynamicLinks has been deleted

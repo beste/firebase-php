@@ -253,6 +253,9 @@ final readonly class ApiClient
         ]);
     }
 
+    /**
+     * @param positive-int|DateInterval $ttl
+     */
     public function createSessionCookie(string $idToken, int|DateInterval $ttl): string
     {
         return (new GuzzleApiClientHandler($this->client, $this->projectId))

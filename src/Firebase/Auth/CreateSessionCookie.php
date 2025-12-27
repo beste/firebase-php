@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception\InvalidArgumentException;
 use Lcobucci\JWT\Token;
 use Psr\Clock\ClockInterface;
 
+use Throwable;
 use function is_int;
 
 /**
@@ -31,10 +32,9 @@ final readonly class CreateSessionCookie
     }
 
     /**
-     * @param Token|string $idToken
-     * @param int|DateInterval $ttl
+     * @param positive-int|DateInterval $ttl
      */
-    public static function forIdToken($idToken, ?string $tenantId, $ttl, ?object $clock = null): self
+    public static function forIdToken(Token|string $idToken, ?string $tenantId, DateInterval|int $ttl, ?object $clock = null): self
     {
         $clock ??= SystemClock::create();
 
@@ -74,18 +74,18 @@ final readonly class CreateSessionCookie
     }
 
     /**
-     * @param int|DateInterval $ttl
+     * @param DateInterval|positive-int $ttl
      *
      * @throws InvalidArgumentException
      */
-    private static function assertValidDuration($ttl, ClockInterface $clock): DateInterval
+    private static function assertValidDuration(DateInterval|int $ttl, ClockInterface $clock): DateInterval
     {
         if (is_int($ttl)) {
-            if ($ttl < 0) {
-                throw new InvalidArgumentException('A session cookie cannot be valid for a negative amount of time');
+            try {
+                $ttl = new DateInterval(sprintf('PT%sS', $ttl));
+            } catch (Throwable $e) {
+                throw new InvalidArgumentException('Invalid TTL value given: '.$e->getMessage());
             }
-
-            $ttl = new DateInterval('PT'.$ttl.'S');
         }
 
         $now = $clock->now();

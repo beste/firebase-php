@@ -81,7 +81,7 @@ class Condition implements JsonSerializable
     /**
      * @param TagColor|non-empty-string $tagColor
      */
-    public function withTagColor($tagColor): self
+    public function withTagColor(TagColor|string $tagColor): self
     {
         $tagColor = $tagColor instanceof TagColor ? $tagColor : new TagColor($tagColor);
 

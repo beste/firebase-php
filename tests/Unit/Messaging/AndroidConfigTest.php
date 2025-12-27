@@ -68,7 +68,7 @@ final class AndroidConfigTest extends UnitTestCase
     }
 
     #[DataProvider('invalidTtlValues')]
-    public function testItRejectsInvalidTTLs(mixed $ttl): void
+    public function testItRejectsInvalidTTLs(int|string $ttl): void
     {
         $this->expectException(InvalidArgument::class);
 

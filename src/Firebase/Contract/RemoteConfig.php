@@ -39,7 +39,7 @@ interface RemoteConfig
      * @throws ValidationFailed if the validation failed
      * @throws RemoteConfigException
      */
-    public function validate($template): void;
+    public function validate(Template|array $template): void;
 
     /**
      * @param Template|RemoteConfigTemplateShape $template
@@ -48,7 +48,7 @@ interface RemoteConfig
      *
      * @return non-empty-string The etag value of the published template that can be compared to in later calls
      */
-    public function publish($template): string;
+    public function publish(Template|array $template): string;
 
     /**
      * Returns a version with the given number.
@@ -77,5 +77,5 @@ interface RemoteConfig
      *
      * @return Traversable<int, Version>
      */
-    public function listVersions($query = null): Traversable;
+    public function listVersions(FindVersions|array|null $query = null): Traversable;
 }

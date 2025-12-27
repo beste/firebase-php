@@ -116,50 +116,40 @@ final readonly class Query implements Stringable
      *
      * The ending point is inclusive, so children with exactly
      * the specified value will be included in the query.
-     *
-     * @param scalar $value
      */
-    public function endAt($value): self
+    public function endAt(float|bool|int|string $value): self
     {
         return $this->withAddedFilter(new EndAt($value));
     }
 
     /**
      * Creates a Query with the specified ending point (exclusive).
-     *
-     * @param scalar $value
      */
-    public function endBefore($value): self
+    public function endBefore(float|bool|int|string $value): self
     {
         return $this->withAddedFilter(new EndBefore($value));
     }
 
     /**
      * Creates a Query which includes children which match the specified value.
-     *
-     * @param scalar $value
      */
-    public function equalTo($value): self
+    public function equalTo(float|bool|int|string $value): self
     {
         return $this->withAddedFilter(new EqualTo($value));
     }
 
     /**
      * Creates a Query with the specified starting point (inclusive).
-     *
-     * @param scalar $value
      */
-    public function startAt($value): self
+    public function startAt(float|bool|int|string $value): self
     {
         return $this->withAddedFilter(new StartAt($value));
     }
 
     /**
      * Creates a Query with the specified starting point (exclusive).
-     *
-     * @param scalar $value
      */
-    public function startAfter($value): self
+    public function startAfter(float|bool|int|string $value): self
     {
         return $this->withAddedFilter(new StartAfter($value));
     }

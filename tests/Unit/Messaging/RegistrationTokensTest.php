@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Unit\Messaging;
 
-use InvalidArgumentException;
 use Iterator;
 use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Messaging\RegistrationTokens;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 /**
  * @internal
@@ -23,13 +21,6 @@ final class RegistrationTokensTest extends TestCase
         $tokens = RegistrationTokens::fromValue($value);
 
         $this->assertCount($expectedCount, $tokens);
-    }
-
-    #[DataProvider('invalidValues')]
-    public function testItRejectsInvalidValues(mixed $value): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        RegistrationTokens::fromValue($value);
     }
 
     public function testItReturnsStrings(): void
@@ -47,10 +38,5 @@ final class RegistrationTokensTest extends TestCase
         yield 'token object' => [1, $foo];
         yield 'collection' => [2, new RegistrationTokens($foo, $foo)];
         yield 'array with mixed values' => [2, [$foo, 'bar']];
-    }
-
-    public static function invalidValues(): Iterator
-    {
-        yield 'invalid object' => [new stdClass()];
     }
 }

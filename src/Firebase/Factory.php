@@ -500,7 +500,12 @@ final class Factory
         $cachePrefix = 'kreait_firebase_'.$projectId;
 
         $credentials = new FetchAuthTokenCache($credentials, ['prefix' => $cachePrefix], $this->authTokenCache ?? $this->defaultCache);
-        $authTokenHandler = HttpHandlerFactory::build(new Client($config));
+
+        try {
+            $authTokenHandler = HttpHandlerFactory::build(new Client($config));
+        } catch (Throwable $e) {
+            throw new RuntimeException('Unable to create Auth Token HTTP handler: '.$e->getMessage(), previous: $e);
+        }
 
         $handler->push(new AuthTokenMiddleware($credentials, $authTokenHandler));
 

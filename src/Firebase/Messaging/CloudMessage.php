@@ -157,7 +157,7 @@ final class CloudMessage implements Message
     /**
      * @param WebPushConfig|WebPushConfigShape $config
      */
-    public function withWebPushConfig($config): self
+    public function withWebPushConfig(WebPushConfig|array $config): self
     {
         $new = clone $this;
         $new->webPushConfig = $config instanceof WebPushConfig ? $config : WebPushConfig::fromArray($config);
@@ -168,7 +168,7 @@ final class CloudMessage implements Message
     /**
      * @param FcmOptions|FcmOptionsShape $options
      */
-    public function withFcmOptions($options): self
+    public function withFcmOptions(FcmOptions|array $options): self
     {
         $new = clone $this;
         $new->fcmOptions = $options instanceof FcmOptions ? $options : FcmOptions::fromArray($options);

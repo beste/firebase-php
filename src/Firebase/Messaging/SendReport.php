@@ -6,7 +6,7 @@ namespace Kreait\Firebase\Messaging;
 
 use Kreait\Firebase\Exception\Messaging\InvalidMessage;
 use Kreait\Firebase\Exception\Messaging\NotFound;
-use Throwable;
+use Kreait\Firebase\Exception\MessagingException;
 
 use function preg_match;
 
@@ -19,7 +19,7 @@ final class SendReport
 
     private ?Message $message = null;
 
-    private ?Throwable $error = null;
+    private ?MessagingException $error = null;
 
     private function __construct(private readonly MessageTarget $target)
     {
@@ -37,7 +37,7 @@ final class SendReport
         return $report;
     }
 
-    public static function failure(MessageTarget $target, Throwable $error, ?Message $message = null): self
+    public static function failure(MessageTarget $target, MessagingException $error, ?Message $message = null): self
     {
         $report = new self($target);
         $report->error = $error;
@@ -86,7 +86,7 @@ final class SendReport
         return $this->result;
     }
 
-    public function error(): ?Throwable
+    public function error(): ?MessagingException
     {
         return $this->error;
     }

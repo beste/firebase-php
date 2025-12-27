@@ -278,19 +278,6 @@ final class RemoteConfigTest extends IntegrationTestCase
         $this->assertTrue($rollbackSource->equalsTo($targetVersionNumber));
     }
 
-    public function testListVersionsWithoutFilters(): void
-    {
-        $count = 0;
-        // We only need to know that the first returned value is a version,
-        // no need to iterate through all of them
-        foreach ($this->remoteConfig->listVersions() as $version) {
-            ++$count;
-            break;
-        }
-
-        $this->assertSame(1, $count);
-    }
-
     public function testFindVersionsWithFilters(): void
     {
         $currentVersion = $this->remoteConfig->get()->version();

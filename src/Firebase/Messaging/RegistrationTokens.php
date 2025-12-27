@@ -36,7 +36,7 @@ final readonly class RegistrationTokens implements Countable, IteratorAggregate
      *
      * @throws InvalidArgument
      */
-    public static function fromValue($values): self
+    public static function fromValue(RegistrationToken|RegistrationTokens|array|string $values): self
     {
         $tokens = [];
 
@@ -100,7 +100,7 @@ final readonly class RegistrationTokens implements Countable, IteratorAggregate
     /**
      * @param RegistrationToken|non-empty-string $token
      */
-    public function has($token): bool
+    public function has(RegistrationToken|string $token): bool
     {
         $token = $token instanceof RegistrationToken ? $token : RegistrationToken::fromValue($token);
 

@@ -34,7 +34,7 @@ readonly class ConditionalValue implements JsonSerializable
     /**
      * @param non-empty-string|Condition $condition
      */
-    public static function basedOn($condition): self
+    public static function basedOn(Condition|string $condition): self
     {
         $name = $condition instanceof Condition ? $condition->name() : $condition;
 

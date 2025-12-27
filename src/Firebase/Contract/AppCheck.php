@@ -25,7 +25,7 @@ interface AppCheck
      * @throws Exception\AppCheckException
      * @throws Exception\FirebaseException
      */
-    public function createToken(string $appId, $options = null): AppCheckToken;
+    public function createToken(string $appId, AppCheckTokenOptions|array|null $options = null): AppCheckToken;
 
     /**
      * @param non-empty-string $appCheckToken

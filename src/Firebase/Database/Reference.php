@@ -296,11 +296,9 @@ final readonly class Reference implements Stringable
      * list of items will be chronologically sorted. The keys are also designed to be
      * unguessable (they contain 72 random bits of entropy).
      *
-     * @param mixed|null $value
-     *
      * @throws DatabaseException if the API reported an error
      */
-    public function push($value = null): self
+    public function push(mixed $value = null): self
     {
         $value ??= [];
 

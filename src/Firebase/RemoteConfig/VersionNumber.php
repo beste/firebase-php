@@ -46,7 +46,7 @@ final readonly class VersionNumber implements JsonSerializable, Stringable
     /**
      * @param self|non-empty-string $other
      */
-    public function equalsTo($other): bool
+    public function equalsTo(self|string $other): bool
     {
         return $this->value === (string) $other;
     }

@@ -156,7 +156,7 @@ final class UpdateUserTest extends TestCase
             $expected + ['customAttributes' => Json::encode($claims)],
         ];
         yield 'customAttributes' => [
-            $given + ['customAttributes' => $claims = ['admin' => true, 'groupId' => '1234']],
+            $given + ['customAttributes' => $claims = ['admin' => true, 'groupId' => '2345']],
             $expected + ['customAttributes' => Json::encode($claims)],
         ];
     }

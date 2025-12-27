@@ -270,7 +270,7 @@ final readonly class Auth implements Contract\Auth
         return DeleteUsersResult::fromRequestAndResponse($request, $response);
     }
 
-    public function getEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getEmailActionLink(string $type, string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
     {
         $email = Email::fromString($email)->value;
 
@@ -285,7 +285,7 @@ final readonly class Auth implements Contract\Auth
         return $this->client->getEmailActionLink($type, $email, $actionCodeSettings, $locale);
     }
 
-    public function sendEmailActionLink(string $type, string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendEmailActionLink(string $type, string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void
     {
         $email = Email::fromString($email)->value;
 
@@ -323,32 +323,32 @@ final readonly class Auth implements Contract\Auth
         $this->client->sendEmailActionLink($type, $email, $actionCodeSettings, $locale, $idToken);
     }
 
-    public function getEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getEmailVerificationLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('VERIFY_EMAIL', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendEmailVerificationLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendEmailVerificationLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('VERIFY_EMAIL', $email, $actionCodeSettings, $locale);
     }
 
-    public function getPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getPasswordResetLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('PASSWORD_RESET', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendPasswordResetLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendPasswordResetLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('PASSWORD_RESET', $email, $actionCodeSettings, $locale);
     }
 
-    public function getSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): string
+    public function getSignInWithEmailLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
     {
         return $this->getEmailActionLink('EMAIL_SIGNIN', $email, $actionCodeSettings, $locale);
     }
 
-    public function sendSignInWithEmailLink(string $email, $actionCodeSettings = null, ?string $locale = null): void
+    public function sendSignInWithEmailLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): void
     {
         $this->sendEmailActionLink('EMAIL_SIGNIN', $email, $actionCodeSettings, $locale);
     }
@@ -370,7 +370,11 @@ final readonly class Auth implements Contract\Auth
         $uid = Uid::fromString($uid)->value;
 
         if (!$ttl instanceof DateInterval) {
-            $ttl = new DateInterval(sprintf('PT%sS', $ttl));
+            try {
+                $ttl = new DateInterval(sprintf('PT%sS', $ttl));
+            } catch (Throwable $e) {
+                throw new InvalidArgumentException('Invalid TTL value given: '.$e->getMessage());
+            }
         }
 
         $expiresAt = $this->clock->now()->add($ttl);
@@ -650,6 +654,9 @@ final readonly class Auth implements Contract\Auth
         return $this->getUser($responseData['localId']);
     }
 
+    /**
+     * @param positive-int|null $leewayInSeconds
+     */
     private function userSessionHasBeenRevoked(UnencryptedToken $verifiedToken, UserRecord $user, ?int $leewayInSeconds = null): bool
     {
         // The timestamp, in seconds, which marks a boundary, before which Firebase ID token are considered revoked.

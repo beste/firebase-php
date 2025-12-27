@@ -42,7 +42,7 @@ final readonly class Database implements Contract\Database
         }
     }
 
-    public function getReferenceFromUrl($uri): Reference
+    public function getReferenceFromUrl(UriInterface|string $uri): Reference
     {
         $uri = $uri instanceof UriInterface ? $uri : new Uri($uri);
 

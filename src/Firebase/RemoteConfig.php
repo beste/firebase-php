@@ -37,12 +37,12 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
         return $this->buildTemplateFromResponse($this->client->getTemplate($versionNumber));
     }
 
-    public function validate($template): void
+    public function validate(Template|array $template): void
     {
         $this->client->validateTemplate($this->ensureTemplate($template));
     }
 
-    public function publish($template): string
+    public function publish(Template|array $template): string
     {
         $etag = $this->client
             ->publishTemplate($this->ensureTemplate($template))
@@ -82,7 +82,7 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
         return $this->buildTemplateFromResponse($this->client->rollbackToVersion($versionNumber));
     }
 
-    public function listVersions($query = null): Traversable
+    public function listVersions(FindVersions|array|null $query = null): Traversable
     {
         $query = $query instanceof FindVersions ? $query : FindVersions::fromArray((array) $query);
         $pageToken = null;
@@ -110,7 +110,7 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
     /**
      * @param Template|RemoteConfigTemplateShape $value
      */
-    private function ensureTemplate($value): Template
+    private function ensureTemplate(Template|array $value): Template
     {
         return $value instanceof Template ? $value : Template::fromArray($value);
     }

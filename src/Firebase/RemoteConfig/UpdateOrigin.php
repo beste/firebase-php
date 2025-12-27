@@ -34,10 +34,7 @@ final readonly class UpdateOrigin implements JsonSerializable, Stringable
         return $this->value;
     }
 
-    /**
-     * @param self|string $other
-     */
-    public function equalsTo($other): bool
+    public function equalsTo(self|string $other): bool
     {
         return $this->value === (string) $other;
     }
