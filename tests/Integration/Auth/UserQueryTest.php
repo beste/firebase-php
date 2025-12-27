@@ -23,7 +23,7 @@ final class UserQueryTest extends IntegrationTestCase
     protected function setUp(): void
     {
         $this->auth = self::$factory->createAuth();
-        $this->ensureNumberOfUsers(2);
+        $this->ensureAtLeastTwoUsers();
     }
 
     public function testItReturnsResultsInAscendingOrder(): void
@@ -134,22 +134,17 @@ final class UserQueryTest extends IntegrationTestCase
         }
     }
 
-    private function createUserWithEmailAndPassword(?string $email = null, ?string $password = null): UserRecord
+    private function createUserWithEmailAndPassword(): UserRecord
     {
-        $email ??= self::randomEmail();
-        $password ??= self::randomString();
-
         return $this->auth->createUser([
-            'email' => $email,
-            'clear_text_password' => $password,
+            'email' => self::randomEmail(),
+            'clear_text_password' => self::randomString(),
         ]);
     }
 
-    /**
-     * @param positive-int $expected
-     */
-    private function ensureNumberOfUsers(int $expected): void
+    private function ensureAtLeastTwoUsers(): void
     {
+        $expected = 2;
         $present = $this->auth->queryUsers(UserQuery::all()->withLimit($expected));
         $count = count($present);
 

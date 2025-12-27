@@ -75,7 +75,7 @@ final readonly class Messaging implements Contract\Messaging
         $messages = [];
 
         foreach ($registrationTokens as $registrationToken) {
-            $messages[] = $this->withChangedTarget($message, MessageTarget::TOKEN, $registrationToken->value());
+            $messages[] = $this->withChangedTarget($message, $registrationToken->value());
         }
 
         return $this->sendAll($messages, $validateOnly);
@@ -271,7 +271,7 @@ final readonly class Messaging implements Contract\Messaging
             || array_key_exists(MessageTarget::TOPIC, $check);
     }
 
-    private function withChangedTarget(Message $message, string $target, string $value): RawMessageFromArray
+    private function withChangedTarget(Message $message, string $value): RawMessageFromArray
     {
         $message = Json::decode(Json::encode($message), true);
 
@@ -281,7 +281,7 @@ final readonly class Messaging implements Contract\Messaging
             $message[MessageTarget::TOPIC],
         );
 
-        $message[$target] = $value;
+        $message[MessageTarget::TOKEN] = $value;
 
         return new RawMessageFromArray($message);
     }

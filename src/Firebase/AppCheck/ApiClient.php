@@ -9,7 +9,6 @@ use GuzzleHttp\ClientInterface;
 use Kreait\Firebase\Exception\AppCheckApiExceptionConverter;
 use Kreait\Firebase\Exception\AppCheckException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
 use Throwable;
 
 /**
@@ -32,7 +31,7 @@ final readonly class ApiClient
      */
     public function exchangeCustomToken(string $appId, string $customToken): array
     {
-        $response = $this->requestApi('POST', 'apps/'.$appId.':exchangeCustomToken', [
+        $response = $this->post('apps/'.$appId.':exchangeCustomToken', [
             'headers' => [
                 'Content-Type' => 'application/json; UTF-8',
             ],
@@ -48,16 +47,16 @@ final readonly class ApiClient
     }
 
     /**
-     * @param non-empty-string $method
+     * @param non-empty-string $path
      * @param array<string, mixed>|null $options
      * @throws AppCheckException
      */
-    private function requestApi(string $method, string|UriInterface $uri, ?array $options = null): ResponseInterface
+    private function post(string $path, ?array $options = null): ResponseInterface
     {
         $options ??= [];
 
         try {
-            return $this->client->request($method, $uri, $options);
+            return $this->client->request('POST', $path, $options);
         } catch (Throwable $e) {
             throw $this->errorHandler->convertException($e);
         }
