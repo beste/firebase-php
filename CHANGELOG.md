@@ -22,6 +22,9 @@ If it saves you or your team time, please consider [sponsoring its development](
 * The transitional `Kreait\Firebase\Contract\Transitional\FederatedUserFetcher::getUserByProviderUid()` method
   has been moved into the `Kreait\Firebase\Contract\Auth` interface
 * Realtime Database objects considered value objects have been made final and readonly
+* `psr/log` has been moved from runtime dependencies to development dependencies
+* `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been removed
+* Exception codes are no longer preserved when wrapping exceptions
 
 See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x and 8.0.**
 

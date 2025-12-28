@@ -33,6 +33,19 @@ from appearing in stack traces and error logs. This affects methods that handle:
 - API keys and service account data
 - One-time codes and session cookies
 
+## Dependency Changes
+
+### PSR Log Dependency
+`psr/log` is now a development dependency instead of a runtime dependency. This change reduces the production dependency footprint. If you were using PSR Log interfaces directly in your application code, you should add `psr/log` to your project's composer.json.
+
+### Removed Constants
+The `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been removed. If you were using this constant in your code, you should define the limit (500) in your application or use the Firebase messaging service limits documentation as reference.
+
+### Exception Handling Changes
+Exception codes are no longer preserved when wrapping exceptions. If your code relies on specific exception codes for error handling, you should update it to use exception types or messages instead.
+
+---
+
 **See the complete list of breaking changes below** to identify any adjustments needed. Most changes should (hopefully)
 be trivial (e.g., passing `$user->uid` instead of `$user`). Run your test suite to catch any breaking changes.
 
