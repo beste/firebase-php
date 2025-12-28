@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Request;
 
+use JsonSerializable;
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use Kreait\Firebase\Request;
 
-final class CreateUser implements Request
+final class CreateUser implements JsonSerializable
 {
     /** @phpstan-use EditUserTrait<self> */
     use EditUserTrait;

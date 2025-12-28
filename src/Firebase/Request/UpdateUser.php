@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Request;
 
 use Beste\Json;
+use JsonSerializable;
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use Kreait\Firebase\Request;
 use function array_unique;
 use function is_array;
 use function is_string;
 use function mb_strtolower;
 use function preg_replace;
 
-final class UpdateUser implements Request
+final class UpdateUser implements JsonSerializable
 {
     /** @phpstan-use EditUserTrait<self> */
     use EditUserTrait;
