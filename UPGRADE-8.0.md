@@ -69,10 +69,10 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withAndroidConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\AndroidConfig|array
 [BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withApnsConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\ApnsConfig|array
 [BC] CHANGED: The parameter $config of Kreait\Firebase\Messaging\CloudMessage#withWebPushConfig() changed from no type to a non-contravariant Kreait\Firebase\Messaging\WebPushConfig|array
-[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
-[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
-[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
-[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\DefaultValue|array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to a non-contravariant array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter#withDefaultValue() changed from no type to array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to a non-contravariant array|string|bool|null
+[BC] CHANGED: The parameter $defaultValue of Kreait\Firebase\RemoteConfig\Parameter::named() changed from no type to array|string|bool|null
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to a non-contravariant string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#createUserWithEmailAndPassword() changed from Stringable|string to string
 [BC] CHANGED: The parameter $email of Kreait\Firebase\Contract\Auth#getEmailActionLink() changed from Stringable|string to a non-contravariant string
@@ -200,6 +200,8 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: The parameter $value of Kreait\Firebase\RemoteConfig\ConditionalValue#withValue() changed from no type to a non-contravariant Kreait\Firebase\RemoteConfig\ParameterValue|array|string
 [BC] CHANGED: The parameter $values of Kreait\Firebase\Messaging\RegistrationTokens::fromValue() changed from no type to a non-contravariant Kreait\Firebase\Messaging\RegistrationToken|Kreait\Firebase\Messaging\RegistrationTokens|array|string
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\ConditionalValue#value() changed from no type to string|array
+[BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\Parameter#defaultValue() changed from Kreait\Firebase\RemoteConfig\DefaultValue|null to Kreait\Firebase\RemoteConfig\ParameterValue|null
+[BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\Parameter#defaultValue() changed from Kreait\Firebase\RemoteConfig\DefaultValue|null to the non-covariant Kreait\Firebase\RemoteConfig\ParameterValue|null
 [BC] CHANGED: The return type of Kreait\Firebase\RemoteConfig\TagColor#__toString() changed from no type to string
 [BC] REMOVED: Class Kreait\Firebase\Contract\DynamicLinks has been deleted
 [BC] REMOVED: Class Kreait\Firebase\Contract\Transitional\FederatedUserFetcher has been deleted
@@ -219,6 +221,7 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\ShortenLongDynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\ShortenLongDynamicLink\FailedToShortenLongDynamicLink has been deleted
 [BC] REMOVED: Class Kreait\Firebase\DynamicLink\SocialMetaTagInfo has been deleted
+[BC] REMOVED: Class Kreait\Firebase\RemoteConfig\DefaultValue has been deleted
 [BC] REMOVED: Class Kreait\Firebase\RemoteConfig\ExplicitValue has been deleted
 [BC] REMOVED: Constant Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT was removed
 [BC] REMOVED: Method Kreait\Firebase\Factory#createDynamicLinksService() was removed

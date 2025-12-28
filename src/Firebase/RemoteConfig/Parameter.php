@@ -36,9 +36,9 @@ readonly class Parameter implements JsonSerializable
 
     /**
      * @param non-empty-string $name
-     * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
+     * @param RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    public static function named(string $name, DefaultValue|array|string|bool|null $defaultValue = null, ?ParameterValueType $valueType = null): self
+    public static function named(string $name, array|string|bool|null $defaultValue = null, ?ParameterValueType $valueType = null): self
     {
         $defaultValue = self::mapDefaultValue($defaultValue);
 
@@ -52,16 +52,12 @@ readonly class Parameter implements JsonSerializable
     }
 
     /**
-     * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
+     * @param RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    private static function mapDefaultValue(DefaultValue|array|string|bool|null $defaultValue): ?ParameterValue
+    private static function mapDefaultValue(array|string|bool|null $defaultValue): ?ParameterValue
     {
         if ($defaultValue === null) {
             return null;
-        }
-
-        if ($defaultValue instanceof DefaultValue) {
-            return ParameterValue::fromArray($defaultValue->toArray());
         }
 
         if (is_string($defaultValue)) {
@@ -100,9 +96,9 @@ readonly class Parameter implements JsonSerializable
     }
 
     /**
-     * @param DefaultValue|RemoteConfigParameterValueShape|string|bool|null $defaultValue
+     * @param RemoteConfigParameterValueShape|string|bool|null $defaultValue
      */
-    public function withDefaultValue(DefaultValue|array|string|bool|null $defaultValue): self
+    public function withDefaultValue(array|string|bool|null $defaultValue): self
     {
         $defaultValue = self::mapDefaultValue($defaultValue);
 
@@ -115,16 +111,9 @@ readonly class Parameter implements JsonSerializable
         );
     }
 
-    /**
-     * @todo 8.0 Replace with `ParameterValue`
-     */
-    public function defaultValue(): ?DefaultValue
+    public function defaultValue(): ?ParameterValue
     {
-        if ($this->defaultValue === null) {
-            return null;
-        }
-
-        return DefaultValue::fromArray($this->defaultValue->toArray());
+        return $this->defaultValue;
     }
 
     public function withConditionalValue(ConditionalValue $conditionalValue): self

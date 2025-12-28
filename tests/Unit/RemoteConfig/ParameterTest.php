@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
-use Kreait\Firebase\RemoteConfig\DefaultValue;
 use Kreait\Firebase\RemoteConfig\Parameter;
+use Kreait\Firebase\RemoteConfig\ParameterValue;
 use Kreait\Firebase\Tests\UnitTestCase;
 
 /**
@@ -17,14 +17,17 @@ final class ParameterTest extends UnitTestCase
     {
         $parameter = Parameter::named('empty');
 
-        $this->assertNotInstanceOf(DefaultValue::class, $parameter->defaultValue());
+        $this->assertNotInstanceOf(ParameterValue::class, $parameter->defaultValue());
     }
 
     public function testCreateWithDefaultValue(): void
     {
         $parameter = Parameter::named('with_default_foo', 'foo');
 
-        $this->assertEqualsCanonicalizing(DefaultValue::with('foo')->toArray(), $parameter->defaultValue()?->toArray());
+        $defaultValue = $parameter->defaultValue();
+
+        $this->assertInstanceOf(ParameterValue::class, $defaultValue);
+        $this->assertSame(['value' => 'foo'], $defaultValue->toArray());
     }
 
     public function testCreateWithDescription(): void
