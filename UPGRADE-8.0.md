@@ -62,6 +62,8 @@ The following list has been generated with [roave/backward-compatibility-check](
 [BC] CHANGED: Class Kreait\Firebase\Database\Transaction became final
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\TransactionFailed#__construct() changed from 0 to NULL
 [BC] CHANGED: Default parameter value for parameter $code of Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() changed from 0 to NULL
+[BC] CHANGED: Kreait\Firebase\Auth\ActionCodeSettings\ValidatedActionCodeSettings was marked "@internal"
+[BC] CHANGED: Kreait\Firebase\Request\EditUserTrait was marked "@internal"
 [BC] CHANGED: The number of required arguments for Kreait\Firebase\Exception\Database\UnsupportedQuery#__construct() increased from 1 to 2
 [BC] CHANGED: The parameter $accessToken of Kreait\Firebase\Contract\Auth#signInWithIdpAccessToken() changed from string to Lcobucci\JWT\Token|string
 [BC] CHANGED: The parameter $actionCodeSettings of Kreait\Firebase\Contract\Auth#getEmailActionLink() changed from no type to Kreait\Firebase\Auth\ActionCodeSettings|array|null

@@ -15,6 +15,9 @@ use function is_bool;
 use function is_string;
 use function mb_strtolower;
 
+/**
+ * @internal
+ */
 final class ValidatedActionCodeSettings implements ActionCodeSettings
 {
     private ?UriInterface $continueUrl = null;

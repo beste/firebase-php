@@ -16,6 +16,8 @@ use function mb_strtolower;
 use function preg_replace;
 
 /**
+ * @internal
+ *
  * @template T
  */
 trait EditUserTrait
