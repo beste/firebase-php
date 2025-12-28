@@ -47,6 +47,7 @@ use Kreait\Firebase\Valinor\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\UriInterface;
+use SensitiveParameter;
 use Throwable;
 
 use function array_filter;
@@ -140,7 +141,7 @@ final class Factory
      *
      * @throws InvalidArgumentException
      */
-    public function withServiceAccount(string|array $value): self
+    public function withServiceAccount(#[SensitiveParameter] string|array $value): self
     {
         $serviceAccount = $this->mapServiceAccount($value);
 
@@ -617,11 +618,11 @@ final class Factory
 
         $googleApplicationCredentials = Util::getenv('GOOGLE_APPLICATION_CREDENTIALS');
 
-        if ($googleApplicationCredentials === null) {
-            return $this->serviceAccount;
+        if ($googleApplicationCredentials !== null) {
+            return $this->serviceAccount = $this->mapServiceAccount($googleApplicationCredentials);
         }
 
-        return $this->serviceAccount = $this->mapServiceAccount($googleApplicationCredentials);
+        return null;
     }
 
     private function getGoogleAuthTokenCredentials(): ?FetchAuthTokenInterface

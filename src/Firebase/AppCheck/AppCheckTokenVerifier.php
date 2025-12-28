@@ -9,6 +9,7 @@ use Firebase\JWT\JWT;
 use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckToken;
 use Kreait\Firebase\Exception\AppCheck\InvalidAppCheckToken;
 use LogicException;
+use SensitiveParameter;
 use Throwable;
 
 use function in_array;
@@ -40,7 +41,7 @@ final readonly class AppCheckTokenVerifier
      * @throws FailedToVerifyAppCheckToken if the token could not be verified
      * @throws InvalidAppCheckToken if the token is invalid
      */
-    public function verifyToken(string $token): DecodedAppCheckToken
+    public function verifyToken(#[SensitiveParameter] string $token): DecodedAppCheckToken
     {
         $decodedToken = $this->decodeJwt($token);
 
@@ -55,7 +56,7 @@ final readonly class AppCheckTokenVerifier
      * @throws FailedToVerifyAppCheckToken if the token could not be verified
      * @throws InvalidAppCheckToken if the token is invalid
      */
-    private function decodeJwt(string $token): DecodedAppCheckToken
+    private function decodeJwt(#[SensitiveParameter] string $token): DecodedAppCheckToken
     {
         try {
             /** @var DecodedAppCheckTokenShape $payload */

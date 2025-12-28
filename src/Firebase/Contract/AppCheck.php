@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception;
 use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckToken;
 use Kreait\Firebase\Exception\AppCheck\InvalidAppCheckToken;
 use Kreait\Firebase\Exception\AppCheck\InvalidAppCheckTokenOptions;
+use SensitiveParameter;
 
 /**
  * @phpstan-import-type AppCheckTokenOptionsShape from AppCheckTokenOptions
@@ -35,5 +36,5 @@ interface AppCheck
      * @throws Exception\AppCheckException
      * @throws Exception\FirebaseException
      */
-    public function verifyToken(string $appCheckToken): VerifyAppCheckTokenResponse;
+    public function verifyToken(#[SensitiveParameter] string $appCheckToken): VerifyAppCheckTokenResponse;
 }

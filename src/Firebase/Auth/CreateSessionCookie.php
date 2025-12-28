@@ -10,6 +10,7 @@ use DateInterval;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Lcobucci\JWT\Token;
 use Psr\Clock\ClockInterface;
+use SensitiveParameter;
 
 use Throwable;
 use function is_int;
@@ -24,6 +25,7 @@ final readonly class CreateSessionCookie
     private const string TWO_WEEKS = 'P14D';
 
     private function __construct(
+        #[SensitiveParameter]
         private string $idToken,
         private ?string $tenantId,
         private DateInterval $ttl,
@@ -31,10 +33,10 @@ final readonly class CreateSessionCookie
     ) {
     }
 
-    /**
-     * @param positive-int|DateInterval $ttl
-     */
-    public static function forIdToken(Token|string $idToken, ?string $tenantId, DateInterval|int $ttl, ?object $clock = null): self
+/**
+ * @param positive-int|DateInterval $ttl
+ */
+public static function forIdToken(#[SensitiveParameter] Token|string $idToken, ?string $tenantId, DateInterval|int $ttl, ?object $clock = null): self
     {
         $clock ??= SystemClock::create();
 

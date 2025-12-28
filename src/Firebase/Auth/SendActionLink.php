@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Auth;
 
+use SensitiveParameter;
+
 /**
  * @internal
  */
@@ -49,7 +51,7 @@ final class SendActionLink
      *
      * @see https://github.com/firebase/firebase-js-sdk/issues/1958
      */
-    public function withIdTokenString(string $idTokenString): self
+    public function withIdTokenString(#[SensitiveParameter] string $idTokenString): self
     {
         $instance = clone $this;
         $instance->action = clone $this->action;

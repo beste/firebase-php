@@ -10,6 +10,7 @@ use Kreait\Firebase\Value\Email;
 use Kreait\Firebase\Value\Uid;
 use Kreait\Firebase\Value\Url;
 
+use SensitiveParameter;
 use function array_filter;
 use function mb_strtolower;
 use function preg_replace;
@@ -135,7 +136,7 @@ trait EditUserTrait
         return $request;
     }
 
-    public function withClearTextPassword(string $clearTextPassword): self
+    public function withClearTextPassword(#[SensitiveParameter] string $clearTextPassword): self
     {
         $request = clone $this;
         $request->clearTextPassword = ClearTextPassword::fromString($clearTextPassword)->value;

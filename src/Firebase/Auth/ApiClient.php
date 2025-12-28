@@ -20,6 +20,7 @@ use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
+use SensitiveParameter;
 use Throwable;
 
 use function array_filter;
@@ -200,7 +201,7 @@ final readonly class ApiClient
      * @throws InvalidOobCode
      * @throws OperationNotAllowed
      */
-    public function verifyPasswordResetCode(string $oobCode): ResponseInterface
+    public function verifyPasswordResetCode(#[SensitiveParameter] string $oobCode): ResponseInterface
     {
         $url = $this->authResourceUrlBuilder->getUrl('/accounts:resetPassword');
 
@@ -214,7 +215,7 @@ final readonly class ApiClient
      * @throws OperationNotAllowed
      * @throws UserDisabled
      */
-    public function confirmPasswordReset(string $oobCode, string $newPassword): ResponseInterface
+    public function confirmPasswordReset(#[SensitiveParameter] string $oobCode, #[SensitiveParameter] string $newPassword): ResponseInterface
     {
         $url = $this->authResourceUrlBuilder->getUrl('/accounts:resetPassword');
 
@@ -256,7 +257,7 @@ final readonly class ApiClient
     /**
      * @param positive-int|DateInterval $ttl
      */
-    public function createSessionCookie(string $idToken, int|DateInterval $ttl): string
+    public function createSessionCookie(#[SensitiveParameter] string $idToken, int|DateInterval $ttl): string
     {
         return (new GuzzleApiClientHandler($this->client, $this->projectId))
             ->handle(CreateSessionCookie::forIdToken($idToken, $this->tenantId, $ttl, $this->clock))
@@ -270,10 +271,10 @@ final readonly class ApiClient
         ;
     }
 
-    /**
-     * TODO: Make that this method can be emulated.
-     */
-    public function sendEmailActionLink(string $type, string $email, ActionCodeSettings $actionCodeSettings, ?string $locale = null, ?string $idToken = null): void
+/**
+ * TODO: Make that this method can be emulated.
+ */
+public function sendEmailActionLink(string $type, string $email, ActionCodeSettings $actionCodeSettings, ?string $locale = null, #[SensitiveParameter] ?string $idToken = null): void
     {
         $createAction = CreateActionLink::new($type, $email, $actionCodeSettings, $this->tenantId, $locale);
         $sendAction = new SendActionLink($createAction, $locale);

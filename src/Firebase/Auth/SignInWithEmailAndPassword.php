@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Auth;
 
+use SensitiveParameter;
+
 /**
  * @internal
  */
@@ -11,11 +13,11 @@ final class SignInWithEmailAndPassword implements IsTenantAware, SignIn
 {
     private ?string $tenantId = null;
 
-    private function __construct(private readonly string $email, private readonly string $clearTextPassword)
+    private function __construct(private readonly string $email, #[SensitiveParameter] private readonly string $clearTextPassword)
     {
     }
 
-    public static function fromValues(string $email, string $clearTextPassword): self
+    public static function fromValues(string $email, #[SensitiveParameter] string $clearTextPassword): self
     {
         return new self($email, $clearTextPassword);
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase;
 
+use SensitiveParameter;
+
 /**
  * @internal
- *
- * @todo Add #[SensitiveParameter] attributes once the minimum required PHP version is >=8.2
  */
 final class ServiceAccount
 {
@@ -19,6 +19,7 @@ final class ServiceAccount
         /** @var non-empty-string */
         public string $clientEmail,
         /** @var non-empty-string */
+        #[SensitiveParameter]
         public string $privateKey,
         /** @var non-empty-string|null */
         public ?string $clientId = null,

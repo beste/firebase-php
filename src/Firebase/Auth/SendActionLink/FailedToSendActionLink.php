@@ -10,6 +10,7 @@ use Kreait\Firebase\Auth\SendActionLink;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\RuntimeException;
 use Psr\Http\Message\ResponseInterface;
+use SensitiveParameter;
 
 final class FailedToSendActionLink extends RuntimeException implements AuthException
 {
@@ -17,7 +18,7 @@ final class FailedToSendActionLink extends RuntimeException implements AuthExcep
 
     private ?ResponseInterface $response = null;
 
-    public static function withActionAndResponse(SendActionLink $action, ResponseInterface $response): self
+    public static function withActionAndResponse(#[SensitiveParameter] SendActionLink $action, ResponseInterface $response): self
     {
         $fallbackMessage = 'Failed to send action link';
 

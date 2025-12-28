@@ -7,6 +7,7 @@ namespace Kreait\Firebase\Exception\Messaging;
 use Kreait\Firebase\Exception\HasErrors;
 use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Exception\RuntimeException;
+use SensitiveParameter;
 
 final class NotFound extends RuntimeException implements MessagingException
 {
@@ -21,7 +22,7 @@ final class NotFound extends RuntimeException implements MessagingException
      * @param non-empty-string $token
      * @param array<mixed> $errors
      */
-    public static function becauseTokenNotFound(string $token, array $errors = []): self
+    public static function becauseTokenNotFound(#[SensitiveParameter] string $token, array $errors = []): self
     {
         $message = <<<MESSAGE
 

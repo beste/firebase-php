@@ -12,6 +12,7 @@ use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
 use Kreait\Firebase\Auth\SendActionLink;
 use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
 use Psr\Http\Client\ClientExceptionInterface;
+use SensitiveParameter;
 
 use function array_filter;
 
@@ -31,7 +32,7 @@ final readonly class GuzzleApiClientHandler
     ) {
     }
 
-    public function handle(SendActionLink $action): void
+    public function handle(#[SensitiveParameter] SendActionLink $action): void
     {
         $request = $this->createRequest($action);
 
@@ -49,7 +50,7 @@ final readonly class GuzzleApiClientHandler
         }
     }
 
-    private function createRequest(SendActionLink $action): Request
+    private function createRequest(#[SensitiveParameter] SendActionLink $action): Request
     {
         $data = [
             'requestType' => $action->type(),

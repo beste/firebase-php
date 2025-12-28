@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Auth;
 
+use SensitiveParameter;
+
 /**
  * @internal
  */
@@ -11,11 +13,11 @@ final class SignInWithCustomToken implements IsTenantAware, SignIn
 {
     private ?string $tenantId = null;
 
-    private function __construct(private readonly string $customToken)
+    private function __construct(#[SensitiveParameter] private readonly string $customToken)
     {
     }
 
-    public static function fromValue(string $customToken): self
+    public static function fromValue(#[SensitiveParameter] string $customToken): self
     {
         return new self($customToken);
     }

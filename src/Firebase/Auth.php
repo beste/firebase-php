@@ -45,6 +45,7 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
+use SensitiveParameter;
 use Throwable;
 use Traversable;
 
@@ -172,7 +173,7 @@ final readonly class Auth implements Contract\Auth
         return $this->getUserRecordFromResponseAfterUserUpdate($response);
     }
 
-    public function createUserWithEmailAndPassword(string $email, string $password): UserRecord
+    public function createUserWithEmailAndPassword(string $email, #[SensitiveParameter] string $password): UserRecord
     {
         return $this->createUser(
             CreateUser::new()
@@ -227,7 +228,7 @@ final readonly class Auth implements Contract\Auth
         return $this->createUser(CreateUser::new());
     }
 
-    public function changeUserPassword(string $uid, string $newPassword): UserRecord
+    public function changeUserPassword(string $uid, #[SensitiveParameter] string $newPassword): UserRecord
     {
         return $this->updateUser($uid, UpdateUser::new()->withClearTextPassword($newPassword));
     }
@@ -386,7 +387,7 @@ final readonly class Auth implements Contract\Auth
         return $token;
     }
 
-    public function parseToken(string $tokenString): UnencryptedToken
+    public function parseToken(#[SensitiveParameter] string $tokenString): UnencryptedToken
     {
         try {
             $parsedToken = $this->jwtParser->parse($tokenString);
@@ -398,7 +399,7 @@ final readonly class Auth implements Contract\Auth
         return $parsedToken;
     }
 
-    public function verifyIdToken(Token|string $idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
+    public function verifyIdToken(#[SensitiveParameter] Token|string $idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
     {
         $verifier = $this->idTokenVerifier;
 
@@ -436,7 +437,7 @@ final readonly class Auth implements Contract\Auth
         return $verifiedToken;
     }
 
-    public function verifySessionCookie(string $sessionCookie, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
+    public function verifySessionCookie(#[SensitiveParameter] string $sessionCookie, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken
     {
         $verifier = $this->sessionCookieVerifier;
 
@@ -472,7 +473,7 @@ final readonly class Auth implements Contract\Auth
         return $verifiedSessionCookie;
     }
 
-    public function verifyPasswordResetCode(string $oobCode): string
+    public function verifyPasswordResetCode(#[SensitiveParameter] string $oobCode): string
     {
         $response = $this->client->verifyPasswordResetCode($oobCode);
         $responseData = Json::decode((string) $response->getBody(), true);
@@ -484,7 +485,7 @@ final readonly class Auth implements Contract\Auth
         return $responseData['email'];
     }
 
-    public function confirmPasswordReset(string $oobCode, string $newPassword, bool $invalidatePreviousSessions = true): string
+    public function confirmPasswordReset(#[SensitiveParameter] string $oobCode, #[SensitiveParameter] string $newPassword, bool $invalidatePreviousSessions = true): string
     {
         $newPassword = ClearTextPassword::fromString($newPassword)->value;
 
@@ -536,7 +537,7 @@ final readonly class Auth implements Contract\Auth
         return $this->client->handleSignIn(SignInWithCustomToken::fromValue($customToken->toString()));
     }
 
-    public function signInWithCustomToken(Token|string $token): SignInResult
+    public function signInWithCustomToken(#[SensitiveParameter] Token|string $token): SignInResult
     {
         $token = $token instanceof Token ? $token->toString() : $token;
 
@@ -545,12 +546,12 @@ final readonly class Auth implements Contract\Auth
         return $this->client->handleSignIn($action);
     }
 
-    public function signInWithRefreshToken(string $refreshToken): SignInResult
+    public function signInWithRefreshToken(#[SensitiveParameter] string $refreshToken): SignInResult
     {
         return $this->client->handleSignIn(SignInWithRefreshToken::fromValue($refreshToken));
     }
 
-    public function signInWithEmailAndPassword(string $email, string $clearTextPassword): SignInResult
+    public function signInWithEmailAndPassword(string $email, #[SensitiveParameter] string $clearTextPassword): SignInResult
     {
         $email = Email::fromString($email)->value;
         $clearTextPassword = ClearTextPassword::fromString($clearTextPassword)->value;
@@ -558,7 +559,7 @@ final readonly class Auth implements Contract\Auth
         return $this->client->handleSignIn(SignInWithEmailAndPassword::fromValues($email, $clearTextPassword));
     }
 
-    public function signInWithEmailAndOobCode(string $email, string $oobCode): SignInResult
+    public function signInWithEmailAndOobCode(string $email, #[SensitiveParameter] string $oobCode): SignInResult
     {
         $email = Email::fromString($email)->value;
 
@@ -581,7 +582,7 @@ final readonly class Auth implements Contract\Auth
         throw new FailedToSignIn('Failed to sign in anonymously: No ID token or UID available');
     }
 
-    public function signInWithIdpAccessToken(string $provider, Token|string $accessToken, ?string $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
+    public function signInWithIdpAccessToken(string $provider, #[SensitiveParameter] Token|string $accessToken, ?string $redirectUrl = null, #[SensitiveParameter] ?string $oauthTokenSecret = null, #[SensitiveParameter] ?string $linkingIdToken = null, #[SensitiveParameter] ?string $rawNonce = null): SignInResult
     {
         $accessToken = $accessToken instanceof Token ? $accessToken->toString() : $accessToken;
         $redirectUrl = trim($redirectUrl ?? 'http://localhost');
@@ -605,7 +606,7 @@ final readonly class Auth implements Contract\Auth
         return $this->client->handleSignIn($action);
     }
 
-    public function signInWithIdpIdToken(string $provider, Token|string $idToken, ?string $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult
+    public function signInWithIdpIdToken(string $provider, #[SensitiveParameter] Token|string $idToken, ?string $redirectUrl = null, #[SensitiveParameter] ?string $linkingIdToken = null, #[SensitiveParameter] ?string $rawNonce = null): SignInResult
     {
         $redirectUrl = trim(($redirectUrl ?? 'http://localhost'));
 
@@ -628,7 +629,7 @@ final readonly class Auth implements Contract\Auth
         return $this->client->handleSignIn($action);
     }
 
-    public function createSessionCookie(Token|string $idToken, DateInterval|int $ttl): string
+    public function createSessionCookie(#[SensitiveParameter] Token|string $idToken, DateInterval|int $ttl): string
     {
         if ($idToken instanceof Token) {
             $idToken = $idToken->toString();

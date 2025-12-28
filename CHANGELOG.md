@@ -5,6 +5,11 @@ If it saves you or your team time, please consider [sponsoring its development](
 
 ## [Unreleased]
 
+### Security improvements
+
+* Added `#[SensitiveParameter]` attributes to methods handling sensitive data (passwords, tokens, private keys) 
+  to prevent them from appearing in stack traces and error logs.
+
 ### Breaking changes
 
 * The SDK supports only actively supported PHP versions. As a result, support for PHP < 8.3 has been dropped;

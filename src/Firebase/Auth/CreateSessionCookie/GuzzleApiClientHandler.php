@@ -13,6 +13,7 @@ use Kreait\Firebase\Auth\CreateSessionCookie;
 use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
 use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
 use Psr\Http\Client\ClientExceptionInterface;
+use SensitiveParameter;
 
 use function array_filter;
 
@@ -32,7 +33,7 @@ final readonly class GuzzleApiClientHandler
     ) {
     }
 
-    public function handle(CreateSessionCookie $action): string
+    public function handle(#[SensitiveParameter] CreateSessionCookie $action): string
     {
         $request = $this->createRequest($action);
 
@@ -62,7 +63,7 @@ final readonly class GuzzleApiClientHandler
         throw new FailedToCreateSessionCookie($action, $response, 'The response did not contain a session cookie');
     }
 
-    private function createRequest(CreateSessionCookie $action): Request
+    private function createRequest(#[SensitiveParameter] CreateSessionCookie $action): Request
     {
         $data = [
             'idToken' => $action->idToken(),

@@ -10,11 +10,13 @@ use Kreait\Firebase\Auth\CreateSessionCookie;
 use Kreait\Firebase\Exception\AuthException;
 use Kreait\Firebase\Exception\RuntimeException;
 use Psr\Http\Message\ResponseInterface;
+use SensitiveParameter;
 use Throwable;
 
 final class FailedToCreateSessionCookie extends RuntimeException implements AuthException
 {
     public function __construct(
+        #[SensitiveParameter]
         private readonly CreateSessionCookie $action,
         private readonly ?ResponseInterface $response,
         ?string $message = null,
@@ -27,7 +29,7 @@ final class FailedToCreateSessionCookie extends RuntimeException implements Auth
         parent::__construct($message, $code, $previous);
     }
 
-    public static function withActionAndResponse(CreateSessionCookie $action, ResponseInterface $response): self
+    public static function withActionAndResponse(#[SensitiveParameter] CreateSessionCookie $action, ResponseInterface $response): self
     {
         $fallbackMessage = 'Failed to create session cookie';
 

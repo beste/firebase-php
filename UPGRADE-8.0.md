@@ -13,6 +13,7 @@ from 7.x to 8.0.
   and has been removed from the SDK.
 * Realtime Database objects considered value objects have been made final and readonly
 * Method arguments are now fully type-hinted
+* Sensitive data parameters now use `#[SensitiveParameter]` attributes to prevent exposure in stack traces.
 
 ### Type simplifications to reduce runtime overhead
 
@@ -21,6 +22,16 @@ For example, methods that previously accepted `Stringable|string` now only accep
 
 The union types were originally added for convenience, but introduced overhead when processing arguments, requiring
 runtime type conversion and validation that could be replaced with static analysis.
+
+### Sensitive Parameter Protection
+
+The SDK now leverages PHP 8.2+ `#[SensitiveParameter]` attributes to enhance security by preventing sensitive data
+from appearing in stack traces and error logs. This affects methods that handle:
+
+- Passwords and authentication credentials
+- JWT tokens (ID tokens, refresh tokens, custom tokens)
+- API keys and service account data
+- One-time codes and session cookies
 
 **See the complete list of breaking changes below** to identify any adjustments needed. Most changes should (hopefully)
 be trivial (e.g., passing `$user->uid` instead of `$user`). Run your test suite to catch any breaking changes.

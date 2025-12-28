@@ -29,6 +29,7 @@ use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Request\UpdateUser;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
+use SensitiveParameter;
 use Traversable;
 
 /**
@@ -104,7 +105,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function createUserWithEmailAndPassword(string $email, string $password): UserRecord;
+    public function createUserWithEmailAndPassword(string $email, #[SensitiveParameter] string $password): UserRecord;
 
     /**
      * @param non-empty-string $email
@@ -146,7 +147,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function changeUserPassword(string $uid, string $newPassword): UserRecord;
+    public function changeUserPassword(string $uid, #[SensitiveParameter] string $newPassword): UserRecord;
 
     /**
      * @param non-empty-string $uid
@@ -291,7 +292,7 @@ interface Auth
     /**
      * @param non-empty-string $tokenString
      */
-    public function parseToken(string $tokenString): UnencryptedToken;
+    public function parseToken(#[SensitiveParameter] string $tokenString): UnencryptedToken;
 
     /**
      * Creates a new Firebase session cookie with the given lifetime.
@@ -304,7 +305,7 @@ interface Auth
      * @throws InvalidArgumentException if the token or TTL is invalid
      * @throws FailedToCreateSessionCookie
      */
-    public function createSessionCookie(Token|string $idToken, DateInterval|int $ttl): string;
+    public function createSessionCookie(#[SensitiveParameter] Token|string $idToken, DateInterval|int $ttl): string;
 
     /**
      * Verifies a JWT auth token.
@@ -326,7 +327,7 @@ interface Auth
      * @throws FailedToVerifyToken if the token could not be verified
      * @throws RevokedIdToken if the token has been revoked
      */
-    public function verifyIdToken(Token|string $idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken;
+    public function verifyIdToken(#[SensitiveParameter] Token|string $idToken, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken;
 
     /**
      * Verifies a JWT session cookie.
@@ -346,7 +347,7 @@ interface Auth
      * @throws FailedToVerifySessionCookie
      * @throws RevokedSessionCookie
      */
-    public function verifySessionCookie(string $sessionCookie, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken;
+    public function verifySessionCookie(#[SensitiveParameter] string $sessionCookie, bool $checkIfRevoked = false, ?int $leewayInSeconds = null): UnencryptedToken;
 
     /**
      * Verifies the given password reset code and returns the associated user's email address.
@@ -361,7 +362,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function verifyPasswordResetCode(string $oobCode): string;
+    public function verifyPasswordResetCode(#[SensitiveParameter] string $oobCode): string;
 
     /**
      * Applies the password reset requested via the given OOB code and returns the associated user's email address.
@@ -379,7 +380,7 @@ interface Auth
      * @throws Exception\AuthException
      * @throws Exception\FirebaseException
      */
-    public function confirmPasswordReset(string $oobCode, string $newPassword, bool $invalidatePreviousSessions = true): string;
+    public function confirmPasswordReset(#[SensitiveParameter] string $oobCode, #[SensitiveParameter] string $newPassword, bool $invalidatePreviousSessions = true): string;
 
     /**
      * Revokes all refresh tokens for the specified user identified by the uid provided.
@@ -416,14 +417,14 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithCustomToken(Token|string $token): SignInResult;
+    public function signInWithCustomToken(#[SensitiveParameter] Token|string $token): SignInResult;
 
     /**
      * @param non-empty-string $refreshToken
      *
      * @throws FailedToSignIn
      */
-    public function signInWithRefreshToken(string $refreshToken): SignInResult;
+    public function signInWithRefreshToken(#[SensitiveParameter] string $refreshToken): SignInResult;
 
     /**
      * @param non-empty-string $email
@@ -431,7 +432,7 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithEmailAndPassword(string $email, string $clearTextPassword): SignInResult;
+    public function signInWithEmailAndPassword(string $email, #[SensitiveParameter] string $clearTextPassword): SignInResult;
 
     /**
      * @param non-empty-string $email
@@ -439,7 +440,7 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithEmailAndOobCode(string $email, string $oobCode): SignInResult;
+    public function signInWithEmailAndOobCode(string $email, #[SensitiveParameter] string $oobCode): SignInResult;
 
     /**
      * @throws FailedToSignIn
@@ -458,7 +459,7 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpAccessToken(string $provider, Token|string $accessToken, ?string $redirectUrl = null, ?string $oauthTokenSecret = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpAccessToken(string $provider, #[SensitiveParameter] Token|string $accessToken, ?string $redirectUrl = null, #[SensitiveParameter] ?string $oauthTokenSecret = null, #[SensitiveParameter] ?string $linkingIdToken = null, #[SensitiveParameter] ?string $rawNonce = null): SignInResult;
 
     /**
      * @param non-empty-string $provider
@@ -469,5 +470,5 @@ interface Auth
      *
      * @throws FailedToSignIn
      */
-    public function signInWithIdpIdToken(string $provider, Token|string $idToken, ?string $redirectUrl = null, ?string $linkingIdToken = null, ?string $rawNonce = null): SignInResult;
+    public function signInWithIdpIdToken(string $provider, #[SensitiveParameter] Token|string $idToken, ?string $redirectUrl = null, #[SensitiveParameter] ?string $linkingIdToken = null, #[SensitiveParameter] ?string $rawNonce = null): SignInResult;
 }

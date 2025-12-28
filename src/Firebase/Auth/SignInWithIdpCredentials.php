@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Auth;
 
+use SensitiveParameter;
+
 /**
  * @internal
  */
@@ -27,7 +29,7 @@ final class SignInWithIdpCredentials implements IsTenantAware, SignIn
     {
     }
 
-    public static function withAccessToken(string $provider, string $accessToken): self
+    public static function withAccessToken(string $provider, #[SensitiveParameter] string $accessToken): self
     {
         $instance = new self($provider);
         $instance->accessToken = $accessToken;
@@ -35,7 +37,7 @@ final class SignInWithIdpCredentials implements IsTenantAware, SignIn
         return $instance;
     }
 
-    public static function withAccessTokenAndOauthTokenSecret(string $provider, string $accessToken, string $oauthTokenSecret): self
+    public static function withAccessTokenAndOauthTokenSecret(string $provider, #[SensitiveParameter] string $accessToken, #[SensitiveParameter] string $oauthTokenSecret): self
     {
         $instance = self::withAccessToken($provider, $accessToken);
         $instance->oauthTokenSecret = $oauthTokenSecret;
@@ -43,7 +45,7 @@ final class SignInWithIdpCredentials implements IsTenantAware, SignIn
         return $instance;
     }
 
-    public static function withIdToken(string $provider, string $idToken): self
+    public static function withIdToken(string $provider, #[SensitiveParameter] string $idToken): self
     {
         $instance = new self($provider);
         $instance->idToken = $idToken;
@@ -51,7 +53,7 @@ final class SignInWithIdpCredentials implements IsTenantAware, SignIn
         return $instance;
     }
 
-    public function withRawNonce(string $rawNonce): self
+    public function withRawNonce(#[SensitiveParameter] string $rawNonce): self
     {
         $instance = clone $this;
         $instance->rawNonce = $rawNonce;
@@ -59,7 +61,7 @@ final class SignInWithIdpCredentials implements IsTenantAware, SignIn
         return $instance;
     }
 
-    public function withLinkingIdToken(string $idToken): self
+    public function withLinkingIdToken(#[SensitiveParameter] string $idToken): self
     {
         $instance = clone $this;
         $instance->linkingIdToken = $idToken;
