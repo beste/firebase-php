@@ -1,7 +1,13 @@
 {
     "name": "kreait/firebase-php",
     "description": "Firebase Admin SDK",
-    "keywords": ["firebase", "google", "sdk", "api", "database"],
+    "keywords": [
+        "api",
+        "database",
+        "firebase",
+        "google",
+        "sdk"
+    ],
     "type": "library",
     "homepage": "https://github.com/kreait/firebase-php",
     "license": "MIT",
@@ -69,7 +75,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Kreait\\Firebase\\": "src/Firebase"
+            "Kreait\\Firebase\\": "src"
         }
     },
     "autoload-dev": {

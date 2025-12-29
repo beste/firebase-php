@@ -14,7 +14,7 @@ parameters:
 			# Needed for backward compatibility
 			message: '#VersionNumber::fromValue\(\)#'
 			identifier: missingType.parameter
-			path: src/Firebase/RemoteConfig/VersionNumber.php
+			path: src/RemoteConfig/VersionNumber.php
 		-
 			# Needed since introducing phpstan/strict-rules, will revisit for next major release
 			message: '#Dynamic call to static method PHPUnit#'

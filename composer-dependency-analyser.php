@@ -10,5 +10,5 @@ return (new Configuration())
     ->addPathToScan(__DIR__.'/src', false)
     ->addPathToScan(__DIR__.'/tests', true)
     ->ignoreErrorsOnPackage('google/cloud-firestore', [ErrorType::DEV_DEPENDENCY_IN_PROD])
-    ->ignoreErrorsOnExtensionAndPath('ext-curl', 'src/Firebase/Messaging/RequestFactory.php', [ErrorType::SHADOW_DEPENDENCY]) // guarded with extension_loaded
+    ->ignoreErrorsOnExtensionAndPath('ext-curl', 'src/Messaging/RequestFactory.php', [ErrorType::SHADOW_DEPENDENCY]) // guarded with extension_loaded
 ;

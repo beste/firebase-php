@@ -21,7 +21,7 @@
 
     <source ignoreIndirectDeprecations="true">
         <include>
-            <directory>src/Firebase</directory>
+            <directory>src</directory>
         </include>
     </source>
 
