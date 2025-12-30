@@ -28,6 +28,9 @@ final class TopicTest extends TestCase
         Topic::fromValue($value);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function valueProvider(): Iterator
     {
         yield 'no slashes' => ['foo', 'foo'];
@@ -36,6 +39,9 @@ final class TopicTest extends TestCase
         yield 'with topic prefix' => ['foo', '/topic/foo'];
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function invalidValueProvider(): Iterator
     {
         yield '$' => ['$'];

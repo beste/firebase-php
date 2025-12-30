@@ -31,6 +31,9 @@ final class UrlBuilderTest extends UnitTestCase
         UrlBuilder::create($url);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function invalidUrls(): Iterator
     {
         yield 'wrong scheme' => ['ftp://example.com'];
@@ -62,6 +65,9 @@ final class UrlBuilderTest extends UnitTestCase
         $this->assertSame($expected, UrlBuilder::create($baseUrl)->getUrl($path, $queryParams));
     }
 
+    /**
+     * @return Iterator<array<int, (array<mixed> | string)>>
+     */
     public static function realUrls(): Iterator
     {
         $baseUrl = 'https://project.region.example.com';
@@ -103,6 +109,9 @@ final class UrlBuilderTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @return Iterator<array<int, (array<mixed> | string)>>
+     */
     public static function emulatedUrls(): Iterator
     {
         $namespace = 'namespace';

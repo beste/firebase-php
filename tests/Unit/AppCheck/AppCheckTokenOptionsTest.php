@@ -42,6 +42,9 @@ final class AppCheckTokenOptionsTest extends UnitTestCase
         ]);
     }
 
+    /**
+     * @return Iterator<(array<int, int> | array<int, null>)>
+     */
     public static function validOptions(): Iterator
     {
         yield 'null' => [null];
@@ -50,6 +53,9 @@ final class AppCheckTokenOptionsTest extends UnitTestCase
         yield 'max-boundary' => [60480];
     }
 
+    /**
+     * @return Iterator<array<int, int>>
+     */
     public static function invalidOptions(): Iterator
     {
         yield 'too-small' => [1799];

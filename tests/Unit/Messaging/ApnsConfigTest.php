@@ -116,6 +116,9 @@ final class ApnsConfigTest extends UnitTestCase
         );
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, mixed>>, mixed>>
+     */
     public static function validDataProvider(): Iterator
     {
         yield 'full_config' => [[

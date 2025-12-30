@@ -45,6 +45,9 @@ final class SignInResultTest extends UnitTestCase
         $this->assertSame('some-id', $result->firebaseUserId());
     }
 
+    /**
+     * @return Iterator<(array<int, array<string, int>> | array<int, array<string, string>>)>
+     */
     public static function fullResponse(): Iterator
     {
         yield 'snake_cased' => [[

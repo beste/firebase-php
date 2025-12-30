@@ -67,6 +67,9 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $this->assertInstanceOf($expectedClass, $converted);
     }
 
+    /**
+     * @return Iterator<array<array<int, mixed>, mixed>>
+     */
     public static function exceptions(): Iterator
     {
         yield 'connection error' => [new ConnectException('Connection Failed', new Request('GET', 'https://example.com')), ApiConnectionFailed::class];

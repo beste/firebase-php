@@ -15,6 +15,7 @@ return RectorConfig::configure()
     ->withPreparedSets(
         deadCode: true,
         typeDeclarations: true,
+        # typeDeclarationDocblocks: true, # Adds some incorrect doc blocks in interface implementation
         privatization: true,
         earlyReturn: true,
         phpunitCodeQuality: true,

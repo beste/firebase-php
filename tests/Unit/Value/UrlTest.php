@@ -32,11 +32,17 @@ final class UrlTest extends TestCase
         Url::fromString($value);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function validValues(): Iterator
     {
         yield 'string' => ['https://example.com'];
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function invalidValues(): Iterator
     {
         yield 'https:///example.com' => ['https:///example.com'];

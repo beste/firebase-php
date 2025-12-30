@@ -49,6 +49,9 @@ final class SetApnsPushTypeIfNeededTest extends TestCase
         $this->assertSame($given, $processed);
     }
 
+    /**
+     * @return Iterator<array<array<int, mixed>, mixed>>
+     */
     public static function provideMessagesWithExpectedPushType(): Iterator
     {
         yield 'message data at root level -> background' => [

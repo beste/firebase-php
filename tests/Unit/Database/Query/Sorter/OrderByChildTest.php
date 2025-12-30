@@ -31,6 +31,9 @@ final class OrderByChildTest extends UnitTestCase
         $this->assertSame($expected, $sut->modifyValue($given));
     }
 
+    /**
+     * @return Iterator<array<array<int, mixed>, mixed>>
+     */
     public static function valueProvider(): Iterator
     {
         yield 'scalar' => [

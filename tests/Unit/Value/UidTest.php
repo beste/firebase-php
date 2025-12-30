@@ -30,11 +30,17 @@ final class UidTest extends TestCase
         Uid::fromString($uid);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function validValues(): Iterator
     {
         yield 'uid' => ['uid'];
     }
 
+    /**
+     * @return Iterator<array<int, lowercase-string>>
+     */
     public static function invalidValues(): Iterator
     {
         yield 'empty string' => [''];

@@ -34,6 +34,9 @@ final class UpdateUserTest extends TestCase
         UpdateUser::withProperties([])->jsonSerialize();
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, mixed>>, mixed>>
+     */
     public static function propertiesProvider(): Iterator
     {
         // All non-mentioned attributes are already tested through the CreateUserTest

@@ -23,6 +23,9 @@ final class EndBeforeTest extends UnitTestCase
         $this->assertStringContainsString($expected, (string) $filter->modifyUri(new Uri('https://example.com')));
     }
 
+    /**
+     * @return Iterator<(array<int, int> | array<int, string>)>
+     */
     public static function valueProvider(): Iterator
     {
         yield 'int' => [1, 'endBefore=1'];

@@ -171,6 +171,9 @@ final class MessagingTest extends IntegrationTestCase
         $this->messaging->send($message);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function reservedKeywordsThatStillAreAccepted(): Iterator
     {
         yield 'notification' => ['notification'];

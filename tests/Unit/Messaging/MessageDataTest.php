@@ -50,6 +50,9 @@ final class MessageDataTest extends TestCase
         $this->assertSame($data->toArray(), $output);
     }
 
+    /**
+     * @return Iterator<array<int, array<string, string>>>
+     */
     public static function validData(): Iterator
     {
         yield 'UTF-8 string' => [
@@ -57,6 +60,9 @@ final class MessageDataTest extends TestCase
         ];
     }
 
+    /**
+     * @return Iterator<(array<int, array<bool>> | array<int, array<string, string>>)>
+     */
     public static function invalidData(): Iterator
     {
         // @see https://github.com/kreait/firebase-php/issues/441

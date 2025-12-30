@@ -38,6 +38,9 @@ final class OrderByValueTest extends UnitTestCase
         $this->assertSame($expected, $this->sorter->modifyValue($given));
     }
 
+    /**
+     * @return Iterator<(array<int, array<string, int>> | array<int, string>)>
+     */
     public static function valueProvider(): Iterator
     {
         yield 'scalar' => [

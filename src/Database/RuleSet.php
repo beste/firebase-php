@@ -96,6 +96,9 @@ final readonly class RuleSet implements JsonSerializable
         return $this->rules;
     }
 
+    /**
+     * @return array<string, array<mixed>>
+     */
     public function jsonSerialize(): array
     {
         return $this->rules;

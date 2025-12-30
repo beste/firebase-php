@@ -77,6 +77,9 @@ final class AndroidConfigTest extends UnitTestCase
         ]);
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, mixed>>, mixed>>
+     */
     public static function validDataProvider(): Iterator
     {
         yield 'full_config' => [[
@@ -92,6 +95,9 @@ final class AndroidConfigTest extends UnitTestCase
         ]];
     }
 
+    /**
+     * @return Iterator<(array<int, int> | array<int, null> | array<int, string>)>
+     */
     public static function validTtlValues(): Iterator
     {
         yield 'positive int' => [1];
@@ -103,6 +109,9 @@ final class AndroidConfigTest extends UnitTestCase
         yield 'null (#719)' => [null];
     }
 
+    /**
+     * @return Iterator<(array<int, int> | array<int, string>)>
+     */
     public static function invalidTtlValues(): Iterator
     {
         yield 'wrong suffix' => ['1m'];

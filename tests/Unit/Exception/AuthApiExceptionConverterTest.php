@@ -103,6 +103,9 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
         $this->assertInstanceOf($expectedClass, $convertedError);
     }
 
+    /**
+     * @return Iterator<array<array<int, mixed>, mixed>>
+     */
     public static function requestErrors(): Iterator
     {
         yield 'credentials mismatch' => ['CREDENTIALS_MISMATCH', CredentialsMismatch::class];

@@ -85,6 +85,9 @@ final class WebPushConfigTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, mixed>>, mixed>>
+     */
     public static function validHeaders(): Iterator
     {
         yield 'positive int ttl' => [['TTL' => 1]];
@@ -92,6 +95,9 @@ final class WebPushConfigTest extends UnitTestCase
         yield 'null (#719)' => [['TTL' => null]];
     }
 
+    /**
+     * @return Iterator<(array<int, array<string, int>> | array<int, array<string, string>>)>
+     */
     public static function invalidHeaders(): Iterator
     {
         yield 'negative int ttl' => [['TTL' => -1]];

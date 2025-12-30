@@ -30,11 +30,17 @@ final class EmailTest extends TestCase
         Email::fromString($value);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function validValues(): Iterator
     {
         yield 'user@example.com' => ['user@example.com'];
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function invalidValues(): Iterator
     {
         yield 'empty string' => [''];

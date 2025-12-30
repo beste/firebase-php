@@ -30,11 +30,17 @@ final class ClearTextPasswordTest extends TestCase
         ClearTextPassword::fromString($value);
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function validValues(): Iterator
     {
         yield 'long enough' => ['long enough'];
     }
 
+    /**
+     * @return Iterator<array<int, string>>
+     */
     public static function invalidValues(): Iterator
     {
         yield 'empty string' => [''];

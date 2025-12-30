@@ -51,6 +51,9 @@ final class SetApnsContentAvailableIfNeededTest extends TestCase
         $this->assertSame($given, $processed);
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, array<string, mixed>>>, mixed>>
+     */
     public static function provideMessagesWithExpectedContentAvailable(): Iterator
     {
         yield 'message data at root level' => [

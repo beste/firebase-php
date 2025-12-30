@@ -33,6 +33,9 @@ final class CreateUserTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $request->jsonSerialize());
     }
 
+    /**
+     * @return Iterator<array<array<int, array<string, mixed>>, mixed>>
+     */
     public static function propertiesProvider(): Iterator
     {
         $given = ['uid' => 'some-uid'];

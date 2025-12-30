@@ -31,6 +31,9 @@ final class RegistrationTokensTest extends TestCase
         $this->assertEqualsCanonicalizing(['foo', 'foo'], $tokens->asStrings());
     }
 
+    /**
+     * @return Iterator<array<array<int, mixed>, mixed>>
+     */
     public static function validValuesWithExpectedCounts(): Iterator
     {
         $foo = RegistrationToken::fromValue('foo');

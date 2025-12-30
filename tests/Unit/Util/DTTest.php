@@ -46,6 +46,9 @@ final class DTTest extends TestCase
         DT::toUTCDateTimeImmutable($value);
     }
 
+    /**
+     * @return Iterator<array<int, (DateTimeImmutable | int | string)>>
+     */
     public static function validFixedValues(): Iterator
     {
         yield 'seconds' => ['1234567890.000000', 1_234_567_890];
@@ -56,6 +59,9 @@ final class DTTest extends TestCase
         yield 'timezone_2' => ['345328496.789012', new DateTimeImmutable('10.12.1980 12:34:56.789012', new DateTimeZone('America/Los_Angeles'))];
     }
 
+    /**
+     * @return Iterator<array<int, (bool | DateTimeImmutable | int | string | null)>>
+     */
     public static function validVariableValues(): Iterator
     {
         yield 'null' => [null];
@@ -69,6 +75,9 @@ final class DTTest extends TestCase
         yield 'now in Bangkok' => [new DateTimeImmutable('now', new DateTimeZone('Asia/Bangkok'))];
     }
 
+    /**
+     * @return Iterator<array<int, (stdClass | string)>>
+     */
     public static function invalidValues(): Iterator
     {
         yield 'string' => ['foo'];

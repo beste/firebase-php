@@ -36,6 +36,9 @@ final class ValidatedActionSettingsTest extends TestCase
         $this->assertEmpty(ValidatedActionCodeSettings::empty()->toArray());
     }
 
+    /**
+     * @return Iterator<(array<int, array<string, bool>> | array<int, array<string, string>>)>
+     */
     public static function validInputs(): Iterator
     {
         $continueUrl = 'https://example.com';

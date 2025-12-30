@@ -145,6 +145,9 @@ final class CloudMessageTest extends TestCase
         $this->assertSame($serializedFromObject, $serializedFromArray);
     }
 
+    /**
+     * @return Iterator<array<int, array<string, string>>>
+     */
     public static function multipleTargets(): Iterator
     {
         yield 'condition and token' => [[

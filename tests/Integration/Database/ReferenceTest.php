@@ -216,6 +216,9 @@ final class ReferenceTest extends DatabaseTestCase
         $this->assertSame($value, $ref->getValue());
     }
 
+    /**
+     * @return Iterator<(array<int, array<string, string>> | array<int, bool> | array<int, int> | array<int, string>)>
+     */
     public static function validValues(): Iterator
     {
         yield 'string' => ['string', 'value'];

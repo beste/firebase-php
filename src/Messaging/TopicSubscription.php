@@ -33,6 +33,13 @@ final readonly class TopicSubscription implements JsonSerializable
         return $this->subscribedAt;
     }
 
+    /**
+     * @return array{
+     *     topic: non-empty-string,
+     *     registration_token: non-empty-string,
+     *     subscribed_at: string
+     * }
+     */
     public function jsonSerialize(): array
     {
         return [
