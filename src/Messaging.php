@@ -164,7 +164,7 @@ final readonly class Messaging implements Contract\Messaging
     public function unsubscribeFromTopics(array $topics, RegistrationTokens|RegistrationToken|array|string $registrationTokenOrTokens): array
     {
         $topics = array_map(
-            static fn($topic): Topic => $topic instanceof Topic ? $topic : Topic::fromValue($topic),
+            static fn(Topic|string $topic): Topic => $topic instanceof Topic ? $topic : Topic::fromValue($topic),
             $topics,
         );
 
