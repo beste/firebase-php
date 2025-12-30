@@ -188,7 +188,7 @@ final readonly class Auth implements Contract\Auth
 
         $response = $this->client->getUserByEmail($email);
 
-        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
+        $userRecord = $this->getFirstUserRecordFromUserListResponse($response);
 
         if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with email '{$email}' found.");
@@ -201,7 +201,7 @@ final readonly class Auth implements Contract\Auth
     {
         $response = $this->client->getUserByPhoneNumber($phoneNumber);
 
-        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
+        $userRecord = $this->getFirstUserRecordFromUserListResponse($response);
 
         if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with phone number '{$phoneNumber}' found.");
@@ -214,7 +214,7 @@ final readonly class Auth implements Contract\Auth
     {
         $response = $this->client->getUserByProviderUid($providerId, $providerUid);
 
-        $userRecord = self::getFirstUserRecordFromUserListResponse($response);
+        $userRecord = $this->getFirstUserRecordFromUserListResponse($response);
 
         if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with federated account ID '{$providerId}:{$providerUid}' found.");
@@ -677,7 +677,7 @@ final readonly class Auth implements Contract\Auth
         return $tokenAuthenticatedAt->getTimestamp() < $validSince->getTimestamp();
     }
 
-    private static function getFirstUserRecordFromUserListResponse(ResponseInterface $response): ?UserRecord
+    private function getFirstUserRecordFromUserListResponse(ResponseInterface $response): ?UserRecord
     {
         /** @var array{users?: list<UserRecordResponseShape>} $data */
         $data = Json::decode((string) $response->getBody(), true);

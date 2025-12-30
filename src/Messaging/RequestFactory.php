@@ -20,7 +20,7 @@ final readonly class RequestFactory
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
     ) {
-        $this->environmentSupportsHTTP2 = self::environmentSupportsHTTP2();
+        $this->environmentSupportsHTTP2 = $this->environmentSupportsHTTP2();
     }
 
     public function createRequest(Message $message, string $projectId, bool $validateOnly): RequestInterface
@@ -38,7 +38,7 @@ final readonly class RequestFactory
 
         $payload = ['message' => $message];
 
-        if ($validateOnly === true) {
+        if ($validateOnly) {
             $payload['validate_only'] = true;
         }
 
@@ -58,7 +58,7 @@ final readonly class RequestFactory
      *
      * @codeCoverageIgnore
      */
-    private static function environmentSupportsHTTP2(): bool
+    private function environmentSupportsHTTP2(): bool
     {
         if (!extension_loaded('curl')) {
             return false;
