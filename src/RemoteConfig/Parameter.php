@@ -167,7 +167,7 @@ readonly class Parameter implements JsonSerializable
 
         $array = [];
 
-        if ($this->defaultValue !== null) {
+        if ($this->defaultValue instanceof ParameterValue) {
             $array['defaultValue'] = $this->defaultValue->toArray();
         }
 

@@ -27,7 +27,7 @@ final class SetApnsContentAvailableIfNeeded
 
         $notification = $this->getNotification($payload);
         $apnsConfig = $this->getApnsConfig($payload);
-        $isAlert = $notification !== null || $apnsConfig->isAlert();
+        $isAlert = $notification instanceof Notification || $apnsConfig->isAlert();
 
         if ($isAlert) {
             return $message;

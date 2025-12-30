@@ -88,11 +88,11 @@ final readonly class ParameterValue implements JsonSerializable
             return ['useInAppDefault' => $this->useInAppDefault];
         }
 
-        if ($this->personalizationValue !== null) {
+        if ($this->personalizationValue instanceof PersonalizationValue) {
             return ['personalizationValue' => $this->personalizationValue->toArray()];
         }
 
-        if ($this->rolloutValue !== null) {
+        if ($this->rolloutValue instanceof RolloutValue) {
             return ['rolloutValue' => $this->rolloutValue->toArray()];
         }
 

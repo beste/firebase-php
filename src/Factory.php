@@ -294,7 +294,7 @@ final class Factory
 
     public function withClock(object $clock): self
     {
-        if (!$clock instanceof ClockInterface) {
+        if (!($clock instanceof ClockInterface)) {
             $clock = WrappingClock::wrapping($clock);
         }
 
@@ -312,7 +312,7 @@ final class Factory
         $projectId = $this->getProjectId();
         $serviceAccount = $this->getServiceAccount();
 
-        if ($serviceAccount === null) {
+        if (!($serviceAccount instanceof ServiceAccount)) {
             throw new RuntimeException('Unable to use AppCheck without credentials');
         }
 
@@ -493,7 +493,7 @@ final class Factory
 
         $credentials = $this->getGoogleAuthTokenCredentials();
 
-        if (!$credentials instanceof FetchAuthTokenInterface) {
+        if (!($credentials instanceof FetchAuthTokenInterface)) {
             throw new RuntimeException('Unable to create an API client without credentials');
         }
 
@@ -527,7 +527,7 @@ final class Factory
         ];
 
         $credentials = $this->getGoogleAuthTokenCredentials();
-        if ($credentials !== null) {
+        if ($credentials instanceof FetchAuthTokenInterface) {
             $config['credentialsFetcher'] = $credentials;
         }
 
@@ -612,7 +612,7 @@ final class Factory
 
     private function getServiceAccount(): ?ServiceAccount
     {
-        if ($this->serviceAccount !== null) {
+        if ($this->serviceAccount instanceof ServiceAccount) {
             return $this->serviceAccount;
         }
 
@@ -633,7 +633,7 @@ final class Factory
 
         $serviceAccount = $this->getServiceAccount();
 
-        if ($serviceAccount !== null) {
+        if ($serviceAccount instanceof ServiceAccount) {
             return $this->googleAuthTokenCredentials = new ServiceAccountCredentials(
                 self::API_CLIENT_SCOPES,
                 $this->normalizeServiceAccount($serviceAccount),

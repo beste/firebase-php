@@ -23,6 +23,7 @@ use Kreait\Firebase\Exception\Auth\UserNotFound;
 use Kreait\Firebase\Exception\Auth\WeakPassword;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 use function mb_stripos;
@@ -58,7 +59,7 @@ final readonly class AuthApiExceptionConverter
         $code = $e->getCode();
         $response = $e->getResponse();
 
-        if ($response !== null) {
+        if ($response instanceof ResponseInterface) {
             $message = $this->responseParser->getErrorReasonFromResponse($response);
             $code = $response->getStatusCode();
         }

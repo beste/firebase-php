@@ -105,7 +105,7 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
      */
     public function toArray(): array
     {
-        $continueUrl = $this->continueUrl !== null ? (string) $this->continueUrl : null;
+        $continueUrl = $this->continueUrl instanceof UriInterface ? (string) $this->continueUrl : null;
 
         return array_filter([
             'continueUrl' => $continueUrl,

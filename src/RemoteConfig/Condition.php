@@ -101,7 +101,7 @@ class Condition implements JsonSerializable
             'expression' => $this->expression,
         ];
 
-        if ($this->tagColor !== null) {
+        if ($this->tagColor instanceof TagColor) {
             $array['tagColor'] = $this->tagColor->value();
         }
 

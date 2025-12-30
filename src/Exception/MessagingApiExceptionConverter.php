@@ -88,7 +88,7 @@ final readonly class MessagingApiExceptionConverter
                 $convertedError = new QuotaExceeded($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
-                if ($retryAfter !== null) {
+                if ($retryAfter instanceof DateTimeImmutable) {
                     $convertedError = $convertedError->withRetryAfter($retryAfter);
                 }
 
@@ -122,7 +122,7 @@ final readonly class MessagingApiExceptionConverter
                 $convertedError = new ServerUnavailable($message, previous: $previous);
                 $retryAfter = $this->getRetryAfter($response);
 
-                if ($retryAfter !== null) {
+                if ($retryAfter instanceof DateTimeImmutable) {
                     $convertedError = $convertedError->withRetryAfter($retryAfter);
                 }
 
@@ -141,7 +141,7 @@ final readonly class MessagingApiExceptionConverter
     {
         $response = $e->getResponse();
 
-        if ($response !== null) {
+        if ($response instanceof ResponseInterface) {
             return $this->convertResponse($response, $e);
         }
 

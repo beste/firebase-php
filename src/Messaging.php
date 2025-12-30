@@ -62,7 +62,7 @@ final readonly class Messaging implements Contract\Messaging
 
         $error = $report->error();
 
-        if ($error !== null) {
+        if ($error instanceof MessagingException) {
             throw $error;
         }
 

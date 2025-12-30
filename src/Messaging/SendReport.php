@@ -53,17 +53,17 @@ final class SendReport
 
     public function isSuccess(): bool
     {
-        return $this->error === null;
+        return !($this->error instanceof MessagingException);
     }
 
     public function isFailure(): bool
     {
-        return $this->error !== null;
+        return $this->error instanceof MessagingException;
     }
 
     public function messageTargetWasInvalid(): bool
     {
-        $errorMessage = $this->error !== null ? $this->error->getMessage() : '';
+        $errorMessage = $this->error instanceof MessagingException ? $this->error->getMessage() : '';
 
         return preg_match('/((not.+valid)|invalid).+token/i', $errorMessage) === 1;
     }

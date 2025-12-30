@@ -13,6 +13,7 @@ use Kreait\Firebase\Exception\Database\PermissionDenied;
 use Kreait\Firebase\Exception\Database\PreconditionFailed;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -46,7 +47,7 @@ final readonly class DatabaseApiExceptionConverter
         $code = $e->getCode();
         $response = $e->getResponse();
 
-        if ($response !== null) {
+        if ($response instanceof ResponseInterface) {
             $message = $this->responseParser->getErrorReasonFromResponse($response);
             $code = $response->getStatusCode();
         }

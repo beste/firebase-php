@@ -190,7 +190,7 @@ final readonly class Auth implements Contract\Auth
 
         $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if ($userRecord === null) {
+        if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with email '{$email}' found.");
         }
 
@@ -203,7 +203,7 @@ final readonly class Auth implements Contract\Auth
 
         $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if ($userRecord === null) {
+        if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with phone number '{$phoneNumber}' found.");
         }
 
@@ -216,7 +216,7 @@ final readonly class Auth implements Contract\Auth
 
         $userRecord = self::getFirstUserRecordFromUserListResponse($response);
 
-        if ($userRecord === null) {
+        if (!($userRecord instanceof UserRecord)) {
             throw new UserNotFound("No user with federated account ID '{$providerId}:{$providerUid}' found.");
         }
 
@@ -364,13 +364,13 @@ final readonly class Auth implements Contract\Auth
 
     public function createCustomToken(string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken
     {
-        if ($this->tokenGenerator === null) {
+        if (!($this->tokenGenerator instanceof CustomTokenViaGoogleCredentials)) {
             throw new AuthError('Custom Token Generation is disabled because the current credentials do not permit it');
         }
 
         $uid = Uid::fromString($uid)->value;
 
-        if (!$ttl instanceof DateInterval) {
+        if (!($ttl instanceof DateInterval)) {
             try {
                 $ttl = new DateInterval(sprintf('PT%sS', $ttl));
             } catch (Throwable $e) {
@@ -663,7 +663,7 @@ final readonly class Auth implements Contract\Auth
         // The timestamp, in seconds, which marks a boundary, before which Firebase ID token are considered revoked.
         $validSince = $user->tokensValidAfterTime ?? null;
 
-        if (!$validSince instanceof DateTimeImmutable) {
+        if (!($validSince instanceof DateTimeImmutable)) {
             // The user hasn't logged in yet, so there's nothing to revoke
             return false;
         }

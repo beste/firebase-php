@@ -13,6 +13,7 @@ use Kreait\Firebase\Exception\RemoteConfig\RemoteConfigError;
 use Kreait\Firebase\Exception\RemoteConfig\ValidationFailed;
 use Kreait\Firebase\Exception\RemoteConfig\VersionMismatch;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 use function mb_stripos;
@@ -48,7 +49,7 @@ final readonly class RemoteConfigApiExceptionConverter
         $code = $e->getCode();
         $response = $e->getResponse();
 
-        if ($response !== null) {
+        if ($response instanceof ResponseInterface) {
             $message = $this->responseParser->getErrorReasonFromResponse($response);
             $code = $response->getStatusCode();
         }

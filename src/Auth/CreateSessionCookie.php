@@ -40,7 +40,7 @@ public static function forIdToken(#[SensitiveParameter] Token|string $idToken, ?
     {
         $clock ??= SystemClock::create();
 
-        if (!$clock instanceof ClockInterface) {
+        if (!($clock instanceof ClockInterface)) {
             $clock = WrappingClock::wrapping($clock);
         }
 

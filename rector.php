@@ -13,6 +13,7 @@ return RectorConfig::configure()
     ])
     ->withPhpSets()
     ->withPreparedSets(
+        codeQuality: true,
         deadCode: true,
         typeDeclarations: true,
         # typeDeclarationDocblocks: true, # Adds some incorrect doc blocks in interface implementation

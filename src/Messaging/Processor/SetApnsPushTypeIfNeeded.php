@@ -30,7 +30,7 @@ final class SetApnsPushTypeIfNeeded
         $apnsConfig = $this->getApnsConfig($payload);
         $apnsData = $apnsConfig->data();
 
-        $isAlert = $notification !== null || $apnsConfig->isAlert();
+        $isAlert = $notification instanceof Notification || $apnsConfig->isAlert();
         $hasData = $messageData->toArray() !== [] || $apnsData !== [];
         $isBackgroundMessage = !$isAlert && $hasData;
 

@@ -24,7 +24,7 @@ final class TransactionFailed extends RuntimeException implements DatabaseExcept
 
             if ($previous instanceof PreconditionFailed) {
                 $message = "The reference {$queryPath} has changed remotely since the transaction has been started.";
-            } elseif ($previous !== null) {
+            } elseif ($previous instanceof Throwable) {
                 $message = "The transaction on {$query->getPath()} failed: {$previous->getMessage()}";
             }
         }

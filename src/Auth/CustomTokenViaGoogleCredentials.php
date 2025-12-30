@@ -40,7 +40,7 @@ final readonly class CustomTokenViaGoogleCredentials
         $claims ??= [];
 
         $now = new DateTimeImmutable();
-        $expiresAt = ($expiresAt !== null)
+        $expiresAt = ($expiresAt instanceof DateTimeInterface)
             ? DT::toUTCDateTimeImmutable($expiresAt)
             : $now->add(new DateInterval('PT1H'));
 

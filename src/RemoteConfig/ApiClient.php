@@ -93,7 +93,7 @@ final readonly class ApiClient
 
         $since = $since?->format('Y-m-d\TH:i:s.v\Z');
         $until = $until?->format('Y-m-d\TH:i:s.v\Z');
-        $lastVersionNumber = $lastVersionNumber !== null ? (string) $lastVersionNumber : null;
+        $lastVersionNumber = $lastVersionNumber instanceof VersionNumber ? (string) $lastVersionNumber : null;
         $pageSize = $pageSize !== null ? (string) $pageSize : null;
 
         return $this->requestApi('GET', $uri, [
