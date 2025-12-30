@@ -13,13 +13,18 @@ return RectorConfig::configure()
     ])
     ->withPhpSets()
     ->withPreparedSets(
-        codeQuality: true,
         deadCode: true,
+        codeQuality: true,
         typeDeclarations: true,
-        # typeDeclarationDocblocks: true, # Adds some incorrect doc blocks in interface implementation
         privatization: true,
+        # typeDeclarationDocblocks: true, # Adds some incorrect doc blocks in interface implementation
+        instanceOf: true,
         earlyReturn: true,
         phpunitCodeQuality: true,
     )
     ->withImportNames(importShortClasses: false, removeUnusedImports: true)
+    ->withAttributesSets(phpunit: true)
+    ->withComposerBased(phpunit: true)
+    ->withTreatClassesAsFinal()
+    ->withFluentCallNewLine()
 ;
