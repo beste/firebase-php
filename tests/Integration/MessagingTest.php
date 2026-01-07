@@ -140,7 +140,7 @@ final class MessagingTest extends IntegrationTestCase
     {
         $message = CloudMessage::new()
             ->withData([])
-            ->toToken($this->getTestRegistrationToken())
+            ->withToken($this->getTestRegistrationToken())
         ;
 
         $result = $this->messaging->send($message);
@@ -158,7 +158,7 @@ final class MessagingTest extends IntegrationTestCase
     {
         $message = CloudMessage::new()
             ->withData([$keyword => 'value'])
-            ->toToken($this->getTestRegistrationToken())
+            ->withToken($this->getTestRegistrationToken())
         ;
 
         $result = $this->messaging->send($message);
@@ -271,10 +271,10 @@ final class MessagingTest extends IntegrationTestCase
         $message = CloudMessage::new()->withNotification(['title' => 'Token Notification', 'body' => 'Token body']);
         $invalidMessage = new RawMessageFromArray(['invalid' => 'message']);
 
-        $tokenMessage = $message->toToken($token);
-        $topicMessage = $message->toTopic($topic);
-        $conditionMessage = $message->toCondition($condition);
-        $invalidToken = $message->toToken($invalidToken);
+        $tokenMessage = $message->withToken($token);
+        $topicMessage = $message->withTopic($topic);
+        $conditionMessage = $message->withCondition($condition);
+        $invalidToken = $message->withToken($invalidToken);
 
         $messages = [$tokenMessage, $topicMessage, $conditionMessage, $invalidToken, $invalidMessage];
 
@@ -406,7 +406,7 @@ final class MessagingTest extends IntegrationTestCase
                     'title' => '',
                 ],
             ]))
-            ->toToken($this->getTestRegistrationToken());
+            ->withToken($this->getTestRegistrationToken());
 
         $this->messaging->send($message);
     }

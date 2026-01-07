@@ -233,7 +233,7 @@ final class CloudMessage implements Message
     /**
      * @param non-empty-string $token
      */
-    public function toToken(string $token): self
+    public function withToken(string $token): self
     {
         $new = clone $this;
         $new->target = MessageTarget::with(MessageTarget::TOKEN, $token);
@@ -244,7 +244,7 @@ final class CloudMessage implements Message
     /**
      * @param non-empty-string $topic
      */
-    public function toTopic(string $topic): self
+    public function withTopic(string $topic): self
     {
         $new = clone $this;
         $new->target = MessageTarget::with(MessageTarget::TOPIC, $topic);
@@ -255,12 +255,45 @@ final class CloudMessage implements Message
     /**
      * @param non-empty-string $condition
      */
-    public function toCondition(string $condition): self
+    public function withCondition(string $condition): self
     {
         $new = clone $this;
         $new->target = MessageTarget::with(MessageTarget::CONDITION, $condition);
 
         return $new;
+    }
+
+    /**
+     * @param non-empty-string $token
+     *
+     * @deprecated 8.0.0 Use withToken() instead
+     * @codeCoverageIgnore
+     */
+    public function toToken(string $token): self
+    {
+        return $this->withToken($token);
+    }
+
+    /**
+     * @param non-empty-string $topic
+     *
+     * @deprecated 8.0.0 Use withTopic() instead
+     * @codeCoverageIgnore
+     */
+    public function toTopic(string $topic): self
+    {
+        return $this->withTopic($topic);
+    }
+
+    /**
+     * @param non-empty-string $condition
+     *
+     * @deprecated 8.0.0 Use withCondition() instead
+     * @codeCoverageIgnore
+     */
+    public function toCondition(string $condition): self
+    {
+        return $this->withCondition($condition);
     }
 
     /**

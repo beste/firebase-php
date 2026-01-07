@@ -44,6 +44,32 @@ The `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been 
 ### Exception Handling Changes
 Exception codes are no longer preserved when wrapping exceptions. If your code relies on specific exception codes for error handling, you should update it to use exception types or messages instead.
 
+### Cloud Message Builder Method Renames
+
+The `CloudMessage` builder methods for setting message targets have been renamed to follow the `with*` naming pattern for consistency with other builder methods in the SDK:
+
+- `toToken()` -> `withToken()`
+- `toTopic()` -> `withTopic()`
+- `toCondition()` -> `withCondition()`
+
+**Migration:**
+
+Replace the old method names with the new ones:
+
+```php
+// Before (7.x)
+$message = CloudMessage::new()
+    ->toToken('device-token')
+    ->withNotification(['title' => 'Hello']);
+
+// After (8.0)
+$message = CloudMessage::new()
+    ->withToken('device-token')
+    ->withNotification(['title' => 'Hello']);
+```
+
+The old methods are still available as deprecated aliases, so your code will continue to work during the transition period.
+
 ---
 
 **See the complete list of breaking changes below** to identify any adjustments needed. Most changes should (hopefully)

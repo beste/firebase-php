@@ -33,9 +33,9 @@ Getting started
     $message = CloudMessage::new()
         ->withNotification(Notification::create('Title', 'Body'))
         ->withData(['key' => 'value'])
-        ->toToken('...')
-        // ->toTopic('...')
-        // ->toCondition('...')
+        ->withToken('...')
+        // ->withTopic('...')
+        // ->withCondition('...')
     ;
 
     $messaging->send($message);
@@ -79,7 +79,7 @@ You can create a message to a topic in one of the following ways:
     $message = CloudMessage::new()
         ->withNotification($notification) // optional
         ->withData($data) // optional
-        ->toTopic($topic)
+        ->withTopic($topic)
     ;
 
     $message = CloudMessage::fromArray([
@@ -132,7 +132,7 @@ Likewise, a user who does not subscribe to TopicA does not receive the message. 
     $message = CloudMessage::new()
         ->withNotification($notification) // optional
         ->withData($data) // optional
-        ->toCondition($condition)
+        ->withCondition($condition)
     ;
 
     $message = CloudMessage::fromArray([
@@ -161,7 +161,7 @@ for each end-user client app instance.
     $message = CloudMessage::new()
         ->withNotification($notification) // optional
         ->withData($data) // optional
-        ->toToken($deviceToken)
+        ->withToken($deviceToken)
     ;
 
     $message = CloudMessage::fromArray([

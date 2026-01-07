@@ -25,6 +25,9 @@ If it saves you or your team time, please consider [sponsoring its development](
 * `psr/log` has been moved from runtime dependencies to development dependencies
 * `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been removed
 * Exception codes are no longer preserved when wrapping exceptions
+* `Kreait\Firebase\Messaging\CloudMessage` builder methods have been renamed to follow the `with*` pattern:
+  `toToken()` -> `withToken()`, `toTopic()` -> `withTopic()`, `toCondition()` -> `withCondition()`.
+  The old methods are deprecated but still available as aliases.
 
 See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x and 8.0.**
 
