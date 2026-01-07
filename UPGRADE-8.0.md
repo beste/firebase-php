@@ -2,12 +2,12 @@
 
 ## Introduction
 
-This is a major release, but its aim is to provide as much backward compatibility as possible to ease upgrades
-from 7.x to 8.0.
+This is a major release, but its aim is to provide as much backward compatibility as possible to ease upgrades from 7.x to 8.0.
 
 ## Notable changes
 
-* The SDK supports only actively supported PHP versions. As a result, support for PHP < 8.3 has been dropped;
+* The SDK supports only actively supported PHP versions.
+  As a result, support for PHP < 8.3 has been dropped;
   supported versions are 8.3, 8.4, and 8.5.
 * [Firebase Dynamic Links was shut down on August 25th, 2025](https://firebase.google.com/support/dynamic-links-faq)
   and has been removed from the SDK.
@@ -20,13 +20,31 @@ from 7.x to 8.0.
 Several argument types have been simplified to their most common forms to eliminate runtime type conversion overhead.
 For example, methods that previously accepted `Stringable|string` now only accept `string`.
 
-The union types were originally added for convenience, but introduced overhead when processing arguments, requiring
-runtime type conversion and validation that could be replaced with static analysis.
+The union types were originally added for convenience,
+but introduced overhead when processing arguments,
+requiring runtime type conversion and validation that could be replaced with static analysis.
+
+**Migration:**
+
+If you were passing `Stringable` objects, extract/convert to the string value first:
+
+```diff
++use Kreait\Firebase\Auth\CreateUser;
++
+ $userRecord = $auth->createUser(
+-    CreateUser::new()->withEmail($emailObject)
++    CreateUser::new()->withEmail((string) $emailObject)
+ );
+
+-$user = $auth->getUser($userRecord);
++$user = $auth->getUser($userRecord->uid);
+```
 
 ### Sensitive Parameter Protection
 
-The SDK now leverages PHP 8.2+ `#[SensitiveParameter]` attributes to enhance security by preventing sensitive data
-from appearing in stack traces and error logs. This affects methods that handle:
+The SDK now leverages PHP 8.2+ `#[SensitiveParameter]` attributes to enhance security
+by preventing sensitive data from appearing in stack traces and error logs.
+This affects methods that handle:
 
 - Passwords and authentication credentials
 - JWT tokens (ID tokens, refresh tokens, custom tokens)
@@ -36,44 +54,95 @@ from appearing in stack traces and error logs. This affects methods that handle:
 ## Dependency Changes
 
 ### PSR Log Dependency
-`psr/log` is now a development dependency instead of a runtime dependency. This change reduces the production dependency footprint. If you were using PSR Log interfaces directly in your application code, you should add `psr/log` to your project's composer.json.
+
+`psr/log` is now a development dependency instead of a runtime dependency.
+This change reduces the production dependency footprint.
+If you were using PSR Log interfaces directly in your application code,
+you should add `psr/log` to your project's composer.json.
 
 ### Removed Constants
-The `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been removed. If you were using this constant in your code, you should define the limit (500) in your application or use the Firebase messaging service limits documentation as reference.
+
+The `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT` constant has been removed.
+If you were using this constant in your code,
+you should define the limit (500) in your application or use the Firebase messaging service limits documentation as reference.
 
 ### Exception Handling Changes
-Exception codes are no longer preserved when wrapping exceptions. If your code relies on specific exception codes for error handling, you should update it to use exception types or messages instead.
+
+Exception codes are no longer preserved when wrapping exceptions.
+If your code relies on specific exception codes for error handling,
+you should update it to use exception types or messages instead.
 
 ### Cloud Message Builder Method Renames
 
-The `CloudMessage` builder methods for setting message targets have been renamed to follow the `with*` naming pattern for consistency with other builder methods in the SDK:
-
-- `toToken()` -> `withToken()`
-- `toTopic()` -> `withTopic()`
-- `toCondition()` -> `withCondition()`
+The `CloudMessage` builder methods for setting message targets have been renamed
+to follow the `with*` naming pattern for consistency with other builder methods in the SDK.
 
 **Migration:**
 
-Replace the old method names with the new ones:
+```diff
+-$message = CloudMessage::new()
+-    ->toToken('device-token')
+-    ->withNotification(['title' => 'Hello']);
++$message = CloudMessage::new()
++    ->withToken('device-token')
++    ->withNotification(['title' => 'Hello']);
 
-```php
-// Before (7.x)
-$message = CloudMessage::new()
-    ->toToken('device-token')
-    ->withNotification(['title' => 'Hello']);
+-$message->toTopic('news');
++$message->withTopic('news');
 
-// After (8.0)
-$message = CloudMessage::new()
-    ->withToken('device-token')
-    ->withNotification(['title' => 'Hello']);
+-$message->toCondition("'dogs' in topics");
++$message->withCondition("'dogs' in topics");
 ```
 
-The old methods are still available as deprecated aliases, so your code will continue to work during the transition period.
+The old methods are still available as deprecated aliases,
+so your code will continue to work during the transition period.
+
+### Removed Factory Methods
+
+Several debugging and logging methods have been removed from the `Factory` class.
+
+**Migration:**
+
+```diff
+-$factory = $factory->withHttpLogger($logger);
+-$factory = $factory->withHttpDebugLogger($logger);
++// Use Guzzle middleware or your HTTP client's logging instead
++// See: https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html
+
+-$debugInfo = $factory->getDebugInfo();
++// No direct replacement - inspect services directly if needed
+```
+
+The `withFirestoreDatabase()` method has also been removed as it was never fully implemented.
+
+### Remote Config Value Objects
+
+The `DefaultValue` and `ExplicitValue` classes have been removed and replaced with the unified `ParameterValue` class.
+
+**Migration:**
+
+```diff
+ use Kreait\Firebase\RemoteConfig\Parameter;
++use Kreait\Firebase\RemoteConfig\ParameterValue;
+
+-$parameter = Parameter::named('feature_flag', DefaultValue::with('false'));
++$parameter = Parameter::named('feature_flag', 'false');
+
+-$value = $parameter->defaultValue();
+-if ($value instanceof DefaultValue) {
+-    // Handle default
+-}
++$value = $parameter->defaultValue();
++if ($value instanceof ParameterValue) {
++    $stringValue = $value->value();
++}
+```
 
 ---
 
-**See the complete list of breaking changes below** to identify any adjustments needed. Most changes should (hopefully)
-be trivial (e.g., passing `$user->uid` instead of `$user`). Run your test suite to catch any breaking changes.
+**See the complete list of breaking changes below** to identify any adjustments needed.
+Most changes should (hopefully) be trivial (e.g., passing `$user->uid` instead of `$user`).
+Run your test suite to catch any breaking changes.
 
 ## Complete list of breaking changes
 
