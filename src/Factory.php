@@ -394,8 +394,10 @@ final class Factory
      */
     public function createRemoteConfig(): Contract\RemoteConfig
     {
+        $projectId = $this->getProjectId();
+
         $http = $this->createApiClient([
-            'base_uri' => "https://firebaseremoteconfig.googleapis.com/v1/projects/{$this->getProjectId()}/remoteConfig",
+            'base_uri' => "https://firebaseremoteconfig.googleapis.com/v1/projects/{$projectId}/remoteConfig",
         ]);
 
         return new RemoteConfig(
@@ -551,6 +553,10 @@ final class Factory
         $projectId ??= $this->getServiceAccount()?->projectId;
 
         if (is_string($projectId) && $projectId !== '') {
+            if (preg_match('/^[a-z0-9-]{1,128}$/', $projectId) !== 1) {
+                throw new InvalidArgumentException(sprintf('Invalid project ID: "%s"', $projectId));
+            }
+
             return $this->projectId = $projectId;
         }
 
