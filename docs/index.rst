@@ -49,7 +49,7 @@ your project needs and installs them into your project.
 
 .. code-block:: bash
 
-    composer require "kreait/firebase-php:^7.0"
+    composer require "kreait/firebase-php:^8.0"
 
 Please continue to the :ref:`Setup section <setup>` to learn more about connecting your application to Firebase.
 

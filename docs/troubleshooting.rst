@@ -154,13 +154,6 @@ HTTP Client option while configuring the service factory: :ref:`http-client-opti
 Debugging
 *********
 
-In order to debug HTTP requests to the Firebase/Google APIs, you can enable the factory's
-debug mode and provide an instance of ``Psr\Log\LoggerInterface``. HTTP requests and
-responses will then be pushed to this logger with their full headers and bodies.
-
-.. code-block:: php
-
-    $factory = $factory->withHttpDebugLogger($logger);
-
-If you want to make sure that the Factory has the configuration you expect it to have,
-call the ``getDebugInfo()`` method:
+To debug HTTP requests to the Firebase/Google APIs, configure an HTTP client with
+debug logging enabled and pass it to the factory. See :ref:`http-client-options` for
+details on customizing the HTTP client configuration.
