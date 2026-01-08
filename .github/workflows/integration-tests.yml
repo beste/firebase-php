@@ -9,7 +9,7 @@ on:
       - '.github/workflows/integration-tests.yml'
       - 'phpstan.neon.dist'
   push:
-    branches: ['7.x']
+    branches: ['8.x']
     paths:
       - 'src/**'
       - 'tests/**'

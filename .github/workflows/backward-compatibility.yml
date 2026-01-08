@@ -2,13 +2,13 @@ name: Backward Compatibility Check
 
 on:
   pull_request:
-    branches: ['7.x']
+    branches: ['8.x']
     paths:
       - 'src/**'
       - 'composer.json'
       - '.github/workflows/backward-compatibility.yml'
   push:
-    branches: ['7.x']
+    branches: ['8.x']
     paths:
       - 'src/**'
       - 'composer.json'
