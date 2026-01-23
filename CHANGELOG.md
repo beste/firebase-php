@@ -3,7 +3,7 @@
 **Support the project:** This SDK is downloaded 1M+ times monthly and powers thousands of applications.
 If it saves you or your team time, please consider [sponsoring its development](https://github.com/sponsors/jeromegamez).
 
-## Unreleased
+## 8.1.0 - 2026-01-23
 
 * Added support for `firebase/php-jwt:^7.0.2` 
 
