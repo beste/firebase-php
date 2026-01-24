@@ -32,7 +32,7 @@ final readonly class RuleSet implements JsonSerializable
      * to authenticated users of your app. They are useful if you want data open to
      * all users of your app but don't want it open to the world.
      *
-     * @see https://firebase.google.com/docs/database/security/quickstart#sample-rules
+     * @see https://firebase.google.com/docs/database/security
      */
     public static function default(): self
     {
@@ -52,7 +52,7 @@ final readonly class RuleSet implements JsonSerializable
      * This level of access means anyone can read or write to your database. You should
      * configure more secure rules before launching your app.
      *
-     * @see https://firebase.google.com/docs/database/security/quickstart#sample-rules
+     * @see https://firebase.google.com/docs/database/security
      */
     public static function public(): self
     {
@@ -68,7 +68,7 @@ final readonly class RuleSet implements JsonSerializable
      * Private rules disable read and write access to your database by users. With these rules,
      * you can only access the database through the Firebase console and an Admin SDK.
      *
-     * @see https://firebase.google.com/docs/database/security/quickstart#sample-rules
+     * @see https://firebase.google.com/docs/database/security
      */
     public static function private(): self
     {
