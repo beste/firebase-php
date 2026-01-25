@@ -76,31 +76,28 @@ Quick Start
     $cloudStorage = $factory->createStorage();
     $firestore = $factory->createFirestore();
 
+********
+Sponsors
+********
+
+.. raw:: html
+
+   <p style="display:flex; flex-wrap:wrap; gap:16px 32px; align-items:center; justify-content:flex-start; margin:0;">
+     <a href="https://exitable.nl/" style="display:inline-flex; align-items:center;">
+       <img src="_static/sponsors/logo-exitable.png" alt="Exitable logo" style="height:48px; width:auto; max-width:360px;">
+     </a>
+     <a href="https://jb.gg/OpenSourceSupport" style="display:inline-flex; align-items:center;">
+       <img src="_static/sponsors/jetbrains.svg" alt="JetBrains logo" style="height:48px; width:auto; max-width:200px;">
+     </a>
+   </p>
+
+Thanks to `Exitable <https://exitable.nl/>`_ and `JetBrains <https://www.jetbrains.com/>`_ for supporting the development of this project.
+
 *******
 License
 *******
 
 Licensed using the `MIT license <https://opensource.org/license/MIT>`_.
-
-    Copyright (c) Jérôme Gamez <https://github.com/jeromegamez> <jerome@gamez.name>
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
 
 Your use of Firebase is governed by the `Terms of Service for Firebase Services <https://firebase.google.com/terms/>`_.
 

@@ -64,11 +64,16 @@ $cloudStorage = $factory->createStorage();
 $firestore = $factory->createFirestore();
 ```
 
-## Powered by
+## Sponsors
 
-[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+<div align="center" style="display: flex; justify-content: center; align-items: center; gap: 40px;">
+  <a href="https://exitable.nl/"><img src="docs/_static/sponsors/logo-exitable.png" alt="Exitable" height="48"></a>
+  <a href="https://jb.gg/OpenSourceSupport"><img src="docs/_static/sponsors/jetbrains.svg" alt="JetBrains" height="48"></a>
+</div>
 
-Thanks to [JetBrains](https://www.jetbrains.com/) credits for providing [a free PhpStorm license](https://jb.gg/OpenSourceSupport) for the development of this open-source package.
+<div align="center">
+  <sub>Thanks to <a href="https://exitable.nl/">Exitable</a> and <a href="https://www.jetbrains.com/">JetBrains</a> for supporting this project.</sub>
+</div>
 
 ## License
 
