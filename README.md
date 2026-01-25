@@ -24,11 +24,6 @@
 > The namespace remains `Kreait\Firebase` and the package name remains `kreait/firebase-php`.
 > Please update your remote URL if you have forked or cloned the repository.
 
-> [!NOTE]
-> If you are interested in using the PHP Admin SDK as a client for end-user access (for example, in a web application),
-> as opposed to admin access from a privileged environment (like a server), you should instead follow the
-> [instructions for setting up the client JavaScript SDK](https://firebase.google.com/docs/web/setup).
-
 ## Overview
 
 [Firebase](https://firebase.google.com/) provides the tools and infrastructure you need to develop your app, grow your user base, and earn money. The Firebase Admin PHP SDK enables access to Firebase services from privileged environments (such as servers or cloud) in PHP.
