@@ -122,7 +122,7 @@ final class CloudMessageTest extends TestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/768
+     * @see https://github.com/beste/firebase-php/issues/768
      */
     public function testMessageDataCanBeSetWithAnObjectOrAnArray(): void
     {

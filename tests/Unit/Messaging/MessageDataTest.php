@@ -39,7 +39,7 @@ final class MessageDataTest extends TestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/709
+     * @see https://github.com/beste/firebase-php/issues/709
      */
     public function testItDoesNotLowerCaseKeys(): void
     {
@@ -65,7 +65,7 @@ final class MessageDataTest extends TestCase
      */
     public static function invalidData(): Iterator
     {
-        // @see https://github.com/kreait/firebase-php/issues/441
+        // @see https://github.com/beste/firebase-php/issues/441
         yield 'binary data' => [
             ['key' => hex2bin('81612bcffb')], // generated with \openssl_random_pseudo_bytes(5)
         ];

@@ -164,7 +164,7 @@ final class UpdateUserTest extends IntegrationTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/196
+     * @see https://github.com/beste/firebase-php/issues/196
      */
     public function testReEnable(): void
     {

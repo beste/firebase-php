@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class ServiceAccountTest extends TestCase
 {
     /**
-     * @see https://github.com/kreait/firebase-php/pull/1034
+     * @see https://github.com/beste/firebase-php/pull/1034
      */
     #[DoesNotPerformAssertions]
     public function testItCanBeMapped(): void

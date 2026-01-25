@@ -60,7 +60,7 @@ final class DatabaseApiExceptionConverterTest extends UnitTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/295
+     * @see https://github.com/beste/firebase-php/issues/295
      */
     public function testItHandlesAnExtendedErrorFormatInAResponse(): void
     {

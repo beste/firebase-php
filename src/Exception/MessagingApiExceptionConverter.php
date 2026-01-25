@@ -105,7 +105,7 @@ final readonly class MessagingApiExceptionConverter
 
                 if (!str_contains($contentType, 'json')) {
                     // Adding 30 seconds as a fallback retry after because the HTML Response suggests it
-                    // See https://github.com/kreait/firebase-php/issues/988
+                    // See https://github.com/beste/firebase-php/issues/988
                     $retryAfter ??= ($this->clock->now()->add(new DateInterval('PT30S')));
                     $message = 'The server encountered a temporary error and could not complete your request.';
                 }

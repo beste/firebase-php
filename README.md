@@ -1,17 +1,15 @@
 <div align="center">
 
-# Firebase for PHP
+# Firebase Admin SDK for PHP
 
 <img src="docs/_static/logo.svg" alt="Firebase Admin PHP SDK Logo" width="120">
-
-<p><em>Firebase Admin SDK for PHP</em></p>
 
 [![Current version](https://img.shields.io/packagist/v/kreait/firebase-php.svg?logo=composer)](https://packagist.org/packages/kreait/firebase-php)
 [![Monthly Downloads](https://img.shields.io/packagist/dm/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)
 [![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)<br/>
-[![Tests](https://github.com/kreait/firebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/tests.yml)
-[![Integration Tests](https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/integration-tests.yml)
-[![Emulator Tests](https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml/badge.svg)](https://github.com/kreait/firebase-php/actions/workflows/emulator-tests.yml)
+[![Tests](https://github.com/beste/firebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/tests.yml)
+[![Integration Tests](https://github.com/beste/firebase-php/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/integration-tests.yml)
+[![Emulator Tests](https://github.com/beste/firebase-php/actions/workflows/emulator-tests.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/emulator-tests.yml)
 [![Sponsor](https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4)](https://github.com/sponsors/jeromegamez)
 
 </div>
@@ -20,6 +18,11 @@
 > **Support the project:** This SDK is downloaded 1M+ times monthly and powers thousands of applications.
 > If it saves you or your team time, please consider
 > [sponsoring its development](https://github.com/sponsors/jeromegamez).
+
+> [!NOTE]
+> The project moved from the `kreait` to the `beste` GitHub Organization in January 2026.
+> The namespace remains `Kreait\Firebase` and the package name remains `kreait/firebase-php`.
+> Please update your remote URL if you have forked or cloned the repository.
 
 > [!NOTE]
 > If you are interested in using the PHP Admin SDK as a client for end-user access (for example, in a web application),
@@ -46,8 +49,8 @@ Please continue to the [Setup section](docs/setup.rst) to learn more about conne
 
 If you want to use the SDK within a Framework, please follow the installation instructions here:
 
-- **Laravel**: https://github.com/kreait/laravel-firebase
-- **Symfony**: https://github.com/kreait/firebase-bundle
+- **Laravel**: https://packagist.org/packages/kreait/laravel-firebase
+- **Symfony**: https://packagist.org/packages/kreait/firebase-bundle
 
 ## Quickstart
 

@@ -43,7 +43,7 @@ final class TemplateTest extends UnitTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/218
+     * @see https://github.com/beste/firebase-php/issues/218
      */
     public function testConditionNamesAreImportedCorrectlyWhenUsingFromArray(): void
     {

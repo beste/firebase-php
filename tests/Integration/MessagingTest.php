@@ -134,7 +134,7 @@ final class MessagingTest extends IntegrationTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/591
+     * @see https://github.com/beste/firebase-php/issues/591
      */
     public function testSendingAMessageWithEmptyMessageDataShouldNotFail(): void
     {
@@ -227,7 +227,7 @@ final class MessagingTest extends IntegrationTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/436
+     * @see https://github.com/beste/firebase-php/issues/436
      */
     public function testSendMulticastMessageToTwoInvalidRecipients(): void
     {
@@ -250,7 +250,7 @@ final class MessagingTest extends IntegrationTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/317
+     * @see https://github.com/beste/firebase-php/issues/317
      */
     public function testSendMulticastMessageToOneRecipientOnly(): void
     {

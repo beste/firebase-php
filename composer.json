@@ -9,7 +9,7 @@
         "sdk"
     ],
     "type": "library",
-    "homepage": "https://github.com/kreait/firebase-php",
+    "homepage": "https://github.com/beste/firebase-php",
     "license": "MIT",
     "authors": [
         {
@@ -19,8 +19,8 @@
     ],
     "support": {
         "docs": "https://firebase-php.readthedocs.io",
-        "issues": "https://github.com/kreait/firebase-php/issues",
-        "source": "https://github.com/kreait/firebase-php"
+        "issues": "https://github.com/beste/firebase-php/issues",
+        "source": "https://github.com/beste/firebase-php"
     },
     "funding": [
         {

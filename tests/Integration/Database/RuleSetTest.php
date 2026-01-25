@@ -43,7 +43,7 @@ final class RuleSetTest extends DatabaseTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/705
+     * @see https://github.com/beste/firebase-php/issues/705
      */
     public function testRulesAreProperlyEncoded(): void
     {

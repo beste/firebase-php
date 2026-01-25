@@ -3,6 +3,10 @@
 **Support the project:** This SDK is downloaded 1M+ times monthly and powers thousands of applications.
 If it saves you or your team time, please consider [sponsoring its development](https://github.com/sponsors/jeromegamez).
 
+**Repository move:** The project moved from the `kreait` to the `beste` GitHub Organization in January 2026.
+The namespace remains `Kreait\Firebase` and the package name remains `kreait/firebase-php`.
+Please update your remote URL if you have forked or cloned the repository.
+
 ## 8.1.0 - 2026-01-23
 
 * Added support for `firebase/php-jwt:^7.0.2` 
@@ -37,4 +41,4 @@ See **[UPGRADE-8.0](UPGRADE-8.0.md) for more details on the changes between 7.x 
 
 ## 7.x Changelog
 
-https://github.com/kreait/firebase-php/blob/7.24.0/CHANGELOG.md
+https://github.com/beste/firebase-php/blob/7.24.0/CHANGELOG.md

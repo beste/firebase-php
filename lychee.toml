@@ -5,7 +5,7 @@ scheme = ["https"]
 exclude = [
     "firebaseio.com",
     "example",
-    "github.com/kreait/firebase-php/(compare|pull|issues)",
+    "github.com/beste/firebase-php/(compare|pull|issues)",
     "oauth2.googleapis.com",
     "googleapis.com",
     "gserviceaccount.com",

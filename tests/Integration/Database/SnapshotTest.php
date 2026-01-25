@@ -86,7 +86,7 @@ final class SnapshotTest extends DatabaseTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/212
+     * @see https://github.com/beste/firebase-php/issues/212
      */
     public function testGetChildWithKeyStartingWithANonAlphabeticalCharacter(): void
     {

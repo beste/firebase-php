@@ -43,7 +43,7 @@ Default sound not played on message delivery
 
 If you specified ``'sound' => 'default'`` in the message payload, try changing it
 to ``'sound' => "default"`` - although single or double quotes shouldn't™ make
-a difference, `it has been reported that this can solve the issue <https://github.com/kreait/firebase-php/issues/454#issuecomment-706771776>`_.
+a difference, `it has been reported that this can solve the issue <https://github.com/beste/firebase-php/issues/454#issuecomment-706771776>`_.
 
 ******************
 cURL error XX: ...

@@ -203,7 +203,7 @@ final class ReferenceTest extends DatabaseTestCase
     }
 
     /**
-     * @see https://github.com/kreait/firebase-php/issues/1031
+     * @see https://github.com/beste/firebase-php/issues/1031
      */
     public function testUseNonLatinCharacters(): void
     {
