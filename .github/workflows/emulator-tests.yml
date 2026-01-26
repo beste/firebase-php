@@ -79,7 +79,7 @@ jobs:
           node-version: '24'
 
       - name: Set Up Java
-        uses: actions/setup-java@v5.1.0
+        uses: actions/setup-java@v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
