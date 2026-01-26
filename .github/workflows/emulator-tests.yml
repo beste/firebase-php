@@ -99,9 +99,20 @@ jobs:
           XDEBUG_MODE: coverage
         run: firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator --coverage-clover=coverage.xml --log-junit=test-report.xml'
 
-      - name: Upload code coverage
-        uses: codecov/codecov-action@v5.5.2
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: emulator
-        if: github.repository_owner == 'beste'
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: emulator
+          fail_ci_if_error: false
