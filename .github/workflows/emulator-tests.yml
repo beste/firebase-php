@@ -33,8 +33,8 @@ jobs:
 
     env:
       php-version: '8.4'
-      extensions: ctype, dom, grpc, json, mbstring, openssl, xml, zip, zlib
-      key: cache-emulators-8x
+      extensions: grpc
+      key: cache-v1
 
     steps:
       - name: Checkout code

@@ -39,8 +39,8 @@ jobs:
           - "8.5"
 
     env:
-      extensions: ctype, dom, grpc, json, mbstring, openssl, xml, zip, zlib
-      key: cache-static-analysis-8x-${{ matrix.php }}
+      extensions: grpc
+      key: cache-v1
 
     steps:
       - name: Checkout code

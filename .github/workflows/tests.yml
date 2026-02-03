@@ -42,8 +42,8 @@ jobs:
           - "highest"
 
     env:
-      extensions: ctype, dom, grpc, json, mbstring, openssl, xml, zip, zlib
-      key: cache-unit-8x-${{ matrix.php }}
+      extensions: grpc
+      key: cache-v1
 
     steps:
       - name: Checkout code
