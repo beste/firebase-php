@@ -15,14 +15,19 @@ final class CamelToSnakeCaseTransformer
     {
         $result = $next();
 
-        if (! is_array($result)) {
+        if (!is_iterable($result)) {
             return $result;
         }
 
         $snakeCased = [];
 
         foreach ($result as $key => $value) {
-            $newKey = preg_replace('/[A-Z]/', '_$0', lcfirst((string) $key));
+            if (!is_string($key)) {
+                $snakeCased[$key] = $value;
+                continue;
+            }
+
+            $newKey = preg_replace('/[A-Z]/', '_$0', lcfirst($key));
             assert(is_string($newKey));
 
             $newKey = strtolower($newKey);
