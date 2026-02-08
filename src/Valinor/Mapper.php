@@ -45,10 +45,17 @@ final readonly class Mapper
     }
 
     /**
-     * @template T
-     * @param class-string<T> $signature
+     * @template T of object
+     *
+     * @param string|class-string<T> $signature
      *
      * @throws InvalidArgumentException
+     *
+     * @phpstan-return (
+     *     $signature is class-string<T>
+     *         ? T
+     *         : ($signature is class-string ? object : mixed)
+     * )
      *
      * @return T
      */
