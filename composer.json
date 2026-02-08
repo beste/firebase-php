@@ -55,20 +55,20 @@
         "psr/http-message": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "google/cloud-firestore": "^1.54.3",
-        "php-cs-fixer/shim": "^3.91.2",
+        "google/cloud-firestore": "^1.55.0",
+        "php-cs-fixer/shim": "^3.93.1",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.32",
+        "phpstan/phpstan": "^2.1.38",
         "phpstan/phpstan-deprecation-rules": "^2.0.3",
-        "phpstan/phpstan-phpunit": "^2.0.8",
-        "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpunit/phpunit": "^12.4.5",
+        "phpstan/phpstan-phpunit": "^2.0.12",
+        "phpstan/phpstan-strict-rules": "^2.0.8",
+        "phpunit/phpunit": "^12.5.10 || ^13.0.1",
         "psr/log": "^3.0.2",
-        "rector/rector": "^2.2.11",
-        "rector/type-perfect": "^2.1",
+        "rector/rector": "^2.3.6",
+        "rector/type-perfect": "^2.1.2",
         "shipmonk/composer-dependency-analyser": "^1.8.4",
-        "symfony/var-dumper": "^7.4.0",
-        "vlucas/phpdotenv": "^5.6.2"
+        "symfony/var-dumper": "^7.4.4 || ^8.0.4",
+        "vlucas/phpdotenv": "^5.6.3"
     },
     "suggest": {
         "google/cloud-firestore": "^1.0 to use the Firestore component"
