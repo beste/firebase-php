@@ -5,7 +5,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Utils\Rector\Rector\InstanceofNegationParenthesesRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -28,7 +27,4 @@ return RectorConfig::configure()
     ->withComposerBased(phpunit: true)
     ->withTreatClassesAsFinal()
     ->withFluentCallNewLine()
-    ->withRules([
-        InstanceofNegationParenthesesRector::class
-    ])
 ;
