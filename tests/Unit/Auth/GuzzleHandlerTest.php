@@ -42,14 +42,14 @@ final class GuzzleHandlerTest extends UnitTestCase
     public function testItFailsOnAnUnsupportedAction(): void
     {
         $this->expectException(FailedToSignIn::class);
-        $this->handler->handle($this->createMock(SignIn::class));
+        $this->handler->handle($this->createStub(SignIn::class));
     }
 
     #[AllowMockObjectsWithoutExpectations]
     public function testItFailsWhenGuzzleFails(): void
     {
         $client = $this->createMock(ClientInterface::class);
-        $client->method('send')->willThrowException($this->createMock(ConnectException::class));
+        $client->method('send')->willThrowException($this->createStub(ConnectException::class));
 
         $handler = new GuzzleHandler('my-project', $client);
 

@@ -50,7 +50,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
     {
         $connectException = new ConnectException(
             'curl error xx',
-            $this->createMock(RequestInterface::class),
+            $this->createStub(RequestInterface::class),
         );
 
         $this->assertInstanceOf(ApiConnectionFailed::class, $this->converter->convertException($connectException));

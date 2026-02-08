@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
-use Override;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -13,7 +12,6 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('emulator')]
 final class TenantAwareAuthTest extends AuthTestCase
 {
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
