@@ -1,0 +1,127 @@
+name: gRPC Tests
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/grpc-tests.yml'
+      - 'composer.json'
+      - 'phpstan.neon.dist'
+  push:
+    branches: ['8.x']
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/grpc-tests.yml'
+      - 'composer.json'
+      - 'phpstan.neon.dist'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  grpc-tests:
+    name: gRPC Tests (PHP 8.5)
+    runs-on: ubuntu-latest
+    # Non-blocking while the gRPC extension is broken/unstable on PHP 8.5.
+    # See https://github.com/shivammathur/setup-php/issues/1041.
+    # Remove this once upstream releases a stable extension and tests pass.
+    continue-on-error: true
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+
+    env:
+      key: cache-grpc
+      php-version: 8.5
+      extensions: grpc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.head.sha) || github.sha }}
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v5.0.2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.extensions }}
+          ini-values: grpc.grpc_verbosity=error, grpc.grpc_trace=
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Verify gRPC extension
+        id: grpc
+        run: php -m | grep -i '^grpc$'
+
+      - uses: "ramsey/composer-install@v3"
+        id: composer
+        if: ${{ steps.grpc.outcome == 'success' }}
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run gRPC Tests
+        id: grpc-tests
+        if: ${{ steps.grpc.outcome == 'success' }}
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
+          TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
+          TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
+          TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          XDEBUG_MODE: coverage
+        run: vendor/bin/phpunit --testsuite=integration --group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+
+      - name: Summarize gRPC failures
+        if: ${{ always() && (steps.grpc.outcome == 'failure' || steps.grpc-tests.outcome == 'failure') }}
+        run: |
+          echo "::notice::gRPC tests are non-blocking due to missing/broken gRPC on PHP 8.5."
+          {
+            echo "### gRPC tests are non-blocking"
+            echo
+            echo "gRPC extension was not available or gRPC tests failed (likely due to missing/broken gRPC on PHP 8.5)."
+            echo "See https://github.com/shivammathur/setup-php/issues/1041."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: grpc
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: grpc
+          fail_ci_if_error: false
