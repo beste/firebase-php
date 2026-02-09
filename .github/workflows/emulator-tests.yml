@@ -32,9 +32,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      php-version: '8.4'
-      extensions: grpc
-      key: cache-v1
+      php-version: '8.5'
 
     steps:
       - name: Checkout code
@@ -42,26 +40,10 @@ jobs:
         with:
           ref: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.head.sha) || github.sha }}
 
-      - name: Setup cache environment
-        id: extcache
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ env.php-version }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.key }}
-
-      - name: Cache extensions
-        uses: actions/cache@v5.0.3
-        with:
-          path: ${{ steps.extcache.outputs.dir }}
-          key: ${{ steps.extcache.outputs.key }}
-          restore-keys: ${{ steps.extcache.outputs.key }}
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          extensions: ${{ env.extensions }}
           tools: composer, pecl
           coverage: xdebug
 
@@ -69,6 +51,8 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
       - uses: "ramsey/composer-install@v3"
+        with:
+          composer-options: "--ignore-platform-req=ext-grpc"
 
       - name: Setup Problem Matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -97,7 +81,7 @@ jobs:
           FIREBASE_DATABASE_EMULATOR_HOST: localhost:9100
           FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
           XDEBUG_MODE: coverage
-        run: firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator --coverage-clover=coverage.xml --log-junit=test-report.xml'
+        run: firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator --exclude-group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml'
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
