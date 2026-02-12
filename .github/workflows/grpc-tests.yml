@@ -34,7 +34,7 @@ jobs:
     # See https://github.com/shivammathur/setup-php/issues/1041.
     # Remove this once upstream releases a stable extension and tests pass.
     continue-on-error: true
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository }}
 
     env:
       key: cache-grpc
