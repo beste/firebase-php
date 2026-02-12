@@ -1,0 +1,331 @@
+name: Secure Tests
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-validation:
+    name: Dependency Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          coverage: none
+          tools: composer
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Ensure dependencies can be installed
+        run: composer install --no-interaction --no-progress --ansi --dry-run --ignore-platform-req=ext-grpc
+
+  integration-tests:
+    name: Integration Tests
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      php-version: '8.5'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run Integration Tests
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
+          TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
+          TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
+          TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          XDEBUG_MODE: coverage
+        run: vendor/bin/phpunit --testsuite=integration --exclude-group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+
+      - name: Upload integration test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: integration
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload integration coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: integration
+          fail_ci_if_error: false
+
+  emulator-tests:
+    name: Emulator Tests
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      php-version: '8.5'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Set Up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Set Up Java
+        uses: actions/setup-java@v5.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools
+
+      - name: Run emulated Integration Tests
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
+          TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
+          TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
+          TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          FIREBASE_DATABASE_EMULATOR_HOST: localhost:9100
+          FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
+          XDEBUG_MODE: coverage
+        run: firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator --exclude-group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml'
+
+      - name: Upload emulator test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: emulator
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload emulator coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: emulator
+          fail_ci_if_error: false
+
+  grpc-tests:
+    name: gRPC Tests (PHP 8.5)
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Non-blocking while the gRPC extension is broken/unstable on PHP 8.5.
+    # See https://github.com/shivammathur/setup-php/issues/1041.
+    # Remove this once upstream releases a stable extension and tests pass.
+    continue-on-error: true
+
+    env:
+      key: cache-grpc
+      php-version: 8.5
+      extensions: grpc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v5.0.3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.extensions }}
+          ini-values: grpc.grpc_verbosity=error, grpc.grpc_trace=
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Verify gRPC extension
+        id: grpc
+        run: php -m | grep -i '^grpc$'
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        if: ${{ steps.grpc.outcome == 'success' }}
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        if: ${{ steps.grpc.outcome == 'success' }}
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        if: ${{ steps.grpc.outcome == 'success' }}
+        run: composer install --no-interaction --no-progress --ansi
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run gRPC Tests
+        id: grpc-tests
+        if: ${{ steps.grpc.outcome == 'success' }}
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
+          TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
+          TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
+          TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          XDEBUG_MODE: coverage
+        run: vendor/bin/phpunit --testsuite=integration --group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+
+      - name: Upload gRPC test results to Codecov
+        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: grpc
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload gRPC coverage to Codecov
+        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: grpc
+          fail_ci_if_error: false
+
+      - name: Summarize gRPC failures
+        if: ${{ always() && (steps.grpc.outcome == 'failure' || steps.grpc-tests.outcome == 'failure') }}
+        run: |
+          echo "::notice::gRPC tests are non-blocking due to missing/broken gRPC on PHP 8.5."
+          {
+            echo "### gRPC tests are non-blocking"
+            echo
+            echo "gRPC extension was not available or gRPC tests failed (likely due to missing/broken gRPC on PHP 8.5)."
+            echo "See https://github.com/shivammathur/setup-php/issues/1041."
+          } >> "$GITHUB_STEP_SUMMARY"

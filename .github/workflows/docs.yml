@@ -1,21 +1,21 @@
-name: Check links
+name: Docs
 
 on:
   pull_request:
     paths:
-      - 'docs/**'
-      - '.github/workflows/docs.yml'
-      - 'CHANGELOG.md'
-      - 'README.md'
-      - 'lychee.toml'
+      - "docs/**"
+      - ".github/workflows/docs.yml"
+      - "CHANGELOG.md"
+      - "README.md"
+      - "lychee.toml"
   push:
     branches: ['8.x']
     paths:
-      - 'docs/**'
-      - '.github/workflows/docs.yml'
-      - 'CHANGELOG.md'
-      - 'README.md'
-      - 'lychee.toml'
+      - "docs/**"
+      - ".github/workflows/docs.yml"
+      - "CHANGELOG.md"
+      - "README.md"
+      - "lychee.toml"
   release:
     types: [published]
   workflow_dispatch:
@@ -31,6 +31,7 @@ jobs:
   links:
     name: Check Links
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
