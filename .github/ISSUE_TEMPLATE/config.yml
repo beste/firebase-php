@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/sponsors/jeromegamez
     about: Support the continued maintenance of this project and support its maintainer by becoming a GitHub Sponsor.
   - name: 🤔 Troubleshooting
-    url: https://firebase-php.readthedocs.io/en/latest/troubleshooting.html
+    url: https://firebase-php.readthedocs.io/latest/troubleshooting.html
     about: Please check the troubleshooting section of the documentation for commonly known problems.
