@@ -41,7 +41,7 @@ jobs:
   dependency-validation:
     name: Dependency Validation
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -78,7 +78,7 @@ jobs:
     needs:
       - dependency-validation
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -135,7 +135,7 @@ jobs:
     needs:
       - dependency-validation
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -185,7 +185,7 @@ jobs:
       - static-analysis
       - lint
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -244,7 +244,7 @@ jobs:
     needs:
       - tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -319,7 +319,7 @@ jobs:
     needs:
       - dependency-validation
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
