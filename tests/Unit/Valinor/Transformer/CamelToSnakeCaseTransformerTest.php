@@ -15,7 +15,7 @@ final class CamelToSnakeCaseTransformerTest extends TestCase
 
         $result = $transformer(
             new class() {},
-            static fn() => ['firstName' => 'Jane', 'URLValue' => 'value'],
+            static fn(): array => ['firstName' => 'Jane', 'URLValue' => 'value'],
         );
 
         $this->assertSame(['first_name' => 'Jane', 'u_r_l_value' => 'value'], $result);
@@ -27,7 +27,7 @@ final class CamelToSnakeCaseTransformerTest extends TestCase
 
         $result = $transformer(
             new class() {},
-            static fn() => [10 => 'ten', 'userName' => 'jane'],
+            static fn(): array => [10 => 'ten', 'userName' => 'jane'],
         );
 
         $this->assertSame([10 => 'ten', 'user_name' => 'jane'], $result);
