@@ -13,4 +13,16 @@ updates:
       prefix: "github-actions"
     open-pull-requests-limit: 10
     labels:
-      - "dependency"
+      - "dependencies"
+
+  - package-ecosystem: "pip"
+    directory: "/docs"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      include: "scope"
+      prefix: "docs-deps"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
