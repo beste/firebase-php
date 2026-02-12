@@ -47,4 +47,4 @@ parameters:
 		narrow_return: true
 includes:
 	- vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
-	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+	- tools/.phpstan/vendor/phpstan/phpstan/conf/bleedingEdge.neon

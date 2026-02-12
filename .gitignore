@@ -1,6 +1,6 @@
 *.log
 
-/.build
+/build
 /vendor
 /docs/_build
 /docs/*.pyc
@@ -8,6 +8,7 @@
 
 /.firebaserc
 /.php-cs-fixer.cache
+/.phpunit.cache
 /.phpunit.result.cache
 /composer.lock
 /phpstan.neon

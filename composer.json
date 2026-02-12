@@ -1,167 +1,189 @@
 {
-    "name": "kreait/firebase-php",
-    "description": "Firebase Admin SDK",
-    "keywords": [
-        "api",
-        "database",
-        "firebase",
-        "google",
-        "sdk"
-    ],
-    "type": "library",
-    "homepage": "https://github.com/beste/firebase-php",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Jérôme Gamez",
-            "homepage": "https://github.com/jeromegamez"
-        }
-    ],
-    "support": {
-        "docs": "https://firebase-php.readthedocs.io",
-        "issues": "https://github.com/beste/firebase-php/issues",
-        "source": "https://github.com/beste/firebase-php"
-    },
-    "funding": [
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/jeromegamez"
-        }
-    ],
-    "require": {
-        "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
-        "ext-ctype": "*",
-        "ext-filter": "*",
-        "ext-json": "*",
-        "ext-mbstring": "*",
-        "beste/clock": "^3.0",
-        "beste/in-memory-cache": "^1.3.1",
-        "beste/json": "^1.5.1",
-        "cuyz/valinor": "^2.2.1",
-        "fig/http-message-util": "^1.1.5",
-        "firebase/php-jwt": "^6.10.2 || ^7.0.2",
-        "google/auth": "^1.45",
-        "google/cloud-storage": "^1.48.7",
-        "guzzlehttp/guzzle": "^7.9.2",
-        "guzzlehttp/promises": "^2.0.4",
-        "guzzlehttp/psr7": "^2.7",
-        "kreait/firebase-tokens": "^5.2",
-        "lcobucci/jwt": "^5.3",
-        "mtdowling/jmespath.php": "^2.8.0",
-        "psr/cache": "^2.0 || ^3.0",
-        "psr/clock": "^1.0",
-        "psr/http-client": "^1.0.3",
-        "psr/http-factory": "^1.1",
-        "psr/http-message": "^1.1 || ^2.0"
-    },
-    "require-dev": {
-        "google/cloud-firestore": "^1.55.0",
-        "php-cs-fixer/shim": "^3.93.1",
-        "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.38",
-        "phpstan/phpstan-deprecation-rules": "^2.0.3",
-        "phpstan/phpstan-phpunit": "^2.0.12",
-        "phpstan/phpstan-strict-rules": "^2.0.8",
-        "phpunit/phpunit": "^12.5.10 || ^13.0.1",
-        "psr/log": "^3.0.2",
-        "rector/rector": "^2.3.6",
-        "rector/type-perfect": "^2.1.2",
-        "shipmonk/composer-dependency-analyser": "^1.8.4",
-        "symfony/var-dumper": "^7.4.4 || ^8.0.4",
-        "vlucas/phpdotenv": "^5.6.3"
-    },
-    "suggest": {
-        "google/cloud-firestore": "^1.0 to use the Firestore component"
-    },
-    "autoload": {
-        "psr-4": {
-            "Kreait\\Firebase\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Kreait\\Firebase\\Tests\\": "tests"
-        }
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
-    },
-    "scripts": {
-        "analyse": [
-            "XDEBUG_MODE=off vendor/bin/phpstan"
-        ],
-        "analyze": "@analyse",
-        "cs": [
-            "vendor/bin/php-cs-fixer fix --diff --verbose"
-        ],
-        "docs": [
-            "@docs:clean",
-            "@docs:setup",
-            "@docs:build"
-        ],
-        "docs:build": [
-            "cd docs && uv run sphinx-build -b html . _build/html"
-        ],
-        "docs:clean": [
-            "cd docs && rm -rf _build/*"
-        ],
-        "docs:linkcheck": [
-            "cd docs && uv run sphinx-build -b linkcheck . _build/linkcheck"
-        ],
-        "docs:serve": [
-            "cd docs && uv run sphinx-autobuild . _build/html --host 0.0.0.0 --port 8000"
-        ],
-        "docs:setup": [
-            "cd docs && uv sync"
-        ],
-        "pre-push": [
-            "@rector-fix",
-            "@test",
-            "@test-bc"
-        ],
-        "rector": [
-            "vendor/bin/rector --dry-run"
-        ],
-        "rector-fix": [
-            "vendor/bin/rector",
-            "@cs"
-        ],
-        "reset-project": [
-            "tests/bin/reset-project"
-        ],
-        "test": [
-            "Composer\\Config::disableProcessTimeout",
-            "@analyze",
-            "@test-dependencies",
-            "vendor/bin/phpunit --stop-on-error --stop-on-failure"
-        ],
-        "test-bc": [
-            "docker run -it --rm -v `pwd`:/app nyholm/roave-bc-check"
-        ],
-        "test-coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html=.build/coverage"
-        ],
-        "test-dependencies": [
-            "vendor/bin/composer-dependency-analyser"
-        ],
-        "test-emulator": [
-            "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'vendor/bin/phpunit --group=emulator'"
-        ],
-        "test-integration": [
-            "vendor/bin/phpunit --testsuite=integration"
-        ],
-        "test-units": [
-            "vendor/bin/phpunit --testsuite=unit"
-        ]
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-7.x": "7.x-dev",
-            "dev-8.x": "8.x-dev"
-        }
+  "name": "kreait/firebase-php",
+  "description": "Firebase Admin SDK",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "api",
+    "database",
+    "firebase",
+    "google",
+    "sdk"
+  ],
+  "authors": [
+    {
+      "name": "Jérôme Gamez",
+      "homepage": "https://github.com/jeromegamez"
     }
+  ],
+  "homepage": "https://github.com/beste/firebase-php",
+  "support": {
+    "issues": "https://github.com/beste/firebase-php/issues",
+    "source": "https://github.com/beste/firebase-php",
+    "docs": "https://firebase-php.readthedocs.io"
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/jeromegamez"
+    }
+  ],
+  "require": {
+    "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
+    "ext-ctype": "*",
+    "ext-filter": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "beste/clock": "^3.0",
+    "beste/in-memory-cache": "^1.3.1",
+    "beste/json": "^1.5.1",
+    "cuyz/valinor": "^2.2.1",
+    "fig/http-message-util": "^1.1.5",
+    "firebase/php-jwt": "^6.10.2 || ^7.0.2",
+    "google/auth": "^1.45",
+    "google/cloud-storage": "^1.48.7",
+    "guzzlehttp/guzzle": "^7.9.2",
+    "guzzlehttp/promises": "^2.0.4",
+    "guzzlehttp/psr7": "^2.7",
+    "kreait/firebase-tokens": "^5.2",
+    "lcobucci/jwt": "^5.3",
+    "mtdowling/jmespath.php": "^2.8.0",
+    "psr/cache": "^2.0 || ^3.0",
+    "psr/clock": "^1.0",
+    "psr/http-client": "^1.0.3",
+    "psr/http-factory": "^1.1",
+    "psr/http-message": "^1.1 || ^2.0"
+  },
+  "require-dev": {
+    "google/cloud-firestore": "^1.55.0",
+    "psr/log": "^3.0.2",
+    "symfony/var-dumper": "^7.4.4 || ^8.0.4",
+    "vlucas/phpdotenv": "^5.6.3"
+  },
+  "suggest": {
+    "google/cloud-firestore": "^1.0 to use the Firestore component"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kreait\\Firebase\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kreait\\Firebase\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    },
+    "sort-packages": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-7.x": "7.x-dev",
+      "dev-8.x": "8.x-dev"
+    }
+  },
+  "scripts": {
+    "analyze": "XDEBUG_MODE=off tools/phpstan --ansi analyse",
+    "clean": [
+      "@clean:build-artifacts",
+      "@clean:vendor"
+    ],
+    "clean:build-artifacts": "rm -rf build && mkdir -p build",
+    "clean:vendor": "rm -rf vendor",
+    "dependencies:check": [
+      "@clean",
+      "@tools:install",
+      "@dependencies:install",
+      "composer outdated --locked --direct --strict --sort-by-age --ansi"
+    ],
+    "dependencies:install": "composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
+    "dependencies:update": [
+      "composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
+      "composer bump --no-interaction --ansi"
+    ],
+    "docs": [
+      "@docs:clean",
+      "@docs:setup",
+      "@docs:build"
+    ],
+    "docs:build": "cd docs && uv run sphinx-build -b html . _build/html",
+    "docs:clean": "cd docs && rm -rf _build/*",
+    "docs:linkcheck": "cd docs && uv run sphinx-build -b linkcheck . _build/linkcheck",
+    "docs:serve": "cd docs && uv run sphinx-autobuild . _build/html --host 0.0.0.0 --port 8000",
+    "docs:setup": "cd docs && uv sync",
+    "lint": [
+      "tools/rector --ansi --dry-run",
+      "tools/php-cs-fixer check --ansi --diff --verbose",
+      "@lint:composer"
+    ],
+    "lint:composer": "tools/composer-normalize --ansi --dry-run",
+    "lint:composer:fix": "tools/composer-normalize --ansi",
+    "lint:fix": [
+      "tools/rector --ansi",
+      "tools/php-cs-fixer fix --ansi --diff --verbose",
+      "@lint:composer:fix"
+    ],
+    "pre-push": [
+      "@test:all",
+      "@test:bc"
+    ],
+    "rector": "tools/rector --ansi --dry-run",
+    "rector:fix": [
+      "tools/rector --ansi",
+      "tools/php-cs-fixer fix --ansi --diff --verbose"
+    ],
+    "reset-project": "tests/bin/reset-project",
+    "setup": [
+      "@clean:build-artifacts",
+      "@tools:install",
+      "@dependencies:install",
+      "@tools:phpstan:install",
+      "@tools:phpstan:update",
+      "@tools:rector:install",
+      "@tools:rector:update",
+      "@tools:link"
+    ],
+    "test": "@test:all",
+    "test:all": [
+      "Composer\\Config::disableProcessTimeout",
+      "@analyze",
+      "@lint",
+      "@test:unit"
+    ],
+    "test:bc": "docker run --rm -v \"$PWD\":/app nyholm/roave-bc-check",
+    "test:coverage": [
+      "Composer\\Config::disableProcessTimeout",
+      "mkdir -p build",
+      "XDEBUG_MODE=coverage tools/phpunit --colors=always --testdox --coverage-text --coverage-html=build/coverage --coverage-clover=build/coverage/clover.xml"
+    ],
+    "test:emulator": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'tools/phpunit --group=emulator'",
+    "test:integration": "tools/phpunit --testsuite=integration",
+    "test:unit": "tools/phpunit --testsuite=unit --colors=always --testdox",
+    "tools:install": "tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
+    "tools:link": [
+      "ln -snf phpunit tools/phpunit.phar",
+      "ln -snf .phpstan/vendor/bin/phpstan tools/phpstan",
+      "ln -snf .rector/vendor/bin/rector tools/rector"
+    ],
+    "tools:phpstan:install": "composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi",
+    "tools:phpstan:update": [
+      "composer --working-dir=tools/.phpstan update --no-interaction --no-progress --ansi",
+      "composer --working-dir=tools/.phpstan bump --no-interaction --ansi"
+    ],
+    "tools:rector:install": "composer --working-dir=tools/.rector install --no-interaction --no-progress --ansi",
+    "tools:rector:update": [
+      "composer --working-dir=tools/.rector update --no-interaction --no-progress --ansi",
+      "composer --working-dir=tools/.rector bump --no-interaction --ansi"
+    ],
+    "tools:update": [
+      "tools/phive --no-progress selfupdate",
+      "tools/phive --no-progress update",
+      "@tools:phpstan:update",
+      "@tools:rector:update",
+      "@tools:link"
+    ]
+  }
 }
