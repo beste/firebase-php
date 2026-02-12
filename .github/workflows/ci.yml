@@ -6,11 +6,12 @@ on:
       - "src/**"
       - "tests/**"
       - "composer.json"
+      - ".phive/phars.xml"
       - "phpstan.neon.dist"
       - "phpunit.xml.dist"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
-      - "composer-dependency-analyser.php"
+      - "tools/**"
       - ".github/workflows/ci.yml"
       - ".github/workflows/secure-tests.yml"
   push:
@@ -19,11 +20,12 @@ on:
       - "src/**"
       - "tests/**"
       - "composer.json"
+      - ".phive/phars.xml"
       - "phpstan.neon.dist"
       - "phpunit.xml.dist"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
-      - "composer-dependency-analyser.php"
+      - "tools/**"
       - ".github/workflows/ci.yml"
       - ".github/workflows/secure-tests.yml"
   workflow_dispatch:
@@ -113,16 +115,75 @@ jobs:
       - name: Install dependencies with Composer
         run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
+      - name: Cache PHPStan dependencies
+        uses: actions/cache@v5
+        with:
+          path: tools/.phpstan/vendor
+          key: ${{ runner.os }}-phpstan-tools-${{ hashFiles('tools/.phpstan/composer.lock') }}
+
+      - name: Install PHPStan dependencies
+        run: composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi
+
       - name: Setup problem matchers for PHP
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
       - name: Run PHPStan
-        run: XDEBUG_MODE=off vendor/bin/phpstan analyse --no-progress --error-format=github
+        run: XDEBUG_MODE=off tools/phpstan analyse --no-progress --error-format=github
+
+  lint:
+    name: Lint
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer, pecl
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Cache Rector dependencies
+        uses: actions/cache@v5
+        with:
+          path: tools/.rector/vendor
+          key: ${{ runner.os }}-rector-tools-${{ hashFiles('tools/.rector/composer.lock') }}
+
+      - name: Install Rector dependencies
+        run: composer --working-dir=tools/.rector install --no-interaction --no-progress --ansi
+
+      - name: Run linter suite
+        run: |
+          tools/rector --ansi --dry-run
+          tools/php-cs-fixer check --ansi --diff --verbose
+          tools/composer-normalize --ansi --dry-run
 
   tests:
     name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"
     needs:
       - static-analysis
+      - lint
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -176,7 +237,7 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --testsuite=unit --testdox
+        run: tools/phpunit --testsuite=unit --testdox
 
   code-coverage:
     name: Unit Test Coverage (PHP 8.5)
@@ -218,8 +279,21 @@ jobs:
       - name: Setup Problem Matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Run PHPUnit with coverage
-        run: vendor/bin/phpunit --testsuite=unit --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+      - name: Cache PHPUnit static analysis cache
+        uses: actions/cache@v5
+        with:
+          path: .phpunit.cache/code-coverage
+          key: ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+
+      - name: Warm PHPUnit static analysis cache
+        run: tools/phpunit --warm-coverage-cache
+
+      - name: Collect code coverage with PHPUnit
+        run: |
+          mkdir -p build
+          tools/phpunit --testsuite=unit --log-junit build/test-results.xml --coverage-clover build/code-coverage.xml --testdox
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
@@ -228,6 +302,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unit
           report_type: test_results
+          files: ./build/test-results.xml
           fail_ci_if_error: false
 
       - name: Upload coverage to Codecov
@@ -235,7 +310,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
+          files: ./build/code-coverage.xml
           flags: unit
           fail_ci_if_error: false
 

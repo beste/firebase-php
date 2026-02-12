@@ -105,7 +105,9 @@ jobs:
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
           XDEBUG_MODE: coverage
-        run: vendor/bin/phpunit --testsuite=integration --exclude-group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+        run: |
+          mkdir -p build
+          tools/phpunit --testsuite=integration --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox
 
       - name: Upload integration test results to Codecov
         if: ${{ !cancelled() }}
@@ -114,6 +116,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: integration
           report_type: test_results
+          files: ./build/test-report.xml
           fail_ci_if_error: false
 
       - name: Upload integration coverage to Codecov
@@ -121,7 +124,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
+          files: ./build/coverage.xml
           flags: integration
           fail_ci_if_error: false
 
@@ -194,7 +197,9 @@ jobs:
           FIREBASE_DATABASE_EMULATOR_HOST: localhost:9100
           FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
           XDEBUG_MODE: coverage
-        run: firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage vendor/bin/phpunit --group=emulator --exclude-group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml'
+        run: |
+          mkdir -p build
+          firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage tools/phpunit --group=emulator --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml'
 
       - name: Upload emulator test results to Codecov
         if: ${{ !cancelled() }}
@@ -203,6 +208,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: emulator
           report_type: test_results
+          files: ./build/test-report.xml
           fail_ci_if_error: false
 
       - name: Upload emulator coverage to Codecov
@@ -210,7 +216,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
+          files: ./build/coverage.xml
           flags: emulator
           fail_ci_if_error: false
 
@@ -299,7 +305,9 @@ jobs:
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
           XDEBUG_MODE: coverage
-        run: vendor/bin/phpunit --testsuite=integration --group grpc --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+        run: |
+          mkdir -p build
+          tools/phpunit --testsuite=integration --group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox
 
       - name: Upload gRPC test results to Codecov
         if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
@@ -308,6 +316,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: grpc
           report_type: test_results
+          files: ./build/test-report.xml
           fail_ci_if_error: false
 
       - name: Upload gRPC coverage to Codecov
@@ -315,7 +324,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
+          files: ./build/coverage.xml
           flags: grpc
           fail_ci_if_error: false
 
