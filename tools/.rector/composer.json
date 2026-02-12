@@ -1,5 +1,6 @@
 {
     "require-dev": {
+        "phpunit/phpunit": "^12.5.11",
         "rector/rector": "^2.3.6"
     },
     "config": {

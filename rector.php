@@ -22,6 +22,7 @@ return RectorConfig::configure()
         earlyReturn: true,
         phpunitCodeQuality: true,
     )
+    ->withBootstrapFiles(["tools/.rector/vendor/autoload.php"])
     ->withImportNames(importShortClasses: false, removeUnusedImports: true)
     ->withAttributesSets(phpunit: true)
     ->withComposerBased(phpunit: true)

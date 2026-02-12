@@ -1,5 +1,7 @@
 parameters:
 	level: 8
+	bootstrapFiles:
+		- tools/.phpstan/vendor/autoload.php
 	paths:
 		- src/
 		- tests/
