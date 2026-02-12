@@ -1,0 +1,277 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "composer.json"
+      - "phpstan.neon.dist"
+      - "phpunit.xml.dist"
+      - ".php-cs-fixer.dist.php"
+      - "rector.php"
+      - "composer-dependency-analyser.php"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/secure-tests.yml"
+  push:
+    branches: ['8.x']
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "composer.json"
+      - "phpstan.neon.dist"
+      - "phpunit.xml.dist"
+      - ".php-cs-fixer.dist.php"
+      - "rector.php"
+      - "composer-dependency-analyser.php"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/secure-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-validation:
+    name: Dependency Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          coverage: none
+          tools: composer
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Ensure dependencies can be installed
+        run: composer install --no-interaction --no-progress --ansi --dry-run --ignore-platform-req=ext-grpc
+
+  static-analysis:
+    name: "PHPStan (PHP ${{ matrix.php }})"
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - "8.3"
+          - "8.4"
+          - "8.5"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer, pecl
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Run PHPStan
+        run: XDEBUG_MODE=off vendor/bin/phpstan analyse --no-progress --error-format=github
+
+  tests:
+    name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"
+    needs:
+      - static-analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - "8.3"
+          - "8.4"
+          - "8.5"
+        dependencies:
+          - "lowest"
+          - "highest"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer, pecl
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: |
+          if [ "${{ matrix.dependencies }}" = "lowest" ]; then
+            composer update --prefer-lowest --prefer-stable --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+          else
+            composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+          fi
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --testsuite=unit --testdox
+
+  code-coverage:
+    name: Unit Test Coverage (PHP 8.5)
+    needs:
+      - tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run PHPUnit with coverage
+        run: vendor/bin/phpunit --testsuite=unit --coverage-clover=coverage.xml --log-junit=test-report.xml --testdox
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit
+          report_type: test_results
+          fail_ci_if_error: false
+
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: unit
+          fail_ci_if_error: false
+
+  bc-check:
+    name: Backward Compatibility Check
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: "Workaround: Configure Git safe.directory for roave-bc-check Docker action"
+        run: |
+          mkdir -p /home/runner/work/_temp/_github_home
+          printf "[safe]\n\tdirectory = /github/workspace\n" > /home/runner/work/_temp/_github_home/.gitconfig
+
+      - name: Check whether repository has tags
+        id: check-tags
+        shell: bash
+        run: |
+          if git tag --list | grep -q .; then
+            echo "has_tags=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_tags=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Roave BC Check
+        if: ${{ steps.check-tags.outputs.has_tags == 'true' }}
+        uses: docker://nyholm/roave-bc-check-ga
+
+      - name: Skip Roave BC Check (no tags found)
+        if: ${{ steps.check-tags.outputs.has_tags != 'true' }}
+        run: echo "Skipping BC check because no git tags were found."
