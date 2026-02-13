@@ -112,7 +112,10 @@
         "docs:build": "cd docs && uv run sphinx-build -b html . _build/html",
         "docs:clean": "cd docs && rm -rf _build/*",
         "docs:linkcheck": "cd docs && uv run sphinx-build -b linkcheck . _build/linkcheck",
-        "docs:serve": "cd docs && uv run sphinx-autobuild . _build/html --host 0.0.0.0 --port 8000",
+        "docs:serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "cd docs && uv run sphinx-autobuild . _build/html --host 0.0.0.0 --port 8000"
+        ],
         "docs:setup": "cd docs && uv sync",
         "lint": [
             "tools/rector --ansi --dry-run",
