@@ -5,6 +5,8 @@ If it saves you or your team time, please consider [sponsoring its development](
 
 ## [Unreleased]
 
+## [7.24.1] - 2025-11-27
+
 * Added support for `firebase/php-jwt:^7.0.2` to remediate the vulnerabilities [PKSA-y2cr-5h3j-g3ys](https://github.com/advisories/GHSA-2x45-7fc3-mxwq) and [CVE-2025-4659](https://nvd.nist.gov/vuln/detail/CVE-2025-45769).
 
 ### Changed
@@ -429,7 +431,8 @@ See **[UPGRADE-7.0](UPGRADE-7.0.md) for more details on the changes between 6.x 
 
 https://github.com/kreait/firebase-php/blob/6.9.6/CHANGELOG.md
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/7.24.0...7.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/7.24.1...7.x
+[7.24.1]: https://github.com/kreait/firebase-php/compare/7.24.0...7.24.1
 [7.24.0]: https://github.com/kreait/firebase-php/compare/7.23.0...7.24.0
 [7.23.0]: https://github.com/kreait/firebase-php/compare/7.22.0...7.23.0
 [7.22.0]: https://github.com/kreait/firebase-php/compare/7.21.2...7.22.0
