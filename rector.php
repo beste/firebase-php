@@ -4,6 +4,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
@@ -28,4 +29,7 @@ return RectorConfig::configure()
     ->withComposerBased(phpunit: true)
     ->withTreatClassesAsFinal()
     ->withFluentCallNewLine()
+    ->withSkip([
+        ThrowWithPreviousExceptionRector::class,
+    ])
 ;
