@@ -10,6 +10,7 @@ namespace Kreait\Firebase\AppCheck;
  * @phpstan-type VerifyAppCheckTokenResponseShape array{
  *     appId: non-empty-string,
  *     token: DecodedAppCheckTokenShape,
+ *     alreadyConsumed?: bool,
  * }
  */
 final readonly class VerifyAppCheckTokenResponse
@@ -20,6 +21,7 @@ final readonly class VerifyAppCheckTokenResponse
     public function __construct(
         public string $appId,
         public DecodedAppCheckToken $token,
+        public ?bool $alreadyConsumed = null,
     ) {
     }
 }

@@ -305,9 +305,9 @@ final class Factory
     }
 
     /**
-     * @phpstan-ignore typePerfect.narrowReturnObjectType
+     * @return Contract\AppCheck&Contract\AppCheckWithReplayProtection
      */
-    public function createAppCheck(): Contract\AppCheck
+    public function createAppCheck(): Contract\AppCheck // @phpstan-ignore typePerfect.narrowReturnObjectType
     {
         $projectId = $this->getProjectId();
         $serviceAccount = $this->getServiceAccount();
@@ -329,14 +329,16 @@ final class Factory
             true,
         );
 
+        $apiClient = new AppCheck\ApiClient($http, new AppCheckApiExceptionConverter($this->errorResponseParser));
+
         return new AppCheck(
-            new AppCheck\ApiClient($http, new AppCheckApiExceptionConverter($this->errorResponseParser)),
+            $apiClient,
             new AppCheckTokenGenerator(
                 $serviceAccount->clientEmail,
                 $serviceAccount->privateKey,
                 $this->clock,
             ),
-            new AppCheckTokenVerifier($projectId, $keySet),
+            new AppCheckTokenVerifier($projectId, $keySet, $apiClient),
         );
     }
 

@@ -35,9 +35,36 @@ See https://firebase.google.com/docs/app-check/custom-resource-backend for more 
     $appCheckTokenString = '...';
 
     try {
-        $appCheck->verifyToken($appCheckTokenString);
+        $verification = $appCheck->verifyToken($appCheckTokenString);
     } catch (FailedToVerifyAppCheckToken $e) {
         // The token is invalid
+    }
+
+To enable replay protection for a security-critical endpoint, use the replay-protection contract method.
+This performs an additional call to the App Check API and reports whether the token has already been consumed.
+
+.. note::
+   Replay protection is currently exposed through ``Kreait\Firebase\Contract\AppCheckWithReplayProtection`` as
+   a transitional API to avoid a backwards-incompatible signature change in ``AppCheck::verifyToken()`` and
+   preserve backwards compatibility in the current major version.
+   In the next major release, this should be folded into ``AppCheck::verifyToken()``.
+
+.. code-block:: php
+    use Kreait\Firebase\Contract\AppCheck;
+    use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
+    use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckReplayProtection;
+
+    /** @var AppCheck&AppCheckWithReplayProtection $appCheck */
+    $verification = null;
+
+    try {
+        $verification = $appCheck->verifyTokenWithReplayProtection($appCheckTokenString);
+    } catch (FailedToVerifyAppCheckReplayProtection $e) {
+        // The token could not be consumed for replay protection.
+    }
+
+    if ($verification?->alreadyConsumed === true) {
+        // Reject the request as a replay attempt.
     }
 
 .. _create-a-custom-provider:

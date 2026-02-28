@@ -10,6 +10,7 @@ use Kreait\Firebase\AppCheck\AppCheckTokenGenerator;
 use Kreait\Firebase\AppCheck\AppCheckTokenOptions;
 use Kreait\Firebase\AppCheck\AppCheckTokenVerifier;
 use Kreait\Firebase\AppCheck\VerifyAppCheckTokenResponse;
+use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
 use SensitiveParameter;
 
 use function is_array;
@@ -17,7 +18,7 @@ use function is_array;
 /**
  * @internal
  */
-final readonly class AppCheck implements Contract\AppCheck
+final readonly class AppCheck implements Contract\AppCheck, AppCheckWithReplayProtection
 {
     public function __construct(
         private ApiClient $client,
@@ -40,8 +41,11 @@ final readonly class AppCheck implements Contract\AppCheck
 
     public function verifyToken(#[SensitiveParameter] string $appCheckToken): VerifyAppCheckTokenResponse
     {
-        $decodedToken = $this->tokenVerifier->verifyToken($appCheckToken);
+        return $this->tokenVerifier->verifyToken($appCheckToken);
+    }
 
-        return new VerifyAppCheckTokenResponse($decodedToken->app_id, $decodedToken);
+    public function verifyTokenWithReplayProtection(#[SensitiveParameter] string $appCheckToken): VerifyAppCheckTokenResponse
+    {
+        return $this->tokenVerifier->verifyToken($appCheckToken, true);
     }
 }
