@@ -6,10 +6,13 @@ namespace Kreait\Firebase\AppCheck;
 
 use Beste\Json;
 use GuzzleHttp\ClientInterface;
+use Kreait\Firebase\Exception\AppCheck\AppCheckError;
 use Kreait\Firebase\Exception\AppCheckApiExceptionConverter;
 use Kreait\Firebase\Exception\AppCheckException;
 use Psr\Http\Message\ResponseInterface;
+use SensitiveParameter;
 use Throwable;
+use function is_bool;
 
 /**
  * @internal
@@ -44,6 +47,37 @@ final readonly class ApiClient
         $decoded = Json::decode((string) $response->getBody(), true);
 
         return $decoded;
+    }
+
+    /**
+     * @param non-empty-string $projectId
+     *
+     * @throws AppCheckException
+     */
+    public function verifyReplayProtection(#[SensitiveParameter] string $token, string $projectId): bool
+    {
+        $response = $this->post(
+            'https://firebaseappcheck.googleapis.com/v1beta/projects/'.$projectId.':verifyAppCheckToken',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json; UTF-8',
+                ],
+                'body' => Json::encode([
+                    'app_check_token' => $token,
+                ]),
+            ],
+        );
+
+        /** @var array{alreadyConsumed?: mixed} $decoded */
+        $decoded = Json::decode((string) $response->getBody(), true);
+
+        $alreadyConsumed = $decoded['alreadyConsumed'] ?? false;
+
+        if (!is_bool($alreadyConsumed)) {
+            throw new AppCheckError('The App Check API returned an invalid "alreadyConsumed" value.');
+        }
+
+        return $alreadyConsumed;
     }
 
     /**

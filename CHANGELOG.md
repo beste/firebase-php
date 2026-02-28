@@ -7,6 +7,19 @@ If it saves you or your team time, please consider [sponsoring its development](
 The namespace remains `Kreait\Firebase` and the package name remains `kreait/firebase-php`.
 Please update your remote URL if you have forked or cloned the repository.
 
+## Unreleased
+
+### App Check
+
+* Added replay-protection verification for App Check tokens via `verifyTokenWithReplayProtection()`.
+  The response now includes `alreadyConsumed` when replay protection is used.
+* Added transitional contract `Kreait\Firebase\Contract\AppCheckWithReplayProtection`.
+  This was introduced to preserve backwards compatibility by avoiding a signature change to
+  `Kreait\Firebase\Contract\AppCheck::verifyToken()` in the current major release.
+* Added dedicated exception `Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckReplayProtection`
+  for replay-protection verification failures. It extends
+  `Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckToken` for backwards compatibility.
+
 ## 8.1.0 - 2026-01-23
 
 * Added support for `firebase/php-jwt:^7.0.2` 

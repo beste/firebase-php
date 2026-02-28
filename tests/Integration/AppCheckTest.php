@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
+use Kreait\Firebase\AppCheck\VerifyAppCheckTokenResponse;
 use Kreait\Firebase\Contract\AppCheck;
+use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
 use Kreait\Firebase\Tests\IntegrationTestCase;
 
 /**
@@ -12,7 +14,7 @@ use Kreait\Firebase\Tests\IntegrationTestCase;
  */
 final class AppCheckTest extends IntegrationTestCase
 {
-    public AppCheck $appCheck;
+    public AppCheck&AppCheckWithReplayProtection $appCheck;
 
     protected function setUp(): void
     {
@@ -47,5 +49,33 @@ final class AppCheckTest extends IntegrationTestCase
 
         $this->assertSame(self::$appId, $response->appId);
         $this->assertSame(self::$appId, $response->token->app_id);
+    }
+
+    public function testVerifyTokenWithReplayProtection(): void
+    {
+        $token = $this->appCheck->createToken(self::$appId);
+
+        $firstVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
+        $secondVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
+
+        // Replay-consumption state may not be visible immediately, so retry briefly.
+        if ($secondVerification->alreadyConsumed !== true) {
+            for ($attempt = 0; $attempt < 3; ++$attempt) {
+                sleep(1);
+                $secondVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
+
+                if ($secondVerification->alreadyConsumed === true) {
+                    break;
+                }
+
+                $secondVerification = null;
+            }
+        }
+
+        $this->assertSame(self::$appId, $firstVerification->appId);
+        $this->assertSame(self::$appId, $firstVerification->token->app_id);
+        $this->assertFalse($firstVerification->alreadyConsumed);
+        $this->assertInstanceOf(VerifyAppCheckTokenResponse::class, $secondVerification);
+        $this->assertTrue($secondVerification->alreadyConsumed);
     }
 }

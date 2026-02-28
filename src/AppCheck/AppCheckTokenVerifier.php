@@ -6,6 +6,7 @@ namespace Kreait\Firebase\AppCheck;
 
 use Firebase\JWT\CachedKeySet;
 use Firebase\JWT\JWT;
+use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckReplayProtection;
 use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckToken;
 use Kreait\Firebase\Exception\AppCheck\InvalidAppCheckToken;
 use LogicException;
@@ -30,6 +31,7 @@ final readonly class AppCheckTokenVerifier
     public function __construct(
         private string $projectId,
         private CachedKeySet $keySet,
+        private ApiClient $apiClient,
     ) {
     }
 
@@ -37,17 +39,32 @@ final readonly class AppCheckTokenVerifier
      * Verifies the format and signature of a Firebase App Check token.
      *
      * @param string $token the Firebase Auth JWT token to verify
+     * @param bool $consume whether the token should be consumed for replay protection
      *
      * @throws FailedToVerifyAppCheckToken if the token could not be verified
+     * @throws FailedToVerifyAppCheckReplayProtection if replay protection could not be verified
      * @throws InvalidAppCheckToken if the token is invalid
      */
-    public function verifyToken(#[SensitiveParameter] string $token): DecodedAppCheckToken
+    public function verifyToken(#[SensitiveParameter] string $token, bool $consume = false): VerifyAppCheckTokenResponse
     {
         $decodedToken = $this->decodeJwt($token);
 
         $this->verifyContent($decodedToken);
 
-        return $decodedToken;
+        $alreadyConsumed = null;
+
+        if ($consume) {
+            try {
+                $alreadyConsumed = $this->apiClient->verifyReplayProtection($token, $this->projectId);
+            } catch (Throwable $e) {
+                throw new FailedToVerifyAppCheckReplayProtection(
+                    message: 'Unable to verify App Check token replay protection: '.$e->getMessage(),
+                    previous: $e,
+                );
+            }
+        }
+
+        return new VerifyAppCheckTokenResponse($decodedToken->app_id, $decodedToken, $alreadyConsumed);
     }
 
     /**

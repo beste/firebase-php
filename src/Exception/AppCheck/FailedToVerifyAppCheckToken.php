@@ -7,6 +7,6 @@ namespace Kreait\Firebase\Exception\AppCheck;
 use Kreait\Firebase\Exception\AppCheckException;
 use Kreait\Firebase\Exception\RuntimeException;
 
-final class FailedToVerifyAppCheckToken extends RuntimeException implements AppCheckException
+class FailedToVerifyAppCheckToken extends RuntimeException implements AppCheckException
 {
 }
