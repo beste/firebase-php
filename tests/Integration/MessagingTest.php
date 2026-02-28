@@ -42,7 +42,7 @@ final class MessagingTest extends IntegrationTestCase
                 // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#notification
                 'title' => 'Notification title',
                 'body' => 'Notification body',
-                'image' => 'https://picsum.photos/400/200',
+                'image' => 'https://example.com/image.jpg',
             ],
             'data' => [
                 'key_1' => 'Value 1',

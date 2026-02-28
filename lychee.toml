@@ -17,7 +17,6 @@ exclude = [
     '^https://console.firebase.google.com',
     '^https://console.cloud.google.com',
     '^https://jb.gg',
-    '^https://picsum.photos',
 ]
 
 exclude_path = [
