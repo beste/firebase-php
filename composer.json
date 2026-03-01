@@ -97,12 +97,12 @@
             "@clean",
             "@tools:install",
             "@dependencies:install",
-            "composer outdated --locked --direct --strict --sort-by-age --ansi"
+            "XDEBUG_MODE=off composer outdated --locked --direct --strict --sort-by-age --ansi"
         ],
-        "dependencies:install": "composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
+        "dependencies:install": "XDEBUG_MODE=off composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
         "dependencies:update": [
-            "composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
-            "composer bump --no-interaction --ansi"
+            "XDEBUG_MODE=off composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc",
+            "XDEBUG_MODE=off composer bump --no-interaction --ansi"
         ],
         "docs": [
             "@docs:clean",
@@ -118,15 +118,15 @@
         ],
         "docs:setup": "cd docs && uv sync",
         "lint": [
-            "tools/rector --ansi --dry-run",
-            "tools/php-cs-fixer check --ansi --diff --verbose",
+            "XDEBUG_MODE=off tools/rector --ansi --dry-run",
+            "XDEBUG_MODE=off tools/php-cs-fixer check --ansi --diff --verbose",
             "@lint:composer"
         ],
-        "lint:composer": "tools/composer-normalize --ansi --dry-run",
-        "lint:composer:fix": "tools/composer-normalize --ansi",
+        "lint:composer": "XDEBUG_MODE=off tools/composer-normalize --ansi --dry-run",
+        "lint:composer:fix": "XDEBUG_MODE=off tools/composer-normalize --ansi",
         "lint:fix": [
-            "tools/rector --ansi",
-            "tools/php-cs-fixer fix --ansi --diff --verbose",
+            "XDEBUG_MODE=off tools/rector --ansi",
+            "XDEBUG_MODE=off tools/php-cs-fixer fix --ansi --diff --verbose",
             "@lint:composer:fix"
         ],
         "pre-push": [
@@ -134,12 +134,12 @@
             "@test:all",
             "@test:bc"
         ],
-        "rector": "tools/rector --ansi --dry-run",
+        "rector": "XDEBUG_MODE=off tools/rector --ansi --dry-run",
         "rector:fix": [
-            "tools/rector --ansi",
-            "tools/php-cs-fixer fix --ansi --diff --verbose"
+            "XDEBUG_MODE=off tools/rector --ansi",
+            "XDEBUG_MODE=off tools/php-cs-fixer fix --ansi --diff --verbose"
         ],
-        "reset-project": "tests/bin/reset-project",
+        "reset-project": "XDEBUG_MODE=off tests/bin/reset-project",
         "setup": [
             "@clean:build-artifacts",
             "@tools:install",
@@ -163,28 +163,28 @@
             "mkdir -p build",
             "XDEBUG_MODE=coverage tools/phpunit --colors=always --testdox --coverage-text --coverage-html=build/coverage --coverage-clover=build/coverage/clover.xml"
         ],
-        "test:emulator": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'tools/phpunit --group=emulator'",
-        "test:integration": "tools/phpunit --testsuite=integration",
-        "test:unit": "tools/phpunit --testsuite=unit --colors=always --testdox",
-        "tools:install": "tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
+        "test:emulator": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=off tools/phpunit --group=emulator'",
+        "test:integration": "XDEBUG_MODE=off tools/phpunit --testsuite=integration",
+        "test:unit": "XDEBUG_MODE=off tools/phpunit --testsuite=unit --colors=always --testdox",
+        "tools:install": "XDEBUG_MODE=off tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
         "tools:link": [
             "ln -snf phpunit tools/phpunit.phar",
             "ln -snf .phpstan/vendor/bin/phpstan tools/phpstan",
             "ln -snf .rector/vendor/bin/rector tools/rector"
         ],
-        "tools:phpstan:install": "composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi",
+        "tools:phpstan:install": "XDEBUG_MODE=off composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi",
         "tools:phpstan:update": [
-            "composer --working-dir=tools/.phpstan update --no-interaction --no-progress --ansi",
-            "composer --working-dir=tools/.phpstan bump --no-interaction --ansi"
+            "XDEBUG_MODE=off composer --working-dir=tools/.phpstan update --no-interaction --no-progress --ansi",
+            "XDEBUG_MODE=off composer --working-dir=tools/.phpstan bump --no-interaction --ansi"
         ],
-        "tools:rector:install": "composer --working-dir=tools/.rector install --no-interaction --no-progress --ansi",
+        "tools:rector:install": "XDEBUG_MODE=off composer --working-dir=tools/.rector install --no-interaction --no-progress --ansi",
         "tools:rector:update": [
-            "composer --working-dir=tools/.rector update --no-interaction --no-progress --ansi",
-            "composer --working-dir=tools/.rector bump --no-interaction --ansi"
+            "XDEBUG_MODE=off composer --working-dir=tools/.rector update --no-interaction --no-progress --ansi",
+            "XDEBUG_MODE=off composer --working-dir=tools/.rector bump --no-interaction --ansi"
         ],
         "tools:update": [
-            "tools/phive --no-progress selfupdate",
-            "tools/phive --no-progress update",
+            "XDEBUG_MODE=off tools/phive --no-progress selfupdate",
+            "XDEBUG_MODE=off tools/phive --no-progress update",
             "@tools:phpstan:update",
             "@tools:rector:update",
             "@tools:link"
