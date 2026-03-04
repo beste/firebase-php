@@ -9,6 +9,10 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.2.0 - 2026-03-04
+
+* Added support for Unicode characters in email addresses.
+
 ### App Check
 
 * Added replay-protection verification for App Check tokens via `verifyTokenWithReplayProtection()`.
