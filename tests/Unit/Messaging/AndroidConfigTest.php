@@ -58,6 +58,9 @@ final class AndroidConfigTest extends UnitTestCase
         $this->assertEqualsCanonicalizing($data, $config->jsonSerialize());
     }
 
+    /**
+     * @param non-negative-int|non-empty-string|null $ttl
+     */
     #[DoesNotPerformAssertions]
     #[DataProvider('validTtlValues')]
     public function testItAcceptsValidTTLs(int|string|null $ttl): void
@@ -96,7 +99,7 @@ final class AndroidConfigTest extends UnitTestCase
     }
 
     /**
-     * @return Iterator<(array<int, int> | array<int, null> | array<int, string>)>
+     * @return Iterator<(array<non-negative-int> | array<null> | array<non-empty-string>)>
      */
     public static function validTtlValues(): Iterator
     {

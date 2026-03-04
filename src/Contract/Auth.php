@@ -321,8 +321,8 @@ interface Auth
      *
      * @param Token|non-empty-string $idToken the JWT to verify
      * @param bool $checkIfRevoked whether to check if the ID token is revoked
-     * @param positive-int|null $leewayInSeconds number of seconds to allow a token to be expired, in case that there
-     *                                           is a clock skew between the signing and the verifying server
+     * @param non-negative-int|null $leewayInSeconds number of seconds to allow a token to be expired, in case that there
+     *                                               is a clock skew between the signing and the verifying server
      *
      * @throws FailedToVerifyToken if the token could not be verified
      * @throws RevokedIdToken if the token has been revoked
@@ -342,7 +342,7 @@ interface Auth
      * to fix your environment's time to be consistent with Google's servers.
      *
      * @param non-empty-string $sessionCookie
-     * @param positive-int|null $leewayInSeconds
+     * @param non-negative-int|null $leewayInSeconds
      *
      * @throws FailedToVerifySessionCookie
      * @throws RevokedSessionCookie

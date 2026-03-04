@@ -656,7 +656,7 @@ final readonly class Auth implements Contract\Auth
     }
 
     /**
-     * @param positive-int|null $leewayInSeconds
+     * @param non-negative-int|null $leewayInSeconds
      */
     private function userSessionHasBeenRevoked(UnencryptedToken $verifiedToken, UserRecord $user, ?int $leewayInSeconds = null): bool
     {

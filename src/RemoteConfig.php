@@ -116,7 +116,7 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
     }
 
     /**
-     * @param VersionNumber|positive-int|non-empty-string $value
+     * @param Version|VersionNumber|positive-int|non-empty-string $value
      */
     private function ensureVersionNumber(Version|VersionNumber|int|string $value): VersionNumber
     {

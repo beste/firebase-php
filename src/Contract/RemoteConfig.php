@@ -25,7 +25,7 @@ use Traversable;
 interface RemoteConfig
 {
     /**
-     * @param Version|VersionNumber|positive-int|non-empty-string $versionNumber
+     * @param Version|VersionNumber|positive-int|non-empty-string|null $versionNumber
      *
      * @throws RemoteConfigException if something went wrong
      */
