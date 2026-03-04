@@ -36,6 +36,7 @@ final class EmailTest extends TestCase
     public static function validValues(): Iterator
     {
         yield 'user@example.com' => ['user@example.com'];
+        yield 'testuserñ@example.com' => ['testuserñ@example.com'];
     }
 
     /**
