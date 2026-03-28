@@ -41,7 +41,7 @@
         "fig/http-message-util": "^1.1.5",
         "firebase/php-jwt": "^6.10.2 || ^7.0.2",
         "google/auth": "^1.45",
-        "google/cloud-storage": "^1.48.7",
+        "google/cloud-storage": "^1.50.0",
         "guzzlehttp/guzzle": "^7.9.2",
         "guzzlehttp/promises": "^2.0.4",
         "guzzlehttp/psr7": "^2.7",
@@ -61,7 +61,7 @@
         "vlucas/phpdotenv": "^5.6.3"
     },
     "suggest": {
-        "google/cloud-firestore": "^1.0 to use the Firestore component"
+        "google/cloud-firestore": "^1.55.0 to use the Firestore component"
     },
     "autoload": {
         "psr-4": {
