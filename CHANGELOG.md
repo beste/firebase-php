@@ -9,6 +9,12 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+### Security improvements
+
+* Restricted Realtime Database URLs to Firebase-owned hosts and reject non-root URLs with embedded
+  paths, query strings, or fragments while preserving emulator support.
+  Related OWASP Top 10:2025 entry: [A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/).
+
 ## 8.2.0 - 2026-03-04
 
 * Added support for Unicode characters in email addresses.

@@ -38,6 +38,10 @@ final class UrlBuilderTest extends UnitTestCase
     {
         yield 'wrong scheme' => ['ftp://example.com'];
         yield 'no scheme' => ['example.com'];
+        yield 'unexpected host' => ['https://project.attacker.test'];
+        yield 'url path is not allowed' => ['https://project.firebaseio.com/path'];
+        yield 'query string is not allowed' => ['https://project.firebaseio.com?ns=project'];
+        yield 'fragment is not allowed' => ['https://project.firebaseio.com#fragment'];
     }
 
     /**
@@ -70,42 +74,41 @@ final class UrlBuilderTest extends UnitTestCase
      */
     public static function realUrls(): Iterator
     {
-        $baseUrl = 'https://project.region.example.com';
-        yield 'empty path, empty query' => [
-            $baseUrl,
+        yield 'firebaseio host, empty path, empty query' => [
+            'https://project.firebaseio.com',
             '',
             [],
-            $baseUrl.'/',
+            'https://project.firebaseio.com/',
         ];
-        yield 'path without trailing slash, empty query' => [
-            $baseUrl,
+        yield 'firebaseio host, path without trailing slash, empty query' => [
+            'https://project.firebaseio.com',
             '/path/to/child',
             [],
-            $baseUrl.'/path/to/child',
+            'https://project.firebaseio.com/path/to/child',
         ];
-        yield 'path with trailing slash, empty query' => [
-            $baseUrl,
+        yield 'firebaseio host, path with trailing slash, empty query' => [
+            'https://project.firebaseio.com',
             '/path/to/child/',
             [],
-            $baseUrl.'/path/to/child',
+            'https://project.firebaseio.com/path/to/child',
         ];
-        yield 'path without trailing slash, non-empty query' => [
-            $baseUrl,
+        yield 'firebaseio host, path without trailing slash, non-empty query' => [
+            'https://project.firebaseio.com',
             '/path/to/child',
             ['one' => 'two', 'three' => 'four'],
-            $baseUrl.'/path/to/child?one=two&three=four',
+            'https://project.firebaseio.com/path/to/child?one=two&three=four',
         ];
-        yield 'path with trailing slash, non-empty query' => [
-            $baseUrl,
+        yield 'regional firebasedatabase host, path with trailing slash, non-empty query' => [
+            'https://project.europe-west1.firebasedatabase.app',
             '/path/to/child/',
             ['one' => 'two', 'three' => 'four'],
-            $baseUrl.'/path/to/child?one=two&three=four',
+            'https://project.europe-west1.firebasedatabase.app/path/to/child?one=two&three=four',
         ];
-        yield 'empty path, non-empty query' => [
-            $baseUrl,
+        yield 'regional firebasedatabase host, empty path, non-empty query' => [
+            'https://project.europe-west1.firebasedatabase.app',
             '',
             ['one' => 'two', 'three' => 'four'],
-            $baseUrl.'/?one=two&three=four',
+            'https://project.europe-west1.firebasedatabase.app/?one=two&three=four',
         ];
     }
 
@@ -115,7 +118,7 @@ final class UrlBuilderTest extends UnitTestCase
     public static function emulatedUrls(): Iterator
     {
         $namespace = 'namespace';
-        $baseUrl = 'https://'.$namespace.'.example.com';
+        $baseUrl = 'https://'.$namespace.'.firebaseio.com';
         $emulatorHost = 'localhost:9000';
         yield 'empty path, empty query' => [
             $emulatorHost,

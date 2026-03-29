@@ -11,6 +11,7 @@ use function http_build_query;
 use function in_array;
 use function preg_match;
 use function rtrim;
+use function str_ends_with;
 use function strtr;
 use function trim;
 
@@ -19,7 +20,12 @@ use function trim;
  */
 final readonly class UrlBuilder
 {
-    private const string EXPECTED_URL_FORMAT = '@^https://(?P<namespace>[^.]+)\.(?P<host>.+)$@';
+    private const string EXPECTED_URL_FORMAT = '@^https://(?P<namespace>[^./?#]+)\.(?P<host>[^/?#]+)$@';
+
+    private const array ALLOWED_HOST_SUFFIXES = [
+        'firebaseio.com',
+        'firebasedatabase.app',
+    ];
 
     /**
      * @param 'http'|'https' $scheme
@@ -82,6 +88,10 @@ final readonly class UrlBuilder
         $namespace = $matches['namespace'];
         $host = $matches['host'];
 
+        if (!self::hostIsAllowed($host)) {
+            throw new InvalidArgumentException('Unexpected database URL host "'.$host.'"');
+        }
+
         $emulatorHost = Util::rtdbEmulatorHost();
 
         if (!in_array($emulatorHost, ['', '0', null], true)) {
@@ -97,5 +107,16 @@ final readonly class UrlBuilder
             'host' => $namespace.'.'.$host,
             'query' => [],
         ];
+    }
+
+    private static function hostIsAllowed(string $host): bool
+    {
+        foreach (self::ALLOWED_HOST_SUFFIXES as $allowedHostSuffix) {
+            if ($host === $allowedHostSuffix || str_ends_with($host, '.'.$allowedHostSuffix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
