@@ -130,6 +130,43 @@ jobs:
       - name: Run PHPStan
         run: XDEBUG_MODE=off tools/phpstan analyse --no-progress --error-format=github
 
+  dependency-audit:
+    name: Composer Audit
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Run Composer Audit
+        run: composer audit --no-interaction --format=summary --abandoned=report --ansi
+
   lint:
     name: "Lint (${{ matrix.name }})"
     needs:
