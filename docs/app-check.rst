@@ -50,6 +50,7 @@ This performs an additional call to the App Check API and reports whether the to
    In the next major release, this should be folded into ``AppCheck::verifyToken()``.
 
 .. code-block:: php
+
     use Kreait\Firebase\Contract\AppCheck;
     use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
     use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckReplayProtection;
