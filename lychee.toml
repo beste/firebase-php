@@ -4,6 +4,7 @@ scheme = ["https"]
 
 exclude = [
     "firebaseio.com",
+    "firebasedatabase.app",
     "example",
     "github.com/beste/firebase-php/(compare|pull|issues)",
     "oauth2.googleapis.com",
