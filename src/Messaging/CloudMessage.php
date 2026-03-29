@@ -338,7 +338,7 @@ final class CloudMessage implements Message
         }
 
         $targetValue = $data[MessageTarget::TOPIC] ?? null;
-        if ($targetValue) {
+        if ($targetValue !== null) {
             return MessageTarget::with(MessageTarget::TOPIC, $targetValue);
         }
 
