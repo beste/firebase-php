@@ -111,7 +111,7 @@ jobs:
 
       - name: Upload integration test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: integration
@@ -121,7 +121,7 @@ jobs:
 
       - name: Upload integration coverage to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./build/coverage.xml
@@ -203,7 +203,7 @@ jobs:
 
       - name: Upload emulator test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: emulator
@@ -213,7 +213,7 @@ jobs:
 
       - name: Upload emulator coverage to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./build/coverage.xml
@@ -311,7 +311,7 @@ jobs:
 
       - name: Upload gRPC test results to Codecov
         if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: grpc
@@ -321,7 +321,7 @@ jobs:
 
       - name: Upload gRPC coverage to Codecov
         if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./build/coverage.xml
