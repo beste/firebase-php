@@ -57,7 +57,7 @@
     "require-dev": {
         "google/cloud-firestore": "^1.55.0 || ^2.0",
         "psr/log": "^3.0.2",
-        "symfony/var-dumper": "^7.4.4 || ^8.0.6",
+        "symfony/var-dumper": "^7.4.4 || ^8.0.8",
         "vlucas/phpdotenv": "^5.6.3"
     },
     "suggest": {
