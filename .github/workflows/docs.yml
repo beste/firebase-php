@@ -18,7 +18,6 @@ on:
       - "lychee.toml"
   release:
     types: [published]
-  workflow_dispatch:
 
 permissions:
   contents: read

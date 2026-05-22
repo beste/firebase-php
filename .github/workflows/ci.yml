@@ -28,7 +28,6 @@ on:
       - "tools/**"
       - ".github/workflows/ci.yml"
       - ".github/workflows/secure-tests.yml"
-  workflow_dispatch:
 
 permissions:
   contents: read
