@@ -5,7 +5,7 @@ description = "Firebase Admin SDK for PHP Documentation"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "furo>=2025.7.19",
+    "furo>=2025.12.19",
     "linkify-it-py>=2.0.3",
     "matplotlib>=3.10.9",
     "myst-parser>=4.0.1",
