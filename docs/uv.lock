@@ -256,7 +256,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "furo", specifier = ">=2025.7.19" },
+    { name = "furo", specifier = ">=2025.12.19" },
     { name = "linkify-it-py", specifier = ">=2.0.3" },
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "myst-parser", specifier = ">=4.0.1" },
