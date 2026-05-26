@@ -235,8 +235,17 @@ jobs:
         if: ${{ matrix.id == 'rector' }}
         run: composer --working-dir=tools/.rector install --no-interaction --no-progress --ansi
 
-      - name: "Run ${{ matrix.name }}"
-        run: ${{ matrix.command }}
+      - name: Run Rector
+        if: ${{ matrix.id == 'rector' }}
+        run: tools/rector --ansi --dry-run
+
+      - name: Run PHP-CS-Fixer
+        if: ${{ matrix.id == 'php-cs-fixer' }}
+        run: tools/php-cs-fixer check --ansi --diff --verbose
+
+      - name: Run Composer Normalize
+        if: ${{ matrix.id == 'composer-normalize' }}
+        run: tools/composer-normalize --ansi --dry-run
 
   tests:
     name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"
@@ -284,8 +293,10 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies with Composer
+        env:
+          DEPENDENCIES: ${{ matrix.dependencies }}
         run: |
-          if [ "${{ matrix.dependencies }}" = "lowest" ]; then
+          if [ "$DEPENDENCIES" = "lowest" ]; then
             composer update --prefer-lowest --prefer-stable --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
           else
             composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc

@@ -17,6 +17,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   actionlint:
     name: Run actionlint
@@ -36,9 +40,9 @@ jobs:
     name: Run zizmor
     runs-on: ubuntu-latest
     permissions:
-      actions: read
-      contents: read
-      security-events: write
+      actions: read # read workflow artifacts/results for analysis
+      contents: read # read repo content for workflow scan
+      security-events: write # publish SARIF findings to Code Scanning
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
