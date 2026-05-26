@@ -1,4 +1,4 @@
-name: GitHub Actions Security Analysis with zizmor
+name: GitHub Actions Security Analysis
 
 on:
   push:
@@ -6,18 +6,32 @@ on:
     paths:
       - ".github/workflows/**"
       - ".github/actions/**"
-      - "zizmor.yml"
+      - "security-analysis.yml"
   pull_request:
     types: [opened, reopened, synchronize]
     paths:
       - ".github/workflows/**"
       - ".github/actions/**"
-      - "zizmor.yml"
+      - "security-analysis.yml"
   workflow_dispatch:
 
 permissions: {}
 
 jobs:
+  actionlint:
+    name: Run actionlint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+
+      - name: Run actionlint
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+
   zizmor:
     name: Run zizmor
     runs-on: ubuntu-latest
