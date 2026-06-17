@@ -532,6 +532,9 @@ final class Factory
 
         $credentials = $this->getGoogleAuthTokenCredentials();
         if ($credentials instanceof FetchAuthTokenInterface) {
+            // google/cloud-firestore 1.x and google/cloud-storage use `credentialsFetcher`.
+            // google/cloud-firestore 2.x/gax use `credentials`.
+            $config['credentials'] = $credentials;
             $config['credentialsFetcher'] = $credentials;
         }
 
