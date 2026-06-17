@@ -51,7 +51,10 @@ final class SetApnsContentAvailableIfNeeded
     }
 
     /**
-     * @param array<string, mixed> $payload
+     * @param array{
+     *     notification?: null|NotificationShape,
+     *     ...
+     * } $payload
      */
     public function getNotification(array $payload): ?Notification
     {
@@ -65,11 +68,14 @@ final class SetApnsContentAvailableIfNeeded
     }
 
     /**
-     * @param array<string, mixed> $payload
+     * @param array{
+     *     apns?: null|ApnsConfigShape,
+     *     ...
+     * } $payload
      */
     public function getApnsConfig(array $payload): ApnsConfig
     {
-        $apnsConfig = $payload['apns'] ?? [];
+        $apnsConfig = $payload['apns'] ?? null;
 
         if (is_array($apnsConfig)) {
             return ApnsConfig::fromArray($apnsConfig);

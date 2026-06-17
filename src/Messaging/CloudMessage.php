@@ -32,7 +32,8 @@ use function implode;
  *     android?: AndroidConfigShape,
  *     apns?: ApnsConfig|ApnsConfigShape,
  *     webpush?: WebPushConfig|WebPushConfigShape,
- *     fcm_options?: FcmOptions|FcmOptionsShape
+ *     fcm_options?: FcmOptions|FcmOptionsShape,
+ *     ...
  * }
  *
  * @phpstan-type MessageOutputShape array{
@@ -44,7 +45,8 @@ use function implode;
  *     android?: AndroidConfigShape,
  *     apns?: ApnsConfigShape,
  *     webpush?: WebPushConfigShape,
- *     fcm_options?: FcmOptionsShape
+ *     fcm_options?: FcmOptionsShape,
+ *     ...
  * }
  */
 final class CloudMessage implements Message

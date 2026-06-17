@@ -139,6 +139,7 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
             $etag = '*';
         }
 
+        /** @var RemoteConfigTemplateShape $data */
         $data = Json::decode((string) $response->getBody(), true);
 
         return Template::fromArray($data, $etag);
