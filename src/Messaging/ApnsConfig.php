@@ -220,7 +220,7 @@ final readonly class ApnsConfig implements JsonSerializable
     }
 
     /**
-     * @return ApnsConfigShape
+     * @return array<non-empty-string, mixed>
      */
     public function jsonSerialize(): array
     {

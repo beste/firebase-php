@@ -30,7 +30,7 @@ final readonly class AppInstance implements JsonSerializable
      *         topics?: array<non-empty-string, array{
      *             addDate?: non-empty-string
      *         }>
-     *     }
+     *     }, ...
      * } $rawData
      */
     public static function fromRawData(RegistrationToken $registrationToken, array $rawData): self

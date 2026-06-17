@@ -12,7 +12,7 @@ use function array_filter;
  * @phpstan-type NotificationShape array{
  *     title?: string,
  *     body?: string,
- *     imageUrl?: string
+ *     image?: string
  * }
  */
 final class Notification implements JsonSerializable
@@ -30,11 +30,7 @@ final class Notification implements JsonSerializable
     }
 
     /**
-     * @param array{
-     *     title?: string,
-     *     body?: string,
-     *     image?: string
-     * } $data
+     * @param NotificationShape $data
      */
     public static function fromArray(array $data): self
     {
@@ -84,6 +80,9 @@ final class Notification implements JsonSerializable
         return $this->imageUrl;
     }
 
+    /**
+     * @return NotificationShape
+     */
     public function jsonSerialize(): array
     {
         return array_filter([

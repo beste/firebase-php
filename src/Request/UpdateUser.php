@@ -258,6 +258,7 @@ final class UpdateUser implements JsonSerializable
      *     customAttributes?: string,
      *     deleteAttribute?: list<non-empty-string>,
      *     deleteProvider?: list<non-empty-string>,
+     *     ...<string, mixed>
      * }
      */
     public function jsonSerialize(): array

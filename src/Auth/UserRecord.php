@@ -117,35 +117,38 @@ final readonly class UserRecord
     }
 
     /**
-     * @param array{
-     *     mfaInfo?: list<MfaInfoResponseShape>
-     * } $data
+     * @param UserRecordResponseShape $data
      */
     private static function mfaInfoFromResponseData(array $data): ?MfaInfo
     {
-        if (!array_key_exists('mfaInfo', $data)) {
-            return null;
-        }
-
-        $mfaInfo = array_shift($data['mfaInfo']);
+        $mfaInfo = $data['mfaInfo'] ?? null;
 
         if ($mfaInfo === null) {
             return null;
         }
 
-        return MfaInfo::fromResponseData($mfaInfo);
+        $firstItem = array_shift($mfaInfo);
+
+        if ($firstItem === null) {
+            return null;
+        }
+
+        return MfaInfo::fromResponseData($firstItem);
     }
 
     /**
-     * @param array{providerUserInfo: list<ProviderUserInfoResponseShape>} $data
+     * @param UserRecordResponseShape $data
      *
      * @return list<UserInfo>
      */
     private static function userInfoFromResponseData(array $data): array
     {
-        return array_map(
-            UserInfo::fromResponseData(...),
-            $data['providerUserInfo'],
-        );
+        $userInfo = $data['providerUserInfo'] ?? null;
+
+        if (is_array($userInfo)) {
+            return array_map(UserInfo::fromResponseData(...), $userInfo);
+        }
+
+        return [];
     }
 }

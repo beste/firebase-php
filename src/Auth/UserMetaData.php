@@ -10,12 +10,14 @@ use Kreait\Firebase\Util\DT;
 use function array_key_exists;
 
 /**
+ * @phpstan-import-type UserRecordResponseShape from UserRecord
+ *
  * @phpstan-type UserMetadataResponseShape array{
  *     createdAt: non-empty-string,
  *     lastLoginAt?: non-empty-string,
  *     passwordUpdatedAt?: non-empty-string,
  *     lastRefreshAt?: non-empty-string
- * }
+ * }|UserRecordResponseShape
  */
 final readonly class UserMetaData
 {
