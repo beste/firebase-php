@@ -21,6 +21,7 @@ use Kreait\Firebase\Exception\Messaging\QuotaExceeded;
 use Kreait\Firebase\Exception\Messaging\ServerError;
 use Kreait\Firebase\Exception\Messaging\ServerUnavailable;
 use Kreait\Firebase\Exception\MessagingApiExceptionConverter;
+use Kreait\Firebase\Tests\CreatesRequestExceptions;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +36,8 @@ use const DATE_ATOM;
  */
 final class MessagingApiExceptionConverterTest extends TestCase
 {
+    use CreatesRequestExceptions;
+
     private MessagingApiExceptionConverter $converter;
 
     private FrozenClock $clock;
@@ -87,7 +90,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
 
     public static function createRequestException(int $code, string $identifier): RequestException
     {
-        return new RequestException(
+        return self::createGuzzleRequestException(
             'Firebase Error Test',
             new Request('GET', 'https://example.com'),
             new Response($code, [], Json::encode([

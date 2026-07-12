@@ -23,6 +23,46 @@ parameters:
 			identifier: staticMethod.dynamicCall
 			path: tests
 
+		# The following errors depend on which Guzzle, Promises and PSR-7 majors are installed
+		-
+			message: '#^Call to function method_exists\(\) with GuzzleHttp\\Exception\\RequestException and ''getResponse'' will always evaluate to true\.$#'
+			path: src/Exception
+			reportUnmatched: false
+		-
+			message: '#^Parameter \#1 \$config of class GuzzleHttp\\Client constructor expects array#'
+			path: src/Factory.php
+			reportUnmatched: false
+		-
+			message: '#^Parameter \#3 \$config of class GuzzleHttp\\Pool constructor expects array#'
+			path: src/Messaging/ApiClient.php
+			reportUnmatched: false
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			paths:
+				- src/Messaging.php
+				- src/Messaging/AppInstanceApiClient.php
+			reportUnmatched: false
+		-
+			message: '#^Offset ''value'' might not exist on array#'
+			path: src/Messaging.php
+			reportUnmatched: false
+		-
+			message: '#^Method Kreait\\Firebase\\Messaging::unsubscribeFromAllTopics\(\) should return array<string, array<string, string>> but returns array<string, list<string>\|string>\.$#'
+			path: src/Messaging.php
+			reportUnmatched: false
+		-
+			message: '#^Provide more specific return type "GuzzleHttp\\Promise\\PromiseInterface" over abstract one$#'
+			paths:
+				- src/Messaging/ApiClient.php
+				- src/Messaging/AppInstanceApiClient.php
+			reportUnmatched: false
+
+		# Only reported with Guzzle 7; Guzzle 8's ResponseException extends RequestException
+		-
+			message: '#should return GuzzleHttp\\Exception\\RequestException but returns GuzzleHttp\\Exception\\ResponseException#'
+			path: tests/CreatesRequestExceptions.php
+			reportUnmatched: false
+
 	editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
 
 	exceptions:

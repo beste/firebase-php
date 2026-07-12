@@ -7,7 +7,6 @@ namespace Kreait\Firebase\Tests\Unit\Exception;
 use Beste\Json;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Kreait\Firebase\Exception\Database\ApiConnectionFailed;
@@ -16,6 +15,7 @@ use Kreait\Firebase\Exception\Database\DatabaseNotFound;
 use Kreait\Firebase\Exception\Database\PermissionDenied;
 use Kreait\Firebase\Exception\DatabaseApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use Kreait\Firebase\Tests\CreatesRequestExceptions;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
@@ -24,6 +24,8 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
  */
 final class DatabaseApiExceptionConverterTest extends UnitTestCase
 {
+    use CreatesRequestExceptions;
+
     private DatabaseApiExceptionConverter $converter;
 
     private Request $request;
@@ -36,7 +38,7 @@ final class DatabaseApiExceptionConverterTest extends UnitTestCase
 
     public function testItConvertsARequestExceptionThatDoesNotIncludeValidJson(): void
     {
-        $requestException = new RequestException(
+        $requestException = self::createGuzzleRequestException(
             'Error without valid json',
             $this->request,
             new Response(400, [], $responseBody = '{"what is this"'),
