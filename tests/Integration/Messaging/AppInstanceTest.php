@@ -36,21 +36,56 @@ final class AppInstanceTest extends IntegrationTestCase
         $this->messaging->subscribeToTopic($secondTopic, RegistrationToken::fromValue($token)); // Lazy registration token test
         $this->messaging->subscribeToTopic($thirdTopic, $token);
 
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($firstTopic));
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($secondTopic));
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($thirdTopic));
+        $this->assertTopicSubscriptionsEventuallyMatch($token, [
+            $firstTopic => true,
+            $secondTopic => true,
+            $thirdTopic => true,
+        ]);
 
         $this->messaging->unsubscribeFromTopic($firstTopic, $token);
-        $this->assertFalse($this->appInstance($token)->isSubscribedToTopic($firstTopic));
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($secondTopic));
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($thirdTopic));
+        $this->assertTopicSubscriptionsEventuallyMatch($token, [
+            $firstTopic => false,
+            $secondTopic => true,
+            $thirdTopic => true,
+        ]);
 
         $this->messaging->unsubscribeFromTopic($secondTopic, $token);
-        $this->assertFalse($this->appInstance($token)->isSubscribedToTopic($secondTopic));
-        $this->assertTrue($this->appInstance($token)->isSubscribedToTopic($thirdTopic));
+        $this->assertTopicSubscriptionsEventuallyMatch($token, [
+            $firstTopic => false,
+            $secondTopic => false,
+            $thirdTopic => true,
+        ]);
 
         $this->messaging->unsubscribeFromAllTopics($token);
-        $this->assertFalse($this->appInstance($token)->isSubscribedToTopic($thirdTopic));
+        $this->assertTopicSubscriptionsEventuallyMatch($token, [
+            $firstTopic => false,
+            $secondTopic => false,
+            $thirdTopic => false,
+        ]);
+    }
+
+    /**
+     * @param non-empty-string $registrationToken
+     * @param array<non-empty-string, bool> $expectedSubscriptions
+     */
+    private function assertTopicSubscriptionsEventuallyMatch(
+        string $registrationToken,
+        array $expectedSubscriptions,
+    ): void {
+        $this->assertEventually(
+            function () use ($registrationToken, $expectedSubscriptions): bool {
+                $appInstance = $this->appInstance($registrationToken);
+
+                foreach ($expectedSubscriptions as $topic => $expectedSubscription) {
+                    if ($appInstance->isSubscribedToTopic($topic) !== $expectedSubscription) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            message: 'Topic subscriptions did not reach their expected state within 10 seconds.',
+        );
     }
 
     /**
