@@ -10,8 +10,10 @@ use Kreait\Firebase\Util;
 
 use function array_rand;
 use function bin2hex;
+use function hrtime;
 use function mb_strtolower;
 use function random_bytes;
+use function sleep;
 
 /**
  * @internal
@@ -87,6 +89,31 @@ abstract class IntegrationTestCase extends FirebaseTestCase
     protected static function randomEmail(string $suffix = ''): string
     {
         return self::randomString($suffix.'@example.com');
+    }
+
+    /**
+     * @param callable(): bool $condition
+     * @param positive-int $timeoutInSeconds
+     */
+    protected function assertEventually(
+        callable $condition,
+        int $timeoutInSeconds = 10,
+        ?string $message = null,
+    ): void {
+        $retryUntil = hrtime()[0] + $timeoutInSeconds;
+        $conditionIsMet = $condition();
+
+        while (!$conditionIsMet && hrtime()[0] < $retryUntil) {
+            sleep(1);
+            $conditionIsMet = $condition();
+        }
+
+        $this->assertTrue(
+            $conditionIsMet,
+            in_array($message, [null, ''], true)
+                ? "Condition did not become true within {$timeoutInSeconds} seconds."
+                : $message
+        );
     }
 
     /**
