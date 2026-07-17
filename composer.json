@@ -47,7 +47,7 @@
         "guzzlehttp/psr7": "^2.7",
         "kreait/firebase-tokens": "^5.2",
         "lcobucci/jwt": "^5.3",
-        "mtdowling/jmespath.php": "^2.8.0",
+        "mtdowling/jmespath.php": "^2.9.2",
         "psr/cache": "^2.0 || ^3.0",
         "psr/clock": "^1.0",
         "psr/http-client": "^1.0.3",
