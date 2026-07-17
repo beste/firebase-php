@@ -9,11 +9,14 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.3.0 - 2026-07-18
+
 ### Security improvements
 
 * Restricted Realtime Database URLs to Firebase-owned hosts and reject non-root URLs with embedded
   paths, query strings, or fragments while preserving emulator support.
   Related OWASP Top 10:2025 entry: [A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/).
+* Updated dependency `mtdowling/jmespath.php` to `2.9.2` to address [CVE-2026-54133](https://github.com/jmespath/jmespath.php/security/advisories/GHSA-pcw8-m77r-2528)
 
 ## 8.2.0 - 2026-03-04
 
