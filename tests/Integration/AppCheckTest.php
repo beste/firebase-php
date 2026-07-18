@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
-use Kreait\Firebase\AppCheck\VerifyAppCheckTokenResponse;
 use Kreait\Firebase\Contract\AppCheck;
 use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
 use Kreait\Firebase\Tests\IntegrationTestCase;
@@ -58,24 +57,20 @@ final class AppCheckTest extends IntegrationTestCase
         $firstVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
         $secondVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
 
-        // Replay-consumption state may not be visible immediately, so retry briefly.
-        if ($secondVerification->alreadyConsumed !== true) {
-            for ($attempt = 0; $attempt < 3; ++$attempt) {
-                sleep(1);
-                $secondVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
-
-                if ($secondVerification->alreadyConsumed === true) {
-                    break;
-                }
-
-                $secondVerification = null;
+        // Replay-consumption state may not be visible immediately.
+        $this->assertEventually(function () use ($token, &$secondVerification): bool {
+            if ($secondVerification->alreadyConsumed === true) {
+                return true;
             }
-        }
+
+            $secondVerification = $this->appCheck->verifyTokenWithReplayProtection($token->token);
+
+            return $secondVerification->alreadyConsumed === true;
+        }, 3, 'Replay-consumption state did not become visible within 3 seconds.');
 
         $this->assertSame(self::$appId, $firstVerification->appId);
         $this->assertSame(self::$appId, $firstVerification->token->app_id);
         $this->assertFalse($firstVerification->alreadyConsumed);
-        $this->assertInstanceOf(VerifyAppCheckTokenResponse::class, $secondVerification);
         $this->assertTrue($secondVerification->alreadyConsumed);
     }
 }
