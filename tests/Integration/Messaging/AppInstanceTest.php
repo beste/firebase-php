@@ -84,7 +84,8 @@ final class AppInstanceTest extends IntegrationTestCase
 
                 return true;
             },
-            message: 'Topic subscriptions did not reach their expected state within 10 seconds.',
+            10,
+            'Topic subscriptions did not reach their expected state within 10 seconds.',
         );
     }
 

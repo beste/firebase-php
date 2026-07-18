@@ -100,10 +100,10 @@ abstract class IntegrationTestCase extends FirebaseTestCase
         int $timeoutInSeconds = 10,
         ?string $message = null,
     ): void {
-        $retryUntil = hrtime()[0] + $timeoutInSeconds;
+        $retryUntil = hrtime(true) + ($timeoutInSeconds * 1_000_000_000);
         $conditionIsMet = $condition();
 
-        while (!$conditionIsMet && hrtime()[0] < $retryUntil) {
+        while (!$conditionIsMet && hrtime(true) < $retryUntil) {
             sleep(1);
             $conditionIsMet = $condition();
         }
