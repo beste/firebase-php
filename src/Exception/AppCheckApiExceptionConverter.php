@@ -43,7 +43,7 @@ final readonly class AppCheckApiExceptionConverter
     {
         $message = $e->getMessage();
         $code = $e->getCode();
-        $response = $e->getResponse();
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
 
         if ($response instanceof ResponseInterface) {
             $message = $this->responseParser->getErrorReasonFromResponse($response);

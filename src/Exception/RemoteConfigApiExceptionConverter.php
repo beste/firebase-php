@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Exception;
 
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use Kreait\Firebase\Exception\RemoteConfig\ApiConnectionFailed;
 use Kreait\Firebase\Exception\RemoteConfig\OperationAborted;
@@ -13,6 +12,7 @@ use Kreait\Firebase\Exception\RemoteConfig\RemoteConfigError;
 use Kreait\Firebase\Exception\RemoteConfig\ValidationFailed;
 use Kreait\Firebase\Exception\RemoteConfig\VersionMismatch;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -33,7 +33,7 @@ final readonly class RemoteConfigApiExceptionConverter
             return $this->convertGuzzleRequestException($exception);
         }
 
-        if ($exception instanceof ConnectException) {
+        if ($exception instanceof NetworkExceptionInterface) {
             return new ApiConnectionFailed(
                 message: 'Unable to connect to the API: '.$exception->getMessage(),
                 previous: $exception
@@ -47,7 +47,7 @@ final readonly class RemoteConfigApiExceptionConverter
     {
         $message = $e->getMessage();
         $code = $e->getCode();
-        $response = $e->getResponse();
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
 
         if ($response instanceof ResponseInterface) {
             $message = $this->responseParser->getErrorReasonFromResponse($response);

@@ -15,6 +15,7 @@ use Kreait\Firebase\Exception\AppCheck\AppCheckError;
 use Kreait\Firebase\Exception\AppCheck\PermissionDenied;
 use Kreait\Firebase\Exception\AppCheckApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use Kreait\Firebase\Tests\CreatesRequestExceptions;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -27,6 +28,8 @@ use Throwable;
  */
 final class AppCheckApiExceptionConverterTest extends TestCase
 {
+    use CreatesRequestExceptions;
+
     private AppCheckApiExceptionConverter $converter;
 
     protected function setUp(): void
@@ -69,7 +72,7 @@ final class AppCheckApiExceptionConverterTest extends TestCase
 
     public static function createRequestException(int $code, string $identifier): RequestException
     {
-        return new RequestException(
+        return self::createGuzzleRequestException(
             'Firebase Error Test',
             new Request('GET', 'https://example.com'),
             new Response($code, [], Json::encode([

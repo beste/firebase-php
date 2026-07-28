@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Tests\Unit\Exception;
 
 use Beste\Json;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Iterator;
@@ -28,6 +27,7 @@ use Kreait\Firebase\Exception\Auth\UserNotFound;
 use Kreait\Firebase\Exception\Auth\WeakPassword;
 use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
+use Kreait\Firebase\Tests\CreatesRequestExceptions;
 use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -39,6 +39,8 @@ use RuntimeException;
  */
 final class AuthApiExceptionConverterTest extends UnitTestCase
 {
+    use CreatesRequestExceptions;
+
     private AuthApiExceptionConverter $converter;
 
     protected function setUp(): void
@@ -48,7 +50,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
 
     public function testItConvertsARequestExceptionThatDoesNotIncludeValidJson(): void
     {
-        $requestException = new RequestException(
+        $requestException = self::createGuzzleRequestException(
             'Error without valid json',
             new Request('GET', 'https://example.com'),
             new Response(400, [], $responseBody = '{"what is this"'),
@@ -82,7 +84,7 @@ final class AuthApiExceptionConverterTest extends UnitTestCase
     #[DataProvider('requestErrors')]
     public function testItConvertsRequestExceptionsBecause(string $identifier, string $expectedClass): void
     {
-        $requestException = new RequestException(
+        $requestException = self::createGuzzleRequestException(
             'Firebase Error Test',
             new Request('GET', 'https://example.com'),
             new Response(400, [], Json::encode([

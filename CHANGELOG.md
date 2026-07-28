@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+* Added support for `guzzlehttp/guzzle:^8.0`, `guzzlehttp/psr7:^3.0` and `guzzlehttp/promises:^3.0`.
+
 ## 8.3.0 - 2026-07-18
 
 ### Security improvements
