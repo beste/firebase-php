@@ -39,7 +39,7 @@
         "beste/json": "^1.5.1",
         "cuyz/valinor": "^2.2.1",
         "fig/http-message-util": "^1.1.5",
-        "firebase/php-jwt": "^6.10.2 || ^7.0.2",
+        "firebase/php-jwt": "^7.0.2",
         "google/auth": "^1.45",
         "google/cloud-storage": "^1.50.0 || ^2.0.0",
         "guzzlehttp/guzzle": "^7.9.2 || ^8.0",
