@@ -10,6 +10,12 @@ Please update your remote URL if you have forked or cloned the repository.
 ## Unreleased
 
 * Added support for `guzzlehttp/guzzle:^8.0`, `guzzlehttp/psr7:^3.0` and `guzzlehttp/promises:^3.0`.
+* Updated the `firebase/php-jwt` constraint to `^7.0.2`. Although
+  [CVE-2025-45769](https://github.com/advisories/GHSA-2x45-7fc3-mxwq) is rated as low severity, it has been
+  [disputed](https://github.com/googleapis/php-jwt/issues/620) on the basis that applications, rather than
+  the library, are responsible for choosing appropriate key lengths. Nevertheless, a review of the library's
+  [most-downloaded dependents](https://packagist.org/packages/firebase/php-jwt/dependents?order_by=downloads)
+  showed that most already support version 7.x.
 
 ## 8.3.0 - 2026-07-18
 
