@@ -94,7 +94,7 @@ final readonly class UrlBuilder
 
         $emulatorHost = Util::rtdbEmulatorHost();
 
-        if (!in_array($emulatorHost, ['', '0', null], true)) {
+        if (!in_array($emulatorHost, ['0', null], true)) {
             return [
                 'scheme' => 'http',
                 'host' => $emulatorHost,

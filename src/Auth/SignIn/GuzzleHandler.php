@@ -167,7 +167,7 @@ final class GuzzleHandler
             'returnIdpCredential' => true,
             'requestUri' => $action->requestUri(),
             'idToken' => $action->linkingIdToken(),
-        ], fn($value): bool => $value !== null);
+        ], fn(mixed $value): bool => $value !== null);
 
         $body = Utils::streamFor(Json::encode($rawBody, JSON_FORCE_OBJECT));
 

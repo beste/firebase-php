@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kreait\Firebase;
 
 use function getenv;
-use function in_array;
 use function putenv;
 
 /**
@@ -50,13 +49,7 @@ final class Util
      */
     public static function authEmulatorHost(): ?string
     {
-        $emulatorHost = self::getenv('FIREBASE_AUTH_EMULATOR_HOST');
-
-        if (!in_array($emulatorHost, [null, ''], true)) {
-            return $emulatorHost;
-        }
-
-        return null;
+        return self::getenv('FIREBASE_AUTH_EMULATOR_HOST');
     }
 
     /**
@@ -64,12 +57,6 @@ final class Util
      */
     public static function rtdbEmulatorHost(): ?string
     {
-        $emulatorHost = self::getenv('FIREBASE_DATABASE_EMULATOR_HOST');
-
-        if (!in_array($emulatorHost, [null, ''], true)) {
-            return $emulatorHost;
-        }
-
-        return null;
+        return self::getenv('FIREBASE_DATABASE_EMULATOR_HOST');
     }
 }

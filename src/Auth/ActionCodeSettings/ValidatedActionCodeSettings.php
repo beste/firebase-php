@@ -57,7 +57,7 @@ final class ValidatedActionCodeSettings implements ActionCodeSettings
     {
         $instance = new self();
 
-        $settings = array_filter($settings, static fn($value): bool => $value !== null);
+        $settings = array_filter($settings, static fn(mixed $value): bool => $value !== null);
 
         foreach ($settings as $key => $value) {
             switch (mb_strtolower($key)) {

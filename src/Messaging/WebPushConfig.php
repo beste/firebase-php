@@ -154,7 +154,7 @@ final class WebPushConfig implements JsonSerializable
     }
 
     /**
-     * @param WebPushHeadersShape $headers
+     * @param WebPushHeadersShape|array{Urgency: string|null} $headers
      *
      * @return WebPushHeadersShape
      */

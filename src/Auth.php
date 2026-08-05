@@ -661,7 +661,7 @@ final readonly class Auth implements Contract\Auth
     private function userSessionHasBeenRevoked(UnencryptedToken $verifiedToken, UserRecord $user, ?int $leewayInSeconds = null): bool
     {
         // The timestamp, in seconds, which marks a boundary, before which Firebase ID token are considered revoked.
-        $validSince = $user->tokensValidAfterTime ?? null;
+        $validSince = $user->tokensValidAfterTime;
 
         if (!($validSince instanceof DateTimeImmutable)) {
             // The user hasn't logged in yet, so there's nothing to revoke
