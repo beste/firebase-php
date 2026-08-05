@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.4.0 - 2026-08-05
+
 * Added support for `guzzlehttp/guzzle:^8.0`, `guzzlehttp/psr7:^3.0` and `guzzlehttp/promises:^3.0`.
 * Updated the `firebase/php-jwt` constraint to `^7.0.2`. Although
   [CVE-2025-45769](https://github.com/advisories/GHSA-2x45-7fc3-mxwq) is rated as low severity, it has been
