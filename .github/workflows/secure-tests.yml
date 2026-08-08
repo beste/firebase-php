@@ -201,7 +201,10 @@ jobs:
           java-version: '21'
 
       - name: Install Firebase Tools
-        run: npm install -g firebase-tools
+        working-directory: tools/.firebase
+        run: |
+          npm ci --ignore-scripts
+          echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
 
       - name: Run emulated Integration Tests
         env:
