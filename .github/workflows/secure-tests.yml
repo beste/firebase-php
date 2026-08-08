@@ -201,10 +201,7 @@ jobs:
           java-version: '21'
 
       - name: Install Firebase Tools
-        working-directory: tools/.firebase
-        run: |
-          npm ci --ignore-scripts
-          echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
+        run: composer tools:firebase:install
 
       - name: Run emulated Integration Tests
         env:
@@ -218,7 +215,7 @@ jobs:
           XDEBUG_MODE: coverage
         run: |
           mkdir -p build
-          firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage tools/phpunit --group=emulator --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml'
+          tools/.firebase/node_modules/.bin/firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage tools/phpunit --group=emulator --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml'
 
       - name: Upload emulator test results to Codecov
         if: ${{ !cancelled() }}
