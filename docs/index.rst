@@ -15,7 +15,6 @@ Firebase Admin SDK for PHP
          <a href="https://packagist.org/packages/kreait/firebase-php/stats"><img src="https://img.shields.io/packagist/dm/kreait/firebase-php.svg" alt="Monthly Downloads"></a>
          <a href="https://packagist.org/packages/kreait/firebase-php/stats"><img src="https://img.shields.io/packagist/dt/kreait/firebase-php.svg" alt="Total Downloads"></a><br/>
          <a href="https://github.com/beste/firebase-php/actions/workflows/ci.yml"><img src="https://github.com/beste/firebase-php/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-         <a href="https://github.com/beste/firebase-php/actions/workflows/secure-tests.yml"><img src="https://github.com/beste/firebase-php/actions/workflows/secure-tests.yml/badge.svg" alt="Secure Tests"></a>
          <a href="https://github.com/beste/firebase-php/actions/workflows/docs.yml"><img src="https://github.com/beste/firebase-php/actions/workflows/docs.yml/badge.svg" alt="Docs"></a>
          <a href="https://github.com/sponsors/jeromegamez"><img src="https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4" alt="Sponsor"></a>
       </p>

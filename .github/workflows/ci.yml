@@ -128,7 +128,9 @@ jobs:
         run: composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Run PHPStan
         run: XDEBUG_MODE=off tools/phpstan analyse --no-progress --error-format=github
@@ -303,10 +305,14 @@ jobs:
           fi
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Run PHPUnit
         run: tools/phpunit --testsuite=unit --testdox
@@ -317,6 +323,9 @@ jobs:
       - tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # authenticate uploads to Codecov with OIDC
 
     steps:
       - name: Checkout code
@@ -348,10 +357,14 @@ jobs:
         run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Cache PHPUnit static analysis cache
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
@@ -373,7 +386,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           flags: unit
           report_type: test_results
           files: ./build/test-results.xml
@@ -383,7 +396,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: ./build/code-coverage.xml
           flags: unit
           fail_ci_if_error: false
@@ -425,3 +438,21 @@ jobs:
       - name: Skip Roave BC Check (no tags found)
         if: ${{ steps.check-tags.outputs.has_tags != 'true' }}
         run: echo "Skipping BC check because no git tags were found."
+
+  secure-tests:
+    name: Secure Tests
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/8.x' }}
+    needs:
+      - dependency-audit
+      - code-coverage
+      - bc-check
+    permissions:
+      contents: read
+      id-token: write # allow the reusable workflow to authenticate Codecov uploads
+    uses: ./.github/workflows/secure-tests.yml
+    secrets:
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      TEST_FIREBASE_APP_ID: ${{ secrets.TEST_FIREBASE_APP_ID }}
+      TEST_FIREBASE_RTDB_URI: ${{ secrets.TEST_FIREBASE_RTDB_URI }}
+      TEST_FIREBASE_TENANT_ID: ${{ secrets.TEST_FIREBASE_TENANT_ID }}
+      TEST_REGISTRATION_TOKENS: ${{ secrets.TEST_REGISTRATION_TOKENS }}

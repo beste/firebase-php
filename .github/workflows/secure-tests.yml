@@ -1,29 +1,31 @@
 name: Secure Tests
 
-on: # zizmor: ignore[dangerous-triggers] workflow_run is guarded at job level: head_repository.full_name == github.repository prevents fork-triggered runs
-  workflow_run:
-    workflows: ["CI"]
-    types: [completed]
+on:
+  workflow_call:
+    secrets:
+      GOOGLE_APPLICATION_CREDENTIALS:
+        required: true
+      TEST_FIREBASE_APP_ID:
+        required: true
+      TEST_FIREBASE_RTDB_URI:
+        required: true
+      TEST_FIREBASE_TENANT_ID:
+        required: true
+      TEST_REGISTRATION_TOKENS:
+        required: true
 
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   dependency-validation:
     name: Dependency Validation
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository) }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Setup PHP
@@ -58,6 +60,9 @@ jobs:
       - dependency-validation
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # authenticate uploads to Codecov with OIDC
 
     env:
       php-version: '8.5'
@@ -66,7 +71,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Setup PHP
@@ -77,7 +81,9 @@ jobs:
           coverage: xdebug
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -96,7 +102,9 @@ jobs:
         run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
       - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Run Integration Tests
         env:
@@ -114,7 +122,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           flags: integration
           report_type: test_results
           files: ./build/test-report.xml
@@ -124,7 +132,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: ./build/coverage.xml
           flags: integration
           fail_ci_if_error: false
@@ -135,6 +143,9 @@ jobs:
       - dependency-validation
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # authenticate uploads to Codecov with OIDC
 
     env:
       php-version: '8.5'
@@ -143,7 +154,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Setup PHP
@@ -154,7 +164,9 @@ jobs:
           coverage: xdebug
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -173,7 +185,9 @@ jobs:
         run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
       - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Set Up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -207,7 +221,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           flags: emulator
           report_type: test_results
           files: ./build/test-report.xml
@@ -217,7 +231,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: ./build/coverage.xml
           flags: emulator
           fail_ci_if_error: false
@@ -228,6 +242,9 @@ jobs:
       - dependency-validation
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # authenticate uploads to Codecov with OIDC
     # Non-blocking while the gRPC extension is broken/unstable on PHP 8.5.
     # See https://github.com/shivammathur/setup-php/issues/1041.
     # Remove this once upstream releases a stable extension and tests pass.
@@ -242,7 +259,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Setup cache environment
@@ -270,7 +286,9 @@ jobs:
           coverage: xdebug
 
       - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Verify gRPC extension
         id: grpc
@@ -296,7 +314,9 @@ jobs:
         run: composer install --no-interaction --no-progress --ansi
 
       - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Run gRPC Tests
         id: grpc-tests
@@ -316,7 +336,7 @@ jobs:
         if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           flags: grpc
           report_type: test_results
           files: ./build/test-report.xml
@@ -326,7 +346,7 @@ jobs:
         if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: ./build/coverage.xml
           flags: grpc
           fail_ci_if_error: false
