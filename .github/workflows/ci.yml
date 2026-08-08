@@ -188,7 +188,7 @@ jobs:
             command: tools/rector --ansi --dry-run
           - id: php-cs-fixer
             name: PHP-CS-Fixer
-            php: "8.3"
+            php: "8.5"
             command: tools/php-cs-fixer check --ansi --diff --verbose
           - id: composer-normalize
             name: Composer Normalize
