@@ -84,7 +84,7 @@ final readonly class GuzzleApiClientHandler
         $headers = array_filter([
             'Content-Type' => 'application/json; charset=UTF-8',
             'Content-Length' => (string) ($body->getSize() ?? ''),
-        ], fn($value): bool => $value !== '' && $value !== '0');
+        ], fn(mixed $value): bool => $value !== '' && $value !== '0');
 
         return new Request('POST', $url, $headers, $body);
     }
