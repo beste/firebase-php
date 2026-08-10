@@ -163,9 +163,10 @@
             "mkdir -p build",
             "XDEBUG_MODE=coverage tools/phpunit --colors=always --testdox --coverage-text --coverage-html=build/coverage --coverage-clover=build/coverage/clover.xml"
         ],
-        "test:emulator": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=off tools/phpunit --group=emulator'",
+        "test:emulator": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_DATABASE_EMULATOR_HOST=localhost:9100 tools/.firebase/node_modules/.bin/firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=off tools/phpunit --group=emulator'",
         "test:integration": "XDEBUG_MODE=off tools/phpunit --testsuite=integration",
         "test:unit": "XDEBUG_MODE=off tools/phpunit --testsuite=unit --colors=always --testdox",
+        "tools:firebase:install": "npm ci --ignore-scripts --prefix tools/.firebase",
         "tools:install": "XDEBUG_MODE=off tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
         "tools:link": [
             "ln -snf phpunit tools/phpunit.phar",

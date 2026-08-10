@@ -8,7 +8,6 @@
 [![Monthly Downloads](https://img.shields.io/packagist/dm/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)
 [![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-php.svg)](https://packagist.org/packages/kreait/firebase-php/stats)<br/>
 [![CI](https://github.com/beste/firebase-php/actions/workflows/ci.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/ci.yml)
-[![Secure Tests](https://github.com/beste/firebase-php/actions/workflows/secure-tests.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/secure-tests.yml)
 [![Docs](https://github.com/beste/firebase-php/actions/workflows/docs.yml/badge.svg)](https://github.com/beste/firebase-php/actions/workflows/docs.yml)
 [![Sponsor](https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4)](https://github.com/sponsors/jeromegamez)
 

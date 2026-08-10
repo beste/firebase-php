@@ -29,9 +29,10 @@ If you want to provide a bug fix, include tests that prove the bug exists and th
    - `TEST_REGISTRATION_TOKENS`
    - `TEST_FIRESTORE_CUSTOM_DB_NAME` if you use a custom Firestore database
 
-4. If you run emulator tests, install the Firebase CLI and make sure it can start Auth and Realtime Database emulators. The test suite uses ports `9099` and `9100`.
+4. If you run emulator tests, install the locked Firebase CLI and make sure it can start Auth and Realtime Database emulators. The test suite uses ports `9099` and `9100`.
 
    ```bash
+   composer tools:firebase:install
    composer test:emulator
    ```
 
