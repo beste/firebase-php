@@ -779,6 +779,27 @@ syntactically correct, this usually has one of the following reasons:
         echo $e->token();
     }
 
+Mismatched registration tokens
+------------------------------
+
+If a registration token is registered to a *different* Firebase project than the project
+you are using to send the message, the FCM API rejects the message with a
+``SENDER_ID_MISMATCH`` error. Like an unknown token, this is a permanent failure for
+this token - it will never be reachable from your project, so it should be removed
+from your list of message targets. In contrast to other authentication errors, it does
+not indicate a problem with your project's credentials.
+
+.. code-block:: php
+
+    use Kreait\Firebase\Exception\Messaging\SenderIdMismatch;
+
+    try {
+        $messaging->send($message);
+    } catch (SenderIdMismatch $e) {
+        echo $e->getMessage();
+        print_r($e->errors());
+    }
+
 Quota exceeded
 --------------
 
@@ -836,6 +857,8 @@ Error handling example
         $messaging->send($message);
     } catch (MessagingErrors\NotFound $e) {
         echo 'The target device could not be found.';
+    } catch (MessagingErrors\SenderIdMismatch $e) {
+        echo 'The target device belongs to a different Firebase project.';
     } catch (MessagingErrors\InvalidMessage $e) {
         echo 'The given message is malformatted.';
     } catch (MessagingErrors\ServerUnavailable $e) {
