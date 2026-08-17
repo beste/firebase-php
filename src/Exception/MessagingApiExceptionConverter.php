@@ -15,6 +15,7 @@ use Kreait\Firebase\Exception\Messaging\InvalidMessage;
 use Kreait\Firebase\Exception\Messaging\MessagingError;
 use Kreait\Firebase\Exception\Messaging\NotFound;
 use Kreait\Firebase\Exception\Messaging\QuotaExceeded;
+use Kreait\Firebase\Exception\Messaging\SenderIdMismatch;
 use Kreait\Firebase\Exception\Messaging\ServerError;
 use Kreait\Firebase\Exception\Messaging\ServerUnavailable;
 use Kreait\Firebase\Http\ErrorResponseParser;
@@ -23,6 +24,7 @@ use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+use function is_array;
 use function is_numeric;
 
 /**
@@ -74,8 +76,14 @@ final readonly class MessagingApiExceptionConverter
                 break;
 
             case StatusCode::STATUS_UNAUTHORIZED:
-            case StatusCode::STATUS_FORBIDDEN:
                 $convertedError = new AuthenticationError($message, previous: $previous);
+
+                break;
+
+            case StatusCode::STATUS_FORBIDDEN:
+                $convertedError = $this->isSenderIdMismatch($errors, $message)
+                    ? new SenderIdMismatch($message, previous: $previous)
+                    : new AuthenticationError($message, previous: $previous);
 
                 break;
 
@@ -146,6 +154,26 @@ final readonly class MessagingApiExceptionConverter
         }
 
         return new MessagingError(message: $e->getMessage(), previous: $e);
+    }
+
+    /**
+     * @see https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
+     *
+     * @param array<mixed> $errors
+     */
+    private function isSenderIdMismatch(array $errors, string $message): bool
+    {
+        $details = $errors['error']['details'] ?? [];
+
+        if (is_array($details)) {
+            foreach ($details as $detail) {
+                if (is_array($detail) && ($detail['errorCode'] ?? null) === 'SENDER_ID_MISMATCH') {
+                    return true;
+                }
+            }
+        }
+
+        return mb_strtolower($message) === 'senderid mismatch';
     }
 
     private function getRetryAfter(ResponseInterface $response): ?DateTimeImmutable

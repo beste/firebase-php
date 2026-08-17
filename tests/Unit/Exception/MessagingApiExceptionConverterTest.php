@@ -18,6 +18,7 @@ use Kreait\Firebase\Exception\Messaging\InvalidMessage;
 use Kreait\Firebase\Exception\Messaging\MessagingError;
 use Kreait\Firebase\Exception\Messaging\NotFound;
 use Kreait\Firebase\Exception\Messaging\QuotaExceeded;
+use Kreait\Firebase\Exception\Messaging\SenderIdMismatch;
 use Kreait\Firebase\Exception\Messaging\ServerError;
 use Kreait\Firebase\Exception\Messaging\ServerUnavailable;
 use Kreait\Firebase\Exception\MessagingApiExceptionConverter;
@@ -105,6 +106,56 @@ final class MessagingApiExceptionConverterTest extends TestCase
                 ],
             ])),
         );
+    }
+
+    public function testItConvertsASenderIdMismatchResponseIdentifiedByItsErrorCode(): void
+    {
+        // Error shape as returned by the FCM HTTP v1 API
+        // https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
+        $response = new Response(403, [], Json::encode([
+            'error' => [
+                'code' => 403,
+                'message' => 'SenderId mismatch',
+                'status' => 'PERMISSION_DENIED',
+                'details' => [
+                    [
+                        '@type' => 'type.googleapis.com/google.firebase.fcm.v1.FcmError',
+                        'errorCode' => 'SENDER_ID_MISMATCH',
+                    ],
+                ],
+            ],
+        ]));
+
+        $converted = $this->converter->convertResponse($response);
+
+        $this->assertInstanceOf(SenderIdMismatch::class, $converted);
+        $this->assertNotEmpty($converted->errors());
+    }
+
+    public function testItConvertsASenderIdMismatchResponseIdentifiedByItsMessage(): void
+    {
+        $response = new Response(403, [], Json::encode([
+            'error' => [
+                'code' => 403,
+                'message' => 'SenderId mismatch',
+                'status' => 'PERMISSION_DENIED',
+            ],
+        ]));
+
+        $this->assertInstanceOf(SenderIdMismatch::class, $this->converter->convertResponse($response));
+    }
+
+    public function testItConvertsOtherForbiddenResponsesToAuthenticationErrors(): void
+    {
+        $response = new Response(403, [], Json::encode([
+            'error' => [
+                'code' => 403,
+                'message' => 'The caller does not have permission',
+                'status' => 'PERMISSION_DENIED',
+            ],
+        ]));
+
+        $this->assertInstanceOf(AuthenticationError::class, $this->converter->convertResponse($response));
     }
 
     public function testItKnowsWhenToRetryAfterWithSeconds(): void

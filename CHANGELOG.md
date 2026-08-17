@@ -9,6 +9,12 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## Messaging
+
+* FCM `403 PERMISSION_DENIED` responses with the error code `SENDER_ID_MISMATCH` are now
+  converted to a dedicated `Kreait\Firebase\Exception\Messaging\SenderIdMismatch` exception instead of
+  the more generic `AuthenticationError`.
+
 ## 8.4.0 - 2026-08-05
 
 * Added support for `guzzlehttp/guzzle:^8.0`, `guzzlehttp/psr7:^3.0` and `guzzlehttp/promises:^3.0`.
