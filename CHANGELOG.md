@@ -9,12 +9,11 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
-* Messaging: FCM `403 PERMISSION_DENIED` responses with the error code `SENDER_ID_MISMATCH` are now
+## Messaging
+
+* FCM `403 PERMISSION_DENIED` responses with the error code `SENDER_ID_MISMATCH` are now
   converted to a dedicated `Kreait\Firebase\Exception\Messaging\SenderIdMismatch` exception instead of
-  the more generic `AuthenticationError`. A sender ID mismatch is a permanent, per-token failure (the
-  token belongs to a different Firebase project) and not a problem with the project's credentials, so
-  it can now be handled like an unregistered token. Other `401`/`403` responses are still converted
-  to `AuthenticationError`.
+  the more generic `AuthenticationError`.
 
 ## 8.4.0 - 2026-08-05
 
