@@ -6,6 +6,7 @@ namespace Kreait\Firebase\Messaging;
 
 use Kreait\Firebase\Exception\Messaging\InvalidMessage;
 use Kreait\Firebase\Exception\Messaging\NotFound;
+use Kreait\Firebase\Exception\Messaging\SenderIdMismatch;
 use Kreait\Firebase\Exception\MessagingException;
 
 use function preg_match;
@@ -75,7 +76,8 @@ final class SendReport
 
     public function messageWasSentToUnknownToken(): bool
     {
-        return $this->error instanceof NotFound;
+        return $this->error instanceof NotFound
+            || $this->error instanceof SenderIdMismatch;
     }
 
     /**
