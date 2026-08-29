@@ -22,7 +22,8 @@ exclude = [
 
 exclude_path = [
     "./docs/_build",
-    ".vendor"
+    "./tools",
+    "./vendor",
 ]
 
 exclude_all_private = false
