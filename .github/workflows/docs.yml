@@ -18,6 +18,8 @@ on:
       - "lychee.toml"
   release:
     types: [published]
+  schedule:
+    - cron: "23 5 * * 1" # weekly, off the hour
 
 permissions:
   contents: read
