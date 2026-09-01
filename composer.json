@@ -167,6 +167,7 @@
         "test:integration": "XDEBUG_MODE=off tools/phpunit --testsuite=integration",
         "test:unit": "XDEBUG_MODE=off tools/phpunit --testsuite=unit --colors=always --testdox",
         "tools:firebase:install": "npm ci --ignore-scripts --prefix tools/.firebase",
+        "tools:firebase:update": "npm update --ignore-scripts --prefix tools/.firebase",
         "tools:install": "XDEBUG_MODE=off tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
         "tools:link": [
             "ln -snf phpunit tools/phpunit.phar",
@@ -188,6 +189,7 @@
             "XDEBUG_MODE=off tools/phive --no-progress update",
             "@tools:phpstan:update",
             "@tools:rector:update",
+            "@tools:firebase:update",
             "@tools:link"
         ]
     }

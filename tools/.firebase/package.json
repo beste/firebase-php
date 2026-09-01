@@ -2,6 +2,6 @@
     "name": "firebase-tools",
     "private": true,
     "devDependencies": {
-        "firebase-tools": "15.28.1"
+        "firebase-tools": "^15.28.2"
     }
 }
