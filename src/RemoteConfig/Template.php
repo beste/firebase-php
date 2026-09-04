@@ -266,7 +266,7 @@ class Template implements JsonSerializable
             ->withDescription($parameterGroupData['description'] ?? '')
         ;
 
-        foreach ($parameterGroupData['parameters'] as $parameterName => $parameterData) {
+        foreach (($parameterGroupData['parameters'] ?? []) as $parameterName => $parameterData) {
             $group = $group->withParameter(self::buildParameter($parameterName, $parameterData));
         }
 

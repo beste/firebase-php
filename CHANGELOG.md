@@ -9,6 +9,11 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## Remote Config
+
+* Fixed retrieving templates containing missing parameter groups 
+  ([#1133](https://github.com/beste/firebase-php/pull/1133)).
+
 ## Messaging
 
 * FCM `403 PERMISSION_DENIED` responses with the error code `SENDER_ID_MISMATCH` are now
