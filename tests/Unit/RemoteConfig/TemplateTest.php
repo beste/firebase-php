@@ -125,6 +125,16 @@ final class TemplateTest extends UnitTestCase
         $this->assertEmpty($template->parameterGroups());
     }
 
+    /**
+     * @see https://github.com/beste/firebase-php/issues/1132
+     */
+    public function testEmptyParameterGroupsCanBeImported(): void
+    {
+        $template = Template::fromArray(['parameterGroups' => ['empty' => []]]);
+
+        $this->assertSame([], $template->parameterGroups()['empty']->parameters());
+    }
+
     public function testPersonalizationValuesAreImportedInDefaultValues(): void
     {
         $data = [

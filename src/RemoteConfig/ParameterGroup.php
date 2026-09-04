@@ -11,7 +11,7 @@ use JsonSerializable;
  *
  * @phpstan-type RemoteConfigParameterGroupShape array{
  *     description?: string|null,
- *     parameters: array<non-empty-string, RemoteConfigParameterShape>}
+ *     parameters?: array<non-empty-string, RemoteConfigParameterShape>}
  */
 final class ParameterGroup implements JsonSerializable
 {
