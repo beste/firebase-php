@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.4.1 - 206-09-05
+
 ## Remote Config
 
 * Fixed retrieving templates containing missing parameter groups 
