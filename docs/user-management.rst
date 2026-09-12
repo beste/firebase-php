@@ -623,3 +623,24 @@ Confirm a password reset
         // Another error has occurred
     }
 
+****************
+Published events
+****************
+
+The Authentication component publishes the following events through the configured
+:doc:`event dispatcher <events>`:
+
+* ``Kreait\Firebase\Auth\Event\UserCreated`` is published by ``createUser()``,
+  ``createUserWithEmailAndPassword()``, and ``createAnonymousUser()``. It contains the created ``user`` record.
+* ``Kreait\Firebase\Auth\Event\UserUpdated`` is published by ``updateUser()``, ``changeUserPassword()``,
+  ``changeUserEmail()``, ``enableUser()``, ``disableUser()``, and ``unlinkProvider()``. It contains the updated
+  ``user`` record.
+* ``Kreait\Firebase\Auth\Event\UserDeleted`` is published by ``deleteUser()``. It contains the deleted user's
+  ``uid``.
+* ``Kreait\Firebase\Auth\Event\UsersDeleted`` is published by ``deleteUsers()``. It contains the requested ``uids``
+  and the resulting ``DeleteUsersResult``.
+* ``Kreait\Firebase\Auth\Event\CustomUserClaimsChanged`` is published by ``setCustomUserClaims()``. It contains the
+  user's ``uid`` and the assigned ``claims``.
+* ``Kreait\Firebase\Auth\Event\EmailActionLinkSent`` is published by ``sendEmailActionLink()``,
+  ``sendEmailVerificationLink()``, ``sendPasswordResetLink()``, and ``sendSignInWithEmailLink()``. It contains the
+  action ``type``, recipient ``email``, and optional ``locale``.

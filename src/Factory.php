@@ -375,7 +375,14 @@ final class Factory
         $idTokenVerifier = $this->createIdTokenVerifier();
         $sessionCookieVerifier = $this->createSessionCookieVerifier();
 
-        return new Auth($authApiClient, $customTokenGenerator, $idTokenVerifier, $sessionCookieVerifier, $this->clock);
+        return new Auth(
+            $authApiClient,
+            $customTokenGenerator,
+            $idTokenVerifier,
+            $sessionCookieVerifier,
+            $this->clock,
+            $this->eventDispatcher,
+        );
     }
 
     /**

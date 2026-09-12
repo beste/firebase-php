@@ -11,6 +11,7 @@ Please update your remote URL if you have forked or cloned the repository.
 
 Added support for providing a PSR-14 event dispatcher to the factory.
 
+* **Authentication**: `Kreait\Firebase\Auth` now dispatches events for user changes, refresh-token revocation, and sent email action links.
 * **Messaging**: `Kreait\Firebase\Messaging` now dispatches events for sent messages and validation errors.
 * **Remote Config**: `Kreait\Firebase\RemoteConfig` now dispatches events for published and rolled-back templates.
 
