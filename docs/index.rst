@@ -112,5 +112,6 @@ Your use of Firebase is governed by the `Terms of Service for Firebase Services 
    user-management
    remote-config
    app-check
+   events
    testing
    troubleshooting

@@ -46,6 +46,7 @@ use Kreait\Firebase\Valinor\Normalizer;
 use Kreait\Firebase\Valinor\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use SensitiveParameter;
 use Throwable;
@@ -112,6 +113,8 @@ final class Factory
     private HttpClientOptions $httpClientOptions;
 
     private ErrorResponseParser $errorResponseParser;
+
+    private ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * @var array<non-empty-string, mixed>
@@ -304,6 +307,14 @@ final class Factory
         return $factory;
     }
 
+    public function withEventDispatcher(EventDispatcherInterface $eventDispatcher): self
+    {
+        $factory = clone $this;
+        $factory->eventDispatcher = $eventDispatcher;
+
+        return $factory;
+    }
+
     /**
      * @return Contract\AppCheck&Contract\AppCheckWithReplayProtection
      */
@@ -440,7 +451,7 @@ final class Factory
             $errorHandler,
         );
 
-        return new Messaging($messagingApiClient, $appInstanceApiClient, $errorHandler);
+        return new Messaging($messagingApiClient, $appInstanceApiClient, $errorHandler, $this->eventDispatcher);
     }
 
     /**

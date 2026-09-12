@@ -65,6 +65,13 @@ If you use another type of credential, it might be necessary to provide it manua
 You can also set a ``GOOGLE_CLOUD_PROJECT=<project-id>`` environment variable before instantiating a component with
 the factory.
 
+****************
+Event Dispatcher
+****************
+
+You can provide a `PSR-14 event dispatcher <https://www.php-fig.org/psr/psr-14/>`_ to the factory before creating a
+component. See :ref:`Events <events>` for configuration and a list of published events.
+
 
 *********************
 Realtime Database URI
