@@ -50,6 +50,7 @@
         "mtdowling/jmespath.php": "^2.9.2",
         "psr/cache": "^2.0 || ^3.0",
         "psr/clock": "^1.0",
+        "psr/event-dispatcher": "^1.0",
         "psr/http-client": "^1.0.3",
         "psr/http-factory": "^1.1",
         "psr/http-message": "^1.1 || ^2.0"

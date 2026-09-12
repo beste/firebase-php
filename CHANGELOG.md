@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+Added support for providing a PSR-14 event dispatcher to the factory.
+
 ## 8.4.2 - 2026-09-05
 
 Re-release of 8.4.1 because its tag pointed to the wrong commit.

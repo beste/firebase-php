@@ -25,6 +25,7 @@ use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Messaging\RegistrationTokens;
 use Kreait\Firebase\Messaging\SendReport;
 use Kreait\Firebase\Messaging\Topic;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -42,6 +43,7 @@ final readonly class Messaging implements Contract\Messaging
         private ApiClient $messagingApi,
         private AppInstanceApiClient $appInstanceApi,
         private MessagingApiExceptionConverter $exceptionConverter,
+        private ?EventDispatcherInterface $eventDispatcher = null,
     ) {
     }
 
