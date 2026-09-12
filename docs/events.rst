@@ -13,3 +13,24 @@ dispatcher to the factory before creating a component:
 
 Events are dispatched synchronously after an operation has completed. Exceptions thrown by event listeners are
 passed to the caller.
+
+For example, with the `Symfony EventDispatcher <https://symfony.com/doc/current/components/event_dispatcher.html>`_:
+
+.. code-block:: php
+
+    use Kreait\Firebase\Messaging\Event\MessagesSent;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $eventDispatcher = new EventDispatcher();
+
+    $eventDispatcher->addListener(
+        MessagesSent::class,
+        function (MessagesSent $event): void {
+            $report = $event->report;
+            $validateOnly = $event->validateOnly;
+        },
+    );
+
+    $messaging = $factory
+        ->withEventDispatcher($eventDispatcher)
+        ->createMessaging();

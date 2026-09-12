@@ -14,6 +14,7 @@ use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Messaging\ApiClient;
 use Kreait\Firebase\Messaging\AppInstance;
 use Kreait\Firebase\Messaging\AppInstanceApiClient;
+use Kreait\Firebase\Messaging\Event\MessagesSent;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Messages;
 use Kreait\Firebase\Messaging\MessageTarget;
@@ -119,7 +120,11 @@ final readonly class Messaging implements Contract\Messaging
         // didn't return a response at all. I don't think it's possible, so letting PHPStan know.
         assert(!in_array(null, $sendReports, true));
 
-        return MulticastSendReport::withItems($sendReports);
+        $report = MulticastSendReport::withItems($sendReports);
+
+        $this->eventDispatcher?->dispatch(new MessagesSent($report, $validateOnly));
+
+        return $report;
     }
 
     public function validate(Message|array $message): array

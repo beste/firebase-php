@@ -11,6 +11,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 Added support for providing a PSR-14 event dispatcher to the factory.
 
+* **Messaging**: `Kreait\Firebase\Messaging` now dispatches events for sent messages and validation errors.
+
 ## 8.4.2 - 2026-09-05
 
 Re-release of 8.4.1 because its tag pointed to the wrong commit.
