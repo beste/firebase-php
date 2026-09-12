@@ -714,6 +714,17 @@ You can retrieve all topic subscriptions for an app instance with the ``topicSub
         echo "{$subscription->registrationToken()} is subscribed to {$subscription->topic()}\n";
     }
 
+****************
+Published events
+****************
+
+The Cloud Messaging component publishes the following events through the configured
+:doc:`event dispatcher <events>`:
+
+* ``Kreait\Firebase\Messaging\Event\MessagesSent`` is published by ``send()``, ``sendAll()``, ``sendMulticast()``,
+  ``validate()``, and ``validateRegistrationTokens()``. It contains the completed ``MulticastSendReport`` and
+  indicates whether the messages were only validated.
+
 **************
 Error Handling
 **************
