@@ -419,6 +419,7 @@ final class Factory
                 $http,
                 new RemoteConfigApiExceptionConverter($this->errorResponseParser),
             ),
+            $this->eventDispatcher,
         );
     }
 

@@ -302,3 +302,14 @@ Rollback to a version
 .. code-block:: php
 
     $template = $remoteConfig->rollbackToVersion($versionNumber);
+
+Published events
+----------------
+
+The Remote Config component publishes the following events through the configured
+:doc:`event dispatcher <events>`:
+
+* ``Kreait\Firebase\RemoteConfig\Event\TemplatePublished`` is published by ``publish()``. It contains the returned
+  ``publishedTemplate``, including its version metadata, and the resulting ``etag``.
+* ``Kreait\Firebase\RemoteConfig\Event\TemplateRolledBack`` is published by ``rollbackToVersion()``. It contains the
+  requested ``rollbackTargetVersionNumber`` and the resulting ``activeTemplate`` with its new version metadata.

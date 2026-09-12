@@ -7,15 +7,15 @@ namespace Kreait\Firebase;
 use Beste\Json;
 use Kreait\Firebase\Exception\RemoteConfig\VersionNotFound;
 use Kreait\Firebase\RemoteConfig\ApiClient;
+use Kreait\Firebase\RemoteConfig\Event\TemplatePublished;
+use Kreait\Firebase\RemoteConfig\Event\TemplateRolledBack;
 use Kreait\Firebase\RemoteConfig\FindVersions;
 use Kreait\Firebase\RemoteConfig\Template;
 use Kreait\Firebase\RemoteConfig\Version;
 use Kreait\Firebase\RemoteConfig\VersionNumber;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Traversable;
-
-use function array_shift;
-use function is_string;
 
 /**
  * @internal
@@ -24,8 +24,10 @@ use function is_string;
  */
 final readonly class RemoteConfig implements Contract\RemoteConfig
 {
-    public function __construct(private ApiClient $client)
-    {
+    public function __construct(
+        private ApiClient $client,
+        private ?EventDispatcherInterface $eventDispatcher = null,
+    ) {
     }
 
     public function get(Version|VersionNumber|int|string|null $versionNumber = null): Template
@@ -44,20 +46,17 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
 
     public function publish(Template|array $template): string
     {
-        $etag = $this->client
-            ->publishTemplate($this->ensureTemplate($template))
-            ->getHeader('ETag')
-        ;
+        $template = $this->ensureTemplate($template);
 
-        $etag = array_shift($etag);
-
-        if (!is_string($etag)) {
-            return '*';
-        }
+        $response = $this->client->publishTemplate($template);
+        $publishedTemplate = $this->buildTemplateFromResponse($response);
+        $etag = $response->getHeaderLine('ETag');
 
         if ($etag === '') {
-            return '*';
+            $etag = '*';
         }
+
+        $this->eventDispatcher?->dispatch(new TemplatePublished($publishedTemplate, $etag));
 
         return $etag;
     }
@@ -78,8 +77,11 @@ final readonly class RemoteConfig implements Contract\RemoteConfig
     public function rollbackToVersion(VersionNumber|int|string $versionNumber): Template
     {
         $versionNumber = $this->ensureVersionNumber($versionNumber);
+        $activeTemplate = $this->buildTemplateFromResponse($this->client->rollbackToVersion($versionNumber));
 
-        return $this->buildTemplateFromResponse($this->client->rollbackToVersion($versionNumber));
+        $this->eventDispatcher?->dispatch(new TemplateRolledBack($versionNumber, $activeTemplate));
+
+        return $activeTemplate;
     }
 
     public function listVersions(FindVersions|array|null $query = null): Traversable
