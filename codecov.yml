@@ -1,8 +1,18 @@
 comment:
-  layout: "reach,diff"
+  layout: "reach,diff,flags"
+  show_carryforward_flags: true
 
 coverage:
   status:
     project:
       default:
         informational: true
+
+flag_management:
+  individual_flags:
+    - name: integration
+      carryforward: true
+    - name: emulator
+      carryforward: true
+    - name: grpc
+      carryforward: true
