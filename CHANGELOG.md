@@ -7,7 +7,7 @@ If it saves you or your team time, please consider [sponsoring its development](
 The namespace remains `Kreait\Firebase` and the package name remains `kreait/firebase-php`.
 Please update your remote URL if you have forked or cloned the repository.
 
-## Unreleased
+## 8.5.0 - 2026-09-13
 
 Added support for providing a PSR-14 event dispatcher to the factory.
 
