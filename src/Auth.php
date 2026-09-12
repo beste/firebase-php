@@ -13,6 +13,13 @@ use Kreait\Firebase\Auth\ApiClient;
 use Kreait\Firebase\Auth\CustomTokenViaGoogleCredentials;
 use Kreait\Firebase\Auth\DeleteUsersRequest;
 use Kreait\Firebase\Auth\DeleteUsersResult;
+use Kreait\Firebase\Auth\Event\CustomUserClaimsChanged;
+use Kreait\Firebase\Auth\Event\EmailActionLinkSent;
+use Kreait\Firebase\Auth\Event\RefreshTokensRevoked;
+use Kreait\Firebase\Auth\Event\UserCreated;
+use Kreait\Firebase\Auth\Event\UserDeleted;
+use Kreait\Firebase\Auth\Event\UsersDeleted;
+use Kreait\Firebase\Auth\Event\UserUpdated;
 use Kreait\Firebase\Auth\SendActionLink\FailedToSendActionLink;
 use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
 use Kreait\Firebase\Auth\SignInAnonymously;
@@ -44,6 +51,7 @@ use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
 use Psr\Clock\ClockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use SensitiveParameter;
 use Throwable;
@@ -71,6 +79,7 @@ final readonly class Auth implements Contract\Auth
         private IdTokenVerifier $idTokenVerifier,
         private SessionCookieVerifier $sessionCookieVerifier,
         private ClockInterface $clock,
+        private ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->jwtParser = new Parser(new JoseEncoder());
     }
@@ -157,7 +166,11 @@ final readonly class Auth implements Contract\Auth
 
         $response = $this->client->createUser($request);
 
-        return $this->getUserRecordFromResponseAfterUserUpdate($response);
+        $user = $this->getUserRecordFromResponseAfterUserUpdate($response);
+
+        $this->eventDispatcher?->dispatch(new UserCreated($user));
+
+        return $user;
     }
 
     public function updateUser(string $uid, array|UpdateUser $properties): UserRecord
@@ -170,7 +183,11 @@ final readonly class Auth implements Contract\Auth
 
         $response = $this->client->updateUser($request);
 
-        return $this->getUserRecordFromResponseAfterUserUpdate($response);
+        $user = $this->getUserRecordFromResponseAfterUserUpdate($response);
+
+        $this->eventDispatcher?->dispatch(new UserUpdated($user));
+
+        return $user;
     }
 
     public function createUserWithEmailAndPassword(string $email, #[SensitiveParameter] string $password): UserRecord
@@ -257,6 +274,8 @@ final readonly class Auth implements Contract\Auth
         } catch (UserNotFound) {
             throw new UserNotFound("No user with uid '{$uid}' found.");
         }
+
+        $this->eventDispatcher?->dispatch(new UserDeleted($uid));
     }
 
     public function deleteUsers(iterable $uids, bool $forceDeleteEnabledUsers = false): DeleteUsersResult
@@ -268,7 +287,11 @@ final readonly class Auth implements Contract\Auth
             $request->enabledUsersShouldBeForceDeleted(),
         );
 
-        return DeleteUsersResult::fromRequestAndResponse($request, $response);
+        $result = DeleteUsersResult::fromRequestAndResponse($request, $response);
+
+        $this->eventDispatcher?->dispatch(new UsersDeleted($request->uids(), $result));
+
+        return $result;
     }
 
     public function getEmailActionLink(string $type, string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
@@ -322,6 +345,8 @@ final readonly class Auth implements Contract\Auth
         }
 
         $this->client->sendEmailActionLink($type, $email, $actionCodeSettings, $locale, $idToken);
+
+        $this->eventDispatcher?->dispatch(new EmailActionLinkSent($type, $email, $locale));
     }
 
     public function getEmailVerificationLink(string $email, ActionCodeSettings|array|null $actionCodeSettings = null, ?string $locale = null): string
@@ -360,6 +385,8 @@ final readonly class Auth implements Contract\Auth
         $claims ??= [];
 
         $this->client->setCustomUserClaims($uid, $claims);
+
+        $this->eventDispatcher?->dispatch(new CustomUserClaimsChanged($uid, $claims));
     }
 
     public function createCustomToken(string $uid, array $claims = [], int|DateInterval|string $ttl = 3600): UnencryptedToken
@@ -510,6 +537,8 @@ final readonly class Auth implements Contract\Auth
         $uid = Uid::fromString($uid)->value;
 
         $this->client->revokeRefreshTokens($uid);
+
+        $this->eventDispatcher?->dispatch(new RefreshTokensRevoked($uid));
     }
 
     public function unlinkProvider(string $uid, array|string $provider): UserRecord
@@ -520,7 +549,11 @@ final readonly class Auth implements Contract\Auth
 
         $response = $this->client->unlinkProvider($uid, $provider);
 
-        return $this->getUserRecordFromResponseAfterUserUpdate($response);
+        $user = $this->getUserRecordFromResponseAfterUserUpdate($response);
+
+        $this->eventDispatcher?->dispatch(new UserUpdated($user));
+
+        return $user;
     }
 
     public function signInAsUser(UserRecord|string $user, ?array $claims = null): SignInResult

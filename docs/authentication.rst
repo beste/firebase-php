@@ -372,6 +372,16 @@ Parameter                    Type              Description
     You can find the usage instructions at https://lcobucci-jwt.readthedocs.io/en/stable/.
 
 ****************
+Published events
+****************
+
+The Authentication component publishes the following events through the configured
+:doc:`event dispatcher <events>`:
+
+* ``Kreait\Firebase\Auth\Event\RefreshTokensRevoked`` is published by ``revokeRefreshTokens()`` and by
+  ``confirmPasswordReset()`` when previous sessions are invalidated. It contains the user's ``uid``.
+
+****************
 Tenant Awareness
 ****************
 
