@@ -140,4 +140,42 @@ final class MessagingTest extends UnitTestCase
 
         $this->assertSame(['token-1', 'token-2'], $sentTargets);
     }
+
+    public function testItValidatesFids(): void
+    {
+        /** @var list<RequestInterface> $sentRequests */
+        $sentRequests = [];
+
+        $handler = static function (RequestInterface $request) use (&$sentRequests): PromiseInterface {
+            $sentRequests[] = $request;
+
+            return Create::promiseFor(new Response(200, [], '{"name":"message-id"}'));
+        };
+
+        $client = new Client(['handler' => $handler]);
+
+        $exceptionConverter = new MessagingApiExceptionConverter();
+
+        $messaging = new Messaging(
+            new ApiClient($client, 'project-id', new RequestFactory(new HttpFactory(), new HttpFactory())),
+            new AppInstanceApiClient($client, $exceptionConverter),
+            $exceptionConverter,
+        );
+
+        $result = $messaging->validateFids(['fid-1', 'fid-2']);
+
+        $this->assertSame(['fid-1', 'fid-2'], $result['valid']);
+        $this->assertSame([], $result['unknown']);
+        $this->assertSame([], $result['invalid']);
+
+        $this->assertCount(2, $sentRequests);
+
+        foreach ($sentRequests as $sentRequest) {
+            $payload = Json::decode((string) $sentRequest->getBody(), true);
+
+            $this->assertTrue($payload['validate_only']);
+            $this->assertArrayHasKey('fid', $payload['message']);
+            $this->assertArrayNotHasKey('token', $payload['message']);
+        }
+    }
 }

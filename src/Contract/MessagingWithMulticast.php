@@ -15,13 +15,14 @@ use Kreait\Firebase\Messaging\RegistrationToken;
 use Kreait\Firebase\Messaging\RegistrationTokens;
 
 /**
- * Transitional contract for multicast messages with explicit target types.
+ * Transitional contract for messages with explicit target types.
  *
  * This interface exists to support Firebase Installation IDs without changing
  * the existing Messaging::sendMulticast() signature in a backwards-incompatible
- * way. Messaging::sendMulticast() defers to sendMulticastToRegistrationTokens().
- * In a future major release, sendMulticast() should be deprecated in favor of
- * the two methods defined here.
+ * way, and to provide the FID counterparts of the methods on Messaging that are
+ * named after registration tokens. Messaging::sendMulticast() defers to
+ * sendMulticastToRegistrationTokens(). In a future major release, sendMulticast()
+ * should be deprecated in favor of the two multicast methods defined here.
  */
 interface MessagingWithMulticast
 {
@@ -44,4 +45,20 @@ interface MessagingWithMulticast
      * @throws FirebaseException if something very unexpected happened (never :))
      */
     public function sendMulticastToFids(Message|array $message, FirebaseInstallationIds|FirebaseInstallationId|array|string $firebaseInstallationIds, bool $validateOnly = false): MulticastSendReport;
+
+    /**
+     * The Firebase Installation ID counterpart of Messaging::validateRegistrationTokens().
+     *
+     * @param FirebaseInstallationIds|FirebaseInstallationId|list<FirebaseInstallationId|non-empty-string>|non-empty-string $firebaseInstallationIdOrIds
+     *
+     * @throws MessagingException
+     * @throws FirebaseException
+     *
+     * @return array{
+     *     valid: list<non-empty-string>,
+     *     unknown: list<non-empty-string>,
+     *     invalid: list<non-empty-string>
+     * }
+     */
+    public function validateFids(FirebaseInstallationIds|FirebaseInstallationId|array|string $firebaseInstallationIdOrIds): array;
 }
