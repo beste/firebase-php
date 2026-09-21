@@ -27,11 +27,14 @@ period it also accepts Firebase Installation IDs - no immediate action is requir
   previous value and does not include `FID`, because changing the value of a public constant would be a
   backward compatibility break. The next major release will fold `ALL_TYPES` back into `TYPES`.
 * Added the `Kreait\Firebase\Contract\MessagingWithMulticast` interface with
-  `sendMulticastToRegistrationTokens()` and `sendMulticastToFids()`. `Messaging` implements it in addition
-  to `Kreait\Firebase\Contract\Messaging`, which is unchanged.
+  `sendMulticastToRegistrationTokens()`, `sendMulticastToFids()` and `validateFids()`. `Messaging`
+  implements it in addition to `Kreait\Firebase\Contract\Messaging`, which is unchanged.
+* Added `validateFids()`, the Firebase Installation ID counterpart of `validateRegistrationTokens()`.
+  It returns the same `valid`/`unknown`/`invalid` keys.
 * `Messaging::sendMulticast()` is unchanged and now defers to `sendMulticastToRegistrationTokens()`.
   A future major release will deprecate it in favor of the two explicit methods.
-* Added `MulticastSendReport::validFids()` and `MulticastSendReport::unknownFids()`.
+* Added `MulticastSendReport::validFids()`, `unknownFids()` and `invalidFids()`.
+* `SendReport::messageTargetWasInvalid()` now also recognises FCM errors that name the `fid` field.
 
 ## 8.5.0 - 2026-09-13
 

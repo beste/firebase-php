@@ -167,6 +167,19 @@ final readonly class Messaging implements Contract\Messaging, MessagingWithMulti
         ];
     }
 
+    public function validateFids(FirebaseInstallationIds|FirebaseInstallationId|array|string $firebaseInstallationIdOrIds): array
+    {
+        $fids = FirebaseInstallationIds::fromValue($firebaseInstallationIdOrIds);
+
+        $report = $this->sendMulticastToFids(new RawMessageFromArray([]), $fids, true);
+
+        return [
+            'valid' => $report->validFids(),
+            'unknown' => $report->unknownFids(),
+            'invalid' => $report->invalidFids(),
+        ];
+    }
+
     public function subscribeToTopic(string|Topic $topic, RegistrationTokens|RegistrationToken|array|string $registrationTokenOrTokens): array
     {
         return $this->subscribeToTopics([$topic], $registrationTokenOrTokens);

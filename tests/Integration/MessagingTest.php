@@ -322,6 +322,17 @@ final class MessagingTest extends IntegrationTestCase
         $this->assertSame($invalid, $result['invalid'][0]);
     }
 
+    public function testValidateFids(): void
+    {
+        $fid = $this->getTestFirebaseInstallationId();
+
+        $result = $this->messaging->validateFids([$fid]);
+
+        $this->assertSame([$fid], $result['valid']);
+        $this->assertSame([], $result['unknown']);
+        $this->assertSame([], $result['invalid']);
+    }
+
     public function testSubscribeToTopic(): void
     {
         $token = $this->getTestRegistrationToken();

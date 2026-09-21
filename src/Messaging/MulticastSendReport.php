@@ -116,7 +116,7 @@ final class MulticastSendReport implements Countable
         return $this->successes()
             ->filter(static fn(SendReport $report): bool => $report->target()->type() === MessageTarget::FID)
             ->map(static fn(SendReport $report): string => $report->target()->value())
-            ;
+        ;
     }
 
     /**
@@ -130,7 +130,21 @@ final class MulticastSendReport implements Countable
             ->filter(static fn(SendReport $report): bool => $report->target()->type() === MessageTarget::FID)
             ->filter(static fn(SendReport $report): bool => $report->messageWasSentToUnknownToken())
             ->map(static fn(SendReport $report): string => $report->target()->value())
-            ;
+        ;
+    }
+
+    /**
+     * Returns all provided Firebase Installation IDs that were invalid.
+     *
+     * @return list<non-empty-string>
+     */
+    public function invalidFids(): array
+    {
+        return $this
+            ->filter(static fn(SendReport $report): bool => $report->target()->type() === MessageTarget::FID)
+            ->filter(static fn(SendReport $report): bool => $report->messageTargetWasInvalid())
+            ->map(static fn(SendReport $report): string => $report->target()->value())
+        ;
     }
 
     public function count(): int

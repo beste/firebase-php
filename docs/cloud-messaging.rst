@@ -670,6 +670,17 @@ The result is an array with three keys containing the checked tokens:
 * ``unknown`` contains all tokens that are valid, but **not** registered to the current Firebase project
 * ``invalid`` contains all invalid (=malformed) tokens
 
+To check Firebase Installation IDs instead, use ``validateFids()`` from the
+``Kreait\Firebase\Contract\MessagingWithMulticast`` interface. It returns the same three keys.
+
+.. code-block:: php
+
+    use Kreait\Firebase\Messaging\FirebaseInstallationIds;
+
+    $fids = FirebaseInstallationIds::fromValue(['...', '...' /* ... */]);
+
+    $result = $messaging->validateFids($fids);
+
 ****************
 Topic management
 ****************
@@ -784,8 +795,9 @@ The Cloud Messaging component publishes the following events through the configu
 :doc:`event dispatcher <events>`:
 
 * ``Kreait\Firebase\Messaging\Event\MessagesSent`` is published by ``send()``, ``sendAll()``, ``sendMulticast()``,
-  ``validate()``, and ``validateRegistrationTokens()``. It contains the completed ``MulticastSendReport`` and
-  indicates whether the messages were only validated.
+  ``sendMulticastToRegistrationTokens()``, ``sendMulticastToFids()``, ``validate()``,
+  ``validateRegistrationTokens()``, and ``validateFids()``. It contains the completed ``MulticastSendReport``
+  and indicates whether the messages were only validated.
 
 **************
 Error Handling
