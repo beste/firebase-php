@@ -6,6 +6,7 @@ namespace Kreait\Firebase;
 
 use Beste\Json;
 use GuzzleHttp\Promise\Utils;
+use Kreait\Firebase\Contract\MessagingWithMulticast;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Kreait\Firebase\Exception\Messaging\NotFound;
@@ -15,6 +16,8 @@ use Kreait\Firebase\Messaging\ApiClient;
 use Kreait\Firebase\Messaging\AppInstance;
 use Kreait\Firebase\Messaging\AppInstanceApiClient;
 use Kreait\Firebase\Messaging\Event\MessagesSent;
+use Kreait\Firebase\Messaging\FirebaseInstallationId;
+use Kreait\Firebase\Messaging\FirebaseInstallationIds;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Messages;
 use Kreait\Firebase\Messaging\MessageTarget;
@@ -38,7 +41,7 @@ use function array_map;
 /**
  * @internal
  */
-final readonly class Messaging implements Contract\Messaging
+final readonly class Messaging implements Contract\Messaging, MessagingWithMulticast
 {
     public function __construct(
         private ApiClient $messagingApi,
@@ -78,6 +81,11 @@ final readonly class Messaging implements Contract\Messaging
 
     public function sendMulticast(Message|array $message, RegistrationTokens|RegistrationToken|array|string $registrationTokens, bool $validateOnly = false): MulticastSendReport
     {
+        return $this->sendMulticastToRegistrationTokens($message, $registrationTokens, $validateOnly);
+    }
+
+    public function sendMulticastToRegistrationTokens(Message|array $message, RegistrationTokens|RegistrationToken|array|string $registrationTokens, bool $validateOnly = false): MulticastSendReport
+    {
         $message = $message instanceof Message ? $message : new RawMessageFromArray($message);
         $registrationTokens = RegistrationTokens::fromValue($registrationTokens);
 
@@ -85,6 +93,20 @@ final readonly class Messaging implements Contract\Messaging
 
         foreach ($registrationTokens as $registrationToken) {
             $messages[] = $this->withChangedTarget($message, $registrationToken->value());
+        }
+
+        return $this->sendAll($messages, $validateOnly);
+    }
+
+    public function sendMulticastToFids(Message|array $message, FirebaseInstallationIds|FirebaseInstallationId|array|string $firebaseInstallationIds, bool $validateOnly = false): MulticastSendReport
+    {
+        $message = $message instanceof Message ? $message : new RawMessageFromArray($message);
+        $firebaseInstallationIds = FirebaseInstallationIds::fromValue($firebaseInstallationIds);
+
+        $messages = [];
+
+        foreach ($firebaseInstallationIds as $firebaseInstallationId) {
+            $messages[] = $this->withChangedTarget($message, $firebaseInstallationId->value(), MessageTarget::FID);
         }
 
         return $this->sendAll($messages, $validateOnly);
@@ -280,21 +302,23 @@ final readonly class Messaging implements Contract\Messaging
         $check = Json::decode(Json::encode($message), true);
 
         return array_key_exists(MessageTarget::CONDITION, $check)
+            || array_key_exists(MessageTarget::FID, $check)
             || array_key_exists(MessageTarget::TOKEN, $check)
             || array_key_exists(MessageTarget::TOPIC, $check);
     }
 
-    private function withChangedTarget(Message $message, string $value): RawMessageFromArray
+    private function withChangedTarget(Message $message, string $value, string $type = MessageTarget::TOKEN): RawMessageFromArray
     {
         $message = Json::decode(Json::encode($message), true);
 
         unset(
             $message[MessageTarget::CONDITION],
+            $message[MessageTarget::FID],
             $message[MessageTarget::TOKEN],
             $message[MessageTarget::TOPIC],
         );
 
-        $message[MessageTarget::TOKEN] = $value;
+        $message[$type] = $value;
 
         return new RawMessageFromArray($message);
     }
@@ -304,11 +328,16 @@ final readonly class Messaging implements Contract\Messaging
         $message = Json::decode(Json::encode($message), true);
 
         $condition = $message[MessageTarget::CONDITION] ?? null;
+        $fid = $message[MessageTarget::FID] ?? null;
         $token = $message[MessageTarget::TOKEN] ?? null;
         $topic = $message[MessageTarget::TOPIC] ?? null;
 
         if (is_string($condition) && $condition !== '') {
             return MessageTarget::with(MessageTarget::CONDITION, $condition);
+        }
+
+        if (is_string($fid) && $fid !== '') {
+            return MessageTarget::with(MessageTarget::FID, $fid);
         }
 
         if (is_string($token) && $token !== '') {
