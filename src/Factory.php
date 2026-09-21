@@ -440,6 +440,8 @@ final class Factory
     }
 
     /**
+     * @return Contract\Messaging&Contract\MessagingWithMulticast
+     *
      * @phpstan-ignore typePerfect.narrowReturnObjectType
      */
     public function createMessaging(): Contract\Messaging
