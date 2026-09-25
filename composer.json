@@ -142,13 +142,12 @@
         ],
         "reset-project": "XDEBUG_MODE=off php tests/bin/reset-project.php",
         "setup": [
-            "@clean:build-artifacts",
             "@tools:install",
             "@dependencies:install",
             "@tools:phpstan:install",
-            "@tools:phpstan:update",
             "@tools:rector:install",
-            "@tools:rector:update",
+            "@tools:firebase:install",
+            "@tools:messaging:install",
             "@tools:link"
         ],
         "test": "@test:all",
@@ -175,6 +174,8 @@
             "ln -snf .phpstan/vendor/bin/phpstan tools/phpstan",
             "ln -snf .rector/vendor/bin/rector tools/rector"
         ],
+        "tools:messaging:install": "npm ci --prefix tools/messaging",
+        "tools:messaging:update": "npm update --prefix tools/messaging",
         "tools:phpstan:install": "XDEBUG_MODE=off composer --working-dir=tools/.phpstan install --no-interaction --no-progress --ansi",
         "tools:phpstan:update": [
             "XDEBUG_MODE=off composer --working-dir=tools/.phpstan update --no-interaction --no-progress --ansi",
@@ -191,6 +192,7 @@
             "@tools:phpstan:update",
             "@tools:rector:update",
             "@tools:firebase:update",
+            "@tools:messaging:update",
             "@tools:link"
         ]
     }

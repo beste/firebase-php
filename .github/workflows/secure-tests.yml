@@ -15,6 +15,8 @@ on:
         required: true
       TEST_REGISTRATION_TOKENS:
         required: true
+      TEST_FIREBASE_INSTALLATION_IDS:
+        required: true
 
 permissions:
   contents: read
@@ -115,6 +117,7 @@ jobs:
           TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          TEST_FIREBASE_INSTALLATION_IDS: ${{secrets.TEST_FIREBASE_INSTALLATION_IDS}}
           XDEBUG_MODE: coverage
         run: |
           mkdir -p build
@@ -213,6 +216,7 @@ jobs:
           TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          TEST_FIREBASE_INSTALLATION_IDS: ${{secrets.TEST_FIREBASE_INSTALLATION_IDS}}
           FIREBASE_DATABASE_EMULATOR_HOST: localhost:9100
           FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
           XDEBUG_MODE: coverage
@@ -330,6 +334,7 @@ jobs:
           TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
+          TEST_FIREBASE_INSTALLATION_IDS: ${{secrets.TEST_FIREBASE_INSTALLATION_IDS}}
           XDEBUG_MODE: coverage
         run: |
           mkdir -p build
