@@ -66,7 +66,7 @@ final class SendReport
     {
         $errorMessage = $this->error instanceof MessagingException ? $this->error->getMessage() : '';
 
-        return preg_match('/((not.+valid)|invalid).+token/i', $errorMessage) === 1;
+        return preg_match('/((not.+valid)|invalid).+(token|fid)/i', $errorMessage) === 1;
     }
 
     public function messageWasInvalid(): bool

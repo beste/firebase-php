@@ -44,6 +44,11 @@ abstract class IntegrationTestCase extends FirebaseTestCase
      */
     protected static array $registrationTokens = [];
 
+    /**
+     * @var list<non-empty-string>
+     */
+    protected static array $firebaseInstallationIds = [];
+
     protected static string $unknownToken = 'd_RTtLHR_JgI4r4tbYM9CA:APA91bEzb2Tb3WlKwddpEPYY2ZAx7AOmjOhiw-jVq6J9ekJGpBAefAgMb1muDJcKBMsrMq7zSCfBzl0Ll7JCZ0o8QI9zLVG1F18nqW9AOFKDXi8-MyT3R5Stt6GGKnq9rd9l5kopGEbO';
 
     public static function setUpBeforeClass(): void
@@ -57,6 +62,7 @@ abstract class IntegrationTestCase extends FirebaseTestCase
         self::$credentials = $credentials;
         self::$factory = (new Factory())->withServiceAccount($credentials);
         self::$registrationTokens = self::registrationTokensFromEnvironment();
+        self::$firebaseInstallationIds = self::firebaseInstallationIdsFromEnvironment();
         self::$rtdbUrl = Util::getenv('TEST_FIREBASE_RTDB_URI');
         self::$tenantId = Util::getenv('TEST_FIREBASE_TENANT_ID');
         self::$appId = Util::getenv('TEST_FIREBASE_APP_ID');
@@ -73,6 +79,19 @@ abstract class IntegrationTestCase extends FirebaseTestCase
 
         // @noinspection NonSecureArrayRandUsageInspection
         return self::$registrationTokens[array_rand(self::$registrationTokens)];
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    protected function getTestFirebaseInstallationId(): string
+    {
+        if (self::$firebaseInstallationIds === []) {
+            $this->markTestSkipped('No Firebase Installation ID available');
+        }
+
+        // @noinspection NonSecureArrayRandUsageInspection
+        return self::$firebaseInstallationIds[array_rand(self::$firebaseInstallationIds)];
     }
 
     /**
@@ -135,5 +154,24 @@ abstract class IntegrationTestCase extends FirebaseTestCase
         $tokens = array_filter($tokens, fn(string $token): bool => $token !== '');
 
         return array_values($tokens);
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    private static function firebaseInstallationIdsFromEnvironment(): array
+    {
+        $value = Util::getenv('TEST_FIREBASE_INSTALLATION_IDS');
+
+        if ($value === null) {
+            return [];
+        }
+
+        $fids = Json::decode($value, true);
+        $fids = array_map(strval(...), $fids);
+        $fids = array_map(trim(...), $fids);
+        $fids = array_filter($fids, fn(string $fid): bool => $fid !== '');
+
+        return array_values($fids);
     }
 }
