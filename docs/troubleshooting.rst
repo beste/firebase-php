@@ -108,6 +108,7 @@ Firebase/Google Cloud Project to take advantage of those new features.
 When a request to the Firebase APIs fails, please make sure that the according Google Cloud API is
 enabled for your project:
 
+- Firebase App Check: https://console.cloud.google.com/apis/library/firebaseappcheck.googleapis.com
 - Firebase Services: https://console.cloud.google.com/apis/library/firebase.googleapis.com
 - Cloud Messaging (FCM): https://console.cloud.google.com/apis/library/fcm.googleapis.com
 - FCM Registration API: https://console.cloud.google.com/apis/library/fcmregistrations.googleapis.com
