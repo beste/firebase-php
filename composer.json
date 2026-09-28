@@ -140,7 +140,7 @@
             "XDEBUG_MODE=off tools/rector --ansi",
             "XDEBUG_MODE=off tools/php-cs-fixer fix --ansi --diff --verbose"
         ],
-        "reset-project": "XDEBUG_MODE=off tests/bin/reset-project",
+        "reset-project": "XDEBUG_MODE=off php tests/bin/reset-project.php",
         "setup": [
             "@clean:build-artifacts",
             "@tools:install",

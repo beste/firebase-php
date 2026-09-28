@@ -1,17 +1,17 @@
-#!/usr/bin/env php
 <?php
 
 declare(strict_types=1);
 
-require __DIR__ . '/../../vendor/autoload.php';
+namespace Kreait\Firebase;
 
+use Dotenv\Dotenv;
 use Kreait\Firebase\Auth\UserRecord;
 use Kreait\Firebase\Database\RuleSet;
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Util;
+
+require __DIR__.'/../../vendor/autoload.php';
 
 // Unsafe is needed because google/auth uses getenv/putenv to determine the Application Credentials
-$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__.'/..');
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__.'/..');
 $dotenv->safeLoad();
 $dotenv->required('GOOGLE_APPLICATION_CREDENTIALS');
 
@@ -21,17 +21,17 @@ $auth = $factory->createAuth();
 $db = $factory->createDatabase();
 
 echo 'Resetting database rules... ';
-$factory->createDatabase()->updateRules(RuleSet::private());
+$db->updateRules(RuleSet::private());
 echo 'DONE'.PHP_EOL;
 
 echo 'Purging database... ';
-$factory->createDatabase()->getReference('/')->remove();
+$db->getReference('/')->remove();
 echo 'DONE'.PHP_EOL;
 
 echo 'Purging auth users... ';
 do {
     $users = iterator_to_array($auth->listUsers());
-    $uids = array_map(fn(UserRecord $record) => $record->uid, $users);
+    $uids = array_map(fn(UserRecord $record): string => $record->uid, $users);
 
     if (count($uids) > 0) {
         $auth->deleteUsers($uids, true);
