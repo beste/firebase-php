@@ -5,6 +5,8 @@ on:
     secrets:
       GOOGLE_APPLICATION_CREDENTIALS:
         required: true
+      TEST_FIREBASE_PROJECT_ID:
+        required: true
       TEST_FIREBASE_APP_ID:
         required: true
       TEST_FIREBASE_RTDB_URI:
@@ -206,6 +208,7 @@ jobs:
       - name: Run emulated Integration Tests
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          TEST_FIREBASE_PROJECT_ID: ${{secrets.TEST_FIREBASE_PROJECT_ID}}
           TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
           TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
           TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
@@ -215,7 +218,7 @@ jobs:
           XDEBUG_MODE: coverage
         run: |
           mkdir -p build
-          tools/.firebase/node_modules/.bin/firebase emulators:exec --only auth,database --project beste-firebase 'XDEBUG_MODE=coverage tools/phpunit --group=emulator --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml'
+          tools/.firebase/node_modules/.bin/firebase emulators:exec --only auth,database --project "$TEST_FIREBASE_PROJECT_ID" 'XDEBUG_MODE=coverage tools/phpunit --group=emulator --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml'
 
       - name: Upload emulator test results to Codecov
         if: ${{ !cancelled() }}

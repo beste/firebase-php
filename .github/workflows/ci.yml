@@ -459,6 +459,7 @@ jobs:
     uses: ./.github/workflows/secure-tests.yml
     secrets:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      TEST_FIREBASE_PROJECT_ID: ${{ secrets.TEST_FIREBASE_PROJECT_ID }}
       TEST_FIREBASE_APP_ID: ${{ secrets.TEST_FIREBASE_APP_ID }}
       TEST_FIREBASE_RTDB_URI: ${{ secrets.TEST_FIREBASE_RTDB_URI }}
       TEST_FIREBASE_TENANT_ID: ${{ secrets.TEST_FIREBASE_TENANT_ID }}
