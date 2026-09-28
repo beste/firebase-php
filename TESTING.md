@@ -7,7 +7,7 @@
 - Node.js 20.12 or later
 - Google Chrome to generate registration tokens and FIDs
 - A Java Development Kit (JDK) for emulator tests (CI uses Java 21)
-- `jq` for the service account command in step 13, or another way to escape the JSON
+- `jq` for the service account command in step 13, or another way to compact the JSON
 
 From the project root, install the project dependencies and test tools:
 
@@ -54,11 +54,11 @@ composer setup
     overview. Add a tenant and note down the tenant ID. If you don't create a tenant, some tests will be skipped. If you
     do create a tenant, select it in Identity Platform and enable anonymous and email/password authentication under
     [Providers](https://console.cloud.google.com/customer-identity/providers).
-13. Encode the service account JSON file you downloaded in step 8 as a JSON string, for example with `jq`, and copy the
+13. Compact the service account JSON file you downloaded in step 8 to one line, for example with `jq`, and copy the
     output:
 
     ```bash
-    jq -Rs . path/to/service-account.json
+    jq -c . path/to/service-account.json
     ```
 
 14. Copy `tools/messaging/.env.dist` to `tools/messaging/.env` and fill in the values you obtained in the previous
@@ -87,11 +87,13 @@ composer setup
     TEST_FIREBASE_APP_ID="app id from step 3"
     TEST_FIREBASE_RTDB_URI="database URL from step 9"
     TEST_FIREBASE_TENANT_ID="tenant ID from step 12, optional"
-    TEST_FIREBASE_INSTALLATION_IDS="[\"<FID from step 15>\"]"
-    TEST_REGISTRATION_TOKENS="[\"<registration token from step 15>\"]"
+    TEST_FIREBASE_INSTALLATION_IDS='["<FID from step 15>"]'
+    TEST_REGISTRATION_TOKENS='["<registration token from step 15>"]'
     TEST_FIRESTORE_CUSTOM_DB_NAME="custom Firestore database name from step 11, optional"
-    GOOGLE_APPLICATION_CREDENTIALS=encoded service account JSON from step 13
+    GOOGLE_APPLICATION_CREDENTIALS='<one-line JSON from step 13>'
     ```
+
+For GitHub Actions secrets, use the JSON values without the outer `.env` quotes.
 
 PHPUnit loads `tests/.env` through `tests/bootstrap.php`. Use `composer reset-project` only with a test project: it
 reads `tests/.env` and deletes Realtime Database data and Auth users.
