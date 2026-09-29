@@ -325,17 +325,17 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "furo", specifier = ">=2025.12.19" },
-    { name = "linkify-it-py", specifier = ">=2.1.0" },
-    { name = "matplotlib", specifier = ">=3.10.9" },
-    { name = "myst-parser", specifier = ">=5.1.0" },
+    { name = "furo", specifier = ">=2025.12.19,<2026" },
+    { name = "linkify-it-py", specifier = ">=2.1.0,<3" },
+    { name = "matplotlib", specifier = ">=3.10.9,<4" },
+    { name = "myst-parser", specifier = ">=5.1.0,<6" },
     { name = "sphinx", specifier = "==9.1.0" },
-    { name = "sphinx-autobuild", specifier = ">=2025.8.25" },
-    { name = "sphinx-copybutton", specifier = ">=0.5.2" },
-    { name = "sphinx-design", specifier = ">=0.6.1" },
-    { name = "sphinx-inline-tabs", specifier = ">=2023.4.21" },
-    { name = "sphinx-sitemap", specifier = ">=2.8.0" },
-    { name = "sphinxext-opengraph", specifier = ">=0.13.0" },
+    { name = "sphinx-autobuild", specifier = ">=2025.8.25,<2026" },
+    { name = "sphinx-copybutton", specifier = ">=0.5.2,<0.6" },
+    { name = "sphinx-design", specifier = ">=0.6.1,<0.8" },
+    { name = "sphinx-inline-tabs", specifier = ">=2023.4.21,<2026" },
+    { name = "sphinx-sitemap", specifier = ">=2.8.0,<3" },
+    { name = "sphinxext-opengraph", specifier = ">=0.13.0,<0.14" },
 ]
 
 [[package]]
