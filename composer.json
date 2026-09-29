@@ -166,6 +166,7 @@
         "test:emulator": "@php tests/bin/run-emulator-tests.php",
         "test:integration": "XDEBUG_MODE=off tools/phpunit --testsuite=integration",
         "test:unit": "XDEBUG_MODE=off tools/phpunit --testsuite=unit --colors=always --testdox",
+        "tools:docs:update": "uv lock --project docs --upgrade",
         "tools:firebase:install": "npm ci --ignore-scripts --prefix tools/.firebase",
         "tools:firebase:update": "npm update --ignore-scripts --prefix tools/.firebase",
         "tools:install": "XDEBUG_MODE=off tools/phive --no-progress install --trust-gpg-keys E82B2FB314E9906E,4AA394086372C20A,C00543248C87FB13",
@@ -193,6 +194,7 @@
             "@tools:rector:update",
             "@tools:firebase:update",
             "@tools:messaging:update",
+            "@tools:docs:update",
             "@tools:link"
         ]
     }
