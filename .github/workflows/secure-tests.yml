@@ -252,10 +252,6 @@ jobs:
     permissions:
       contents: read
       id-token: write # authenticate uploads to Codecov with OIDC
-    # Non-blocking while the gRPC extension is broken/unstable on PHP 8.5.
-    # See https://github.com/shivammathur/setup-php/issues/1041.
-    # Remove this once upstream releases a stable extension and tests pass.
-    continue-on-error: true
 
     env:
       key: cache-grpc
@@ -326,7 +322,6 @@ jobs:
           MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
       - name: Run gRPC Tests
-        id: grpc-tests
         if: ${{ steps.grpc.outcome == 'success' }}
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
@@ -358,14 +353,3 @@ jobs:
           files: ./build/coverage.xml
           flags: grpc
           fail_ci_if_error: false
-
-      - name: Summarize gRPC failures
-        if: ${{ always() && (steps.grpc.outcome == 'failure' || steps.grpc-tests.outcome == 'failure') }}
-        run: |
-          echo "::notice::gRPC tests are non-blocking due to missing/broken gRPC on PHP 8.5."
-          {
-            echo "### gRPC tests are non-blocking"
-            echo
-            echo "gRPC extension was not available or gRPC tests failed (likely due to missing/broken gRPC on PHP 8.5)."
-            echo "See https://github.com/shivammathur/setup-php/issues/1041."
-          } >> "$GITHUB_STEP_SUMMARY"
