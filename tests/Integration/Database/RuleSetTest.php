@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Integration\Database;
 
 use Kreait\Firebase\Database\RuleSet;
+use Kreait\Firebase\Database\UrlBuilder;
 use Kreait\Firebase\Tests\Integration\DatabaseTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -68,7 +69,7 @@ final class RuleSetTest extends DatabaseTestCase
 
         $response = self::$apiClient
             ->get(
-                self::$db->getReference()->getUri()->withPath('/.settings/rules.json'),
+                UrlBuilder::create((string) self::$db->getReference()->getUri())->getUrl('/.settings/rules.json'),
             )
         ;
 

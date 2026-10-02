@@ -54,6 +54,7 @@ use SensitiveParameter;
 use Throwable;
 
 use function array_filter;
+use function in_array;
 use function is_string;
 use function sprintf;
 use function trim;
@@ -401,7 +402,12 @@ final class Factory
             $this->databaseAuthVariableOverrideMiddleware,
         ]);
 
-        $http = $this->createApiClient(null, $middlewares);
+        if (!in_array(Util::rtdbEmulatorHost(), ['0', null], true)) {
+            $middlewares[] = GuzzleMiddleware::mapRequest(static fn(RequestInterface $request): RequestInterface => $request->withHeader('Authorization', 'Bearer owner'));
+            $http = $this->createHttpClient(middlewares: $middlewares);
+        } else {
+            $http = $this->createApiClient(null, $middlewares);
+        }
         $databaseUrl = $this->getDatabaseUrl();
         $resourceUrlBuilder = UrlBuilder::create($databaseUrl);
 
