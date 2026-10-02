@@ -15,7 +15,7 @@ From the project root, install the project dependencies and test tools:
 composer setup
 ```
 
-## Set up a Firebase project for testing and gather configuration values
+## Set up a Firebase project for live integration tests
 
 1. Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project. You don't need to enable
    Google AI assistance, or Google Analytics.
@@ -109,20 +109,41 @@ You should now be able to run the integration tests with `composer test:integrat
 
 ## Emulator tests
 
-Set `TEST_FIREBASE_PROJECT_ID` in `tests/.env` to the project ID from step 2. From the project root, run:
+After installing dependencies and tools with `composer setup`, run:
 
 ```bash
 composer test:emulator
 ```
 
-The project ID must match the project in your service account credentials. The script reads it from `tests/.env` before
-starting the Firebase CLI. An exported `TEST_FIREBASE_PROJECT_ID` takes precedence. The ignored `.firebaserc` file is not
-needed for this command.
+No Firebase project, service account, Firebase CLI login, or `tests/.env` is needed. The runner reads the exported
+`TEST_FIREBASE_PROJECT_ID`, defaulting to `demo-firebase-php` when unset. The Database namespace is
+`<project-id>-default-rtdb`. Use a `demo-` project ID to avoid Firebase CLI requests for a real project's configuration.
+The emulator bootstrap ignores `tests/.env` and replaces inherited credentials with synthetic service account metadata
+and a freshly generated, test-only RSA signing key for custom token tests. Separate tests explicitly remove credentials
+to cover credentialless Auth and Database clients. Tenant tests use `demo-tenant`.
 
-The command starts the Auth and Realtime Database emulators on ports `9099` and `9100`, runs the tests in the
-`emulator` group, and stops the emulators afterward. It sets the emulator host variables for you. Keep
-`GOOGLE_APPLICATION_CREDENTIALS` and `TEST_FIREBASE_RTDB_URI` in `tests/.env` as configured above, since the test setup
-still reads them.
+The command starts the Auth and Realtime Database emulators on ports `9099` and `9100`, runs the shared integration
+test bodies in the `emulator` group, and stops the emulators afterward. It sets the emulator host variables for you.
+The full live integration suite remains available through `composer test:integration` and the protected CI workflow.
+Emulator tests run in ordinary pull request CI, including external contributor PRs, without secrets.
+
+Additional PHPUnit options can be passed through the runner, for example:
+
+```bash
+composer test:emulator -- --filter=testSignInWithCustomToken
+```
+
+The Composer command disables Xdebug. To collect coverage, invoke the runner directly with `XDEBUG_MODE=coverage`,
+as CI does. The runner accepts the same PHPUnit options:
+
+```bash
+XDEBUG_MODE=coverage php tests/bin/run-emulator-tests.php --coverage-clover=build/emulator-coverage.xml
+```
+
+Install dependencies and let the Firebase CLI download the Database emulator while online before testing offline.
+Then disconnect external networking, leaving loopback available, and run `composer test:emulator` again. The tests must
+pass without access to Firebase or Google APIs. Firebase CLI update checks or telemetry may still attempt external
+connections; failures of those optional requests must not prevent the tests from passing.
 
 ## Coverage and pre-push checks
 

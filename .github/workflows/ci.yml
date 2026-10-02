@@ -9,6 +9,7 @@ on:
       - ".phive/phars.xml"
       - "phpstan.neon.dist"
       - "phpunit.xml.dist"
+      - "firebase.json"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
       - "tools/**"
@@ -23,6 +24,7 @@ on:
       - ".phive/phars.xml"
       - "phpstan.neon.dist"
       - "phpunit.xml.dist"
+      - "firebase.json"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
       - "tools/**"
@@ -323,6 +325,98 @@ jobs:
 
       - name: Run PHPUnit
         run: tools/phpunit --testsuite=unit --testdox
+
+  emulator-tests:
+    name: Emulator Tests
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # authenticate uploads to Codecov with OIDC
+
+    env:
+      php-version: '8.5'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ env.php-version }}
+          tools: composer, pecl
+          coverage: xdebug
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${MATCHER_PATH}"
+        env:
+          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
+
+      - name: Set Up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Set Up Java
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Firebase Tools
+        run: composer tools:firebase:install
+
+      - name: Run Emulator Tests
+        env:
+          XDEBUG_MODE: coverage
+        run: |
+          mkdir -p build
+          php tests/bin/run-emulator-tests.php --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml
+
+      - name: Upload emulator test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          flags: emulator
+          report_type: test_results
+          files: ./build/test-report.xml
+          fail_ci_if_error: false
+
+      - name: Upload emulator coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          files: ./build/coverage.xml
+          flags: emulator
+          fail_ci_if_error: false
 
   code-coverage:
     name: Unit Test Coverage (PHP 8.5)

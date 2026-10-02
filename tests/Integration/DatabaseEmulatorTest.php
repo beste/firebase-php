@@ -41,7 +41,9 @@ final class DatabaseEmulatorTest extends FirebaseTestCase
             $this->markTestSkipped('Emulator tests require a project ID');
         }
 
-        $this->factory = (new Factory())->withProjectId($projectId);
+        $this->factory = (new Factory())
+            ->withProjectId($projectId)
+            ->withDatabaseUri('https://'.$projectId.'-default-rtdb.firebaseio.com');
     }
 
     #[Test]
