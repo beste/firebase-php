@@ -364,9 +364,7 @@ final class Factory
         $projectId = $this->getProjectId();
 
         $httpClient = Util::authEmulatorHost() !== null
-            ? $this->createHttpClient(middlewares: [
-                GuzzleMiddleware::mapRequest(static fn(RequestInterface $request): RequestInterface => $request->withHeader('Authorization', 'Bearer owner')),
-            ])
+            ? $this->createEmulatorHttpClient()
             : $this->createApiClient();
 
         $signInHandler = new GuzzleHandler($projectId, $httpClient);
@@ -403,8 +401,7 @@ final class Factory
         ]);
 
         if (!in_array(Util::rtdbEmulatorHost(), ['0', null], true)) {
-            $middlewares[] = GuzzleMiddleware::mapRequest(static fn(RequestInterface $request): RequestInterface => $request->withHeader('Authorization', 'Bearer owner'));
-            $http = $this->createHttpClient(middlewares: $middlewares);
+            $http = $this->createEmulatorHttpClient($middlewares);
         } else {
             $http = $this->createApiClient(null, $middlewares);
         }
@@ -532,6 +529,16 @@ final class Factory
         $config['auth'] = 'google_auth';
 
         return $this->createHttpClient($config, $middlewares);
+    }
+
+    /**
+     * @param array<callable(callable): callable> $middlewares
+     */
+    private function createEmulatorHttpClient(array $middlewares = []): Client
+    {
+        $middlewares[] = GuzzleMiddleware::mapRequest(static fn(RequestInterface $request): RequestInterface => $request->withHeader('Authorization', 'Bearer owner'));
+
+        return $this->createHttpClient(middlewares: $middlewares);
     }
 
     /**
