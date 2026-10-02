@@ -7,9 +7,11 @@ namespace Kreait\Firebase\Tests\Integration;
 use GuzzleHttp\Client;
 use Kreait\Firebase\Contract\Database;
 use Kreait\Firebase\Tests\IntegrationTestCase;
+use Kreait\Firebase\Util;
 
 use Override;
 use function bin2hex;
+use function in_array;
 use function random_bytes;
 
 /**
@@ -37,7 +39,9 @@ abstract class DatabaseTestCase extends IntegrationTestCase
             ->createDatabase()
         ;
 
-        self::$apiClient = self::$factory->createApiClient(['http_errors' => false]);
+        self::$apiClient = !in_array(Util::rtdbEmulatorHost(), ['0', null], true)
+            ? new Client(['http_errors' => false, 'headers' => ['Authorization' => 'Bearer owner']])
+            : self::$factory->createApiClient(['http_errors' => false]);
 
         self::$refPrefix = 'tests'.bin2hex(random_bytes(5));
         self::$db->getReference(self::$refPrefix)->remove();

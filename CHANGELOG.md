@@ -9,6 +9,7 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+* Added support for using the Realtime Database emulator without Google credentials or an OAuth token exchange.
 * Added support for using the Authentication emulator without Google credentials.
   Custom token generation still requires signing credentials.
 * Simplified local integration test setup with helper scripts and a [testing guide](TESTING.md).
