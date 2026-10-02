@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
+use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Tests\FirebaseTestCase;
 use Kreait\Firebase\Util;
@@ -20,27 +21,41 @@ use function random_bytes;
 #[Group('emulator')]
 final class AuthEmulatorTest extends FirebaseTestCase
 {
-    #[Test]
-    #[RunInSeparateProcess]
-    public function itWorksWithoutCredentials(): void
+    private Auth $auth;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         if (Util::authEmulatorHost() === null) {
             $this->markTestSkipped('The Auth emulator must be running');
         }
 
+        $projectId = Util::getenv('TEST_FIREBASE_PROJECT_ID');
+
+        if ($projectId === null) {
+            $this->markTestSkipped('Emulator tests require a project ID');
+        }
+
         Util::rmenv('GOOGLE_APPLICATION_CREDENTIALS');
-        $auth = (new Factory())->withProjectId('demo-project')->createAuth();
+        $this->auth = (new Factory())->withProjectId($projectId)->createAuth();
+    }
+
+    #[Test]
+    #[RunInSeparateProcess]
+    public function itWorksWithoutCredentials(): void
+    {
         $email = bin2hex(random_bytes(5)).'@example.com';
-        $user = $auth->createUserWithEmailAndPassword($email, 'password123');
+        $user = $this->auth->createUserWithEmailAndPassword($email, 'password123');
 
         try {
-            $result = $auth->signInWithEmailAndPassword($email, 'password123');
+            $result = $this->auth->signInWithEmailAndPassword($email, 'password123');
             $this->assertSame($user->uid, $result->firebaseUserId());
 
-            $token = $auth->verifyIdToken($result->idToken());
+            $token = $this->auth->verifyIdToken($result->idToken());
             $this->assertSame($user->uid, $token->claims()->get('sub'));
         } finally {
-            $auth->deleteUser($user->uid);
+            $this->auth->deleteUser($user->uid);
         }
     }
 }
