@@ -19,6 +19,7 @@ use Google\Auth\SignBlobInterface;
 use Google\Cloud\Storage\StorageClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Utils as GuzzleUtils;
 use Kreait\Firebase\AppCheck\AppCheckTokenGenerator;
@@ -47,6 +48,7 @@ use Kreait\Firebase\Valinor\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 use SensitiveParameter;
 use Throwable;
@@ -360,7 +362,11 @@ final class Factory
     {
         $projectId = $this->getProjectId();
 
-        $httpClient = $this->createApiClient();
+        $httpClient = Util::authEmulatorHost() !== null
+            ? $this->createHttpClient(middlewares: [
+                GuzzleMiddleware::mapRequest(static fn(RequestInterface $request): RequestInterface => $request->withHeader('Authorization', 'Bearer owner')),
+            ])
+            : $this->createApiClient();
 
         $signInHandler = new GuzzleHandler($projectId, $httpClient);
         $authApiClient = new ApiClient(
@@ -499,6 +505,35 @@ final class Factory
      */
     public function createApiClient(?array $config = null, ?array $middlewares = null): Client
     {
+        $credentials = $this->getGoogleAuthTokenCredentials();
+
+        if (!($credentials instanceof FetchAuthTokenInterface)) {
+            throw new RuntimeException('Unable to create an API client without credentials');
+        }
+
+        $cachePrefix = 'kreait_firebase_'.$this->getProjectId();
+        $credentials = new FetchAuthTokenCache($credentials, ['prefix' => $cachePrefix], $this->authTokenCache ?? $this->defaultCache);
+
+        try {
+            $authTokenHandler = HttpHandlerFactory::build(new Client([...$this->httpClientOptions->guzzleConfig(), ...($config ?? [])]));
+        } catch (Throwable $e) {
+            throw new RuntimeException('Unable to create Auth Token HTTP handler: '.$e->getMessage(), previous: $e);
+        }
+
+        $middlewares ??= [];
+        $middlewares[] = new AuthTokenMiddleware($credentials, $authTokenHandler);
+        $config ??= [];
+        $config['auth'] = 'google_auth';
+
+        return $this->createHttpClient($config, $middlewares);
+    }
+
+    /**
+     * @param array<non-empty-string, mixed>|null $config
+     * @param array<callable(callable): callable>|null $middlewares
+     */
+    private function createHttpClient(?array $config = null, ?array $middlewares = null): Client
+    {
         $config ??= [];
         $middlewares ??= [];
 
@@ -514,27 +549,7 @@ final class Factory
             $handler->push($middleware);
         }
 
-        $credentials = $this->getGoogleAuthTokenCredentials();
-
-        if (!($credentials instanceof FetchAuthTokenInterface)) {
-            throw new RuntimeException('Unable to create an API client without credentials');
-        }
-
-        $projectId = $this->getProjectId();
-        $cachePrefix = 'kreait_firebase_'.$projectId;
-
-        $credentials = new FetchAuthTokenCache($credentials, ['prefix' => $cachePrefix], $this->authTokenCache ?? $this->defaultCache);
-
-        try {
-            $authTokenHandler = HttpHandlerFactory::build(new Client($config));
-        } catch (Throwable $e) {
-            throw new RuntimeException('Unable to create Auth Token HTTP handler: '.$e->getMessage(), previous: $e);
-        }
-
-        $handler->push(new AuthTokenMiddleware($credentials, $authTokenHandler));
-
         $config['handler'] = $handler;
-        $config['auth'] = 'google_auth';
 
         return new Client($config);
     }

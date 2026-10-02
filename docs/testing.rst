@@ -69,6 +69,26 @@ When connecting to the Authentication emulator, you will need to specify a proje
 the Factory directly or set the ``GOOGLE_CLOUD_PROJECT`` environment variable. Note that you do not need to use your
 real Firebase project ID; the Authentication emulator will accept any project ID.
 
+This example uses ``demo-project`` in both the emulator command and ``Factory::withProjectId()``:
+
+.. code-block:: bash
+
+    $ firebase emulators:start --only auth --project demo-project
+
+No service account or Google credentials are required for managing users, signing in, or verifying emulator tokens:
+
+.. code-block:: php
+
+    use Kreait\Firebase\Factory;
+
+    $auth = (new Factory())->withProjectId('demo-project')->createAuth();
+    $user = $auth->createUserWithEmailAndPassword('user@example.com', 'password123');
+    $result = $auth->signInWithEmailAndPassword('user@example.com', 'password123');
+    $token = $auth->verifyIdToken($result->idToken());
+    $auth->deleteUser($user->uid);
+
+Generating custom tokens still requires credentials that can sign them.
+
 Realtime Database Emulator
 --------------------------
 
