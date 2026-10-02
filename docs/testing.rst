@@ -5,8 +5,8 @@ Testing and Local Development
 .. note::
     This page covers using the PHP SDK with emulators in your own application. To run this repository's tests, see the
     `contributor testing guide <https://github.com/beste/firebase-php/blob/8.x/TESTING.md>`_. Its
-    ``composer test:emulator`` command starts and stops the emulators. The test suite also uses a real Firebase project,
-    so its project ID must match the service account credentials.
+    ``composer test:emulator`` command starts and stops the emulators using a demo project. It requires no real
+    Firebase project or credentials.
 
 *****************
 Integration Tests

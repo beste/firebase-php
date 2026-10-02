@@ -16,10 +16,12 @@ use Kreait\Firebase\Valinor\Source;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\UnencryptedToken;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
  */
+#[Group('emulator')]
 final class CustomTokenViaGoogleCredentialsTest extends IntegrationTestCase
 {
     private string $uid = 'some-uid';
