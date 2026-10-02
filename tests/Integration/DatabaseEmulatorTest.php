@@ -25,21 +25,36 @@ use function random_bytes;
 #[Group('emulator')]
 final class DatabaseEmulatorTest extends FirebaseTestCase
 {
+    private Factory $factory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (in_array(Util::rtdbEmulatorHost(), ['0', null], true)) {
+            $this->markTestSkipped('The Database emulator must be running');
+        }
+
+        $projectId = Util::getenv('TEST_FIREBASE_PROJECT_ID');
+
+        if ($projectId === null) {
+            $this->markTestSkipped('Emulator tests require a project ID');
+        }
+
+        $this->factory = (new Factory())->withProjectId($projectId);
+    }
+
     #[Test]
     #[DataProvider('googleCredentials')]
     #[RunInSeparateProcess]
     public function itWorksWithoutUsableCredentials(?string $credentials): void
     {
-        if (in_array(Util::rtdbEmulatorHost(), ['0', null], true)) {
-            $this->markTestSkipped('The Database emulator must be running');
-        }
-
         if ($credentials === null) {
             Util::rmenv('GOOGLE_APPLICATION_CREDENTIALS');
         } else {
             Util::putenv('GOOGLE_APPLICATION_CREDENTIALS', $credentials);
         }
-        $database = (new Factory())->withProjectId('demo-project')->createDatabase();
+        $database = $this->factory->createDatabase();
         $originalRules = $database->getRuleSet();
         $reference = $database->getReference('tests'.bin2hex(random_bytes(5)));
 
