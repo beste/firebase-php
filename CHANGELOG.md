@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+* Added support for using the Authentication emulator without Google credentials.
+  Custom token generation still requires signing credentials.
 * Simplified local integration test setup with helper scripts and a [testing guide](TESTING.md).
 
 ## 8.5.0 - 2026-09-13
