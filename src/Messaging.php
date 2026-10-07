@@ -6,7 +6,6 @@ namespace Kreait\Firebase;
 
 use Beste\Json;
 use GuzzleHttp\Promise\Utils;
-use Kreait\Firebase\Contract\MessagingWithMulticast;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Kreait\Firebase\Exception\Messaging\NotFound;
@@ -41,7 +40,7 @@ use function array_map;
 /**
  * @internal
  */
-final readonly class Messaging implements Contract\Messaging, MessagingWithMulticast
+final readonly class Messaging implements Contract\Messaging, Contract\MessagingWithMulticast
 {
     public function __construct(
         private ApiClient $messagingApi,
