@@ -9,6 +9,7 @@ use JsonSerializable;
 use function array_key_exists;
 
 /**
+ * @phpstan-import-type RemoteConfigExperimentValueShape from ExperimentValue
  * @phpstan-import-type RemoteConfigPersonalizationValueShape from PersonalizationValue
  * @phpstan-import-type RemoteConfigRolloutValueShape from RolloutValue
  *
@@ -16,7 +17,8 @@ use function array_key_exists;
  *     value?: string,
  *     useInAppDefault?: bool,
  *     personalizationValue?: RemoteConfigPersonalizationValueShape,
- *     rolloutValue?: RemoteConfigRolloutValueShape
+ *     rolloutValue?: RemoteConfigRolloutValueShape,
+ *     experimentValue?: RemoteConfigExperimentValueShape
  * }
  *
  * @see https://firebase.google.com/docs/reference/remote-config/rest/v1/RemoteConfig#remoteconfigparametervalue
@@ -28,6 +30,7 @@ final readonly class ParameterValue implements JsonSerializable
         private ?bool $useInAppDefault = null,
         private ?PersonalizationValue $personalizationValue = null,
         private ?RolloutValue $rolloutValue = null,
+        private ?ExperimentValue $experimentValue = null,
     ) {
     }
 
@@ -51,6 +54,11 @@ final readonly class ParameterValue implements JsonSerializable
         return new self(rolloutValue: $value);
     }
 
+    public static function withExperimentValue(ExperimentValue $value): self
+    {
+        return new self(experimentValue: $value);
+    }
+
     /**
      * @param RemoteConfigParameterValueShape $data
      */
@@ -70,6 +78,10 @@ final readonly class ParameterValue implements JsonSerializable
 
         if (array_key_exists('rolloutValue', $data)) {
             return self::withRolloutValue(RolloutValue::fromArray($data['rolloutValue']));
+        }
+
+        if (array_key_exists('experimentValue', $data)) {
+            return self::withExperimentValue(ExperimentValue::fromArray($data['experimentValue']));
         }
 
         return new self();
@@ -94,6 +106,10 @@ final readonly class ParameterValue implements JsonSerializable
 
         if ($this->rolloutValue instanceof RolloutValue) {
             return ['rolloutValue' => $this->rolloutValue->toArray()];
+        }
+
+        if ($this->experimentValue instanceof ExperimentValue) {
+            return ['experimentValue' => $this->experimentValue->toArray()];
         }
 
         return [];
