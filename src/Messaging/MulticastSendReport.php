@@ -90,6 +90,7 @@ final class MulticastSendReport implements Countable
     public function unknownTokens(): array
     {
         return $this
+            ->filter(static fn(SendReport $report): bool => $report->target()->type() === MessageTarget::TOKEN)
             ->filter(static fn(SendReport $report): bool => $report->messageWasSentToUnknownToken())
             ->map(static fn(SendReport $report): string => $report->target()->value())
         ;
@@ -103,6 +104,7 @@ final class MulticastSendReport implements Countable
     public function invalidTokens(): array
     {
         return $this
+            ->filter(static fn(SendReport $report): bool => $report->target()->type() === MessageTarget::TOKEN)
             ->filter(static fn(SendReport $report): bool => $report->messageTargetWasInvalid())
             ->map(static fn(SendReport $report): string => $report->target()->value())
         ;
