@@ -7,6 +7,7 @@ namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\RemoteConfig\Condition;
 use Kreait\Firebase\RemoteConfig\ConditionalValue;
+use Kreait\Firebase\RemoteConfig\ExperimentValue;
 use Kreait\Firebase\RemoteConfig\Parameter;
 use Kreait\Firebase\RemoteConfig\ParameterGroup;
 use Kreait\Firebase\RemoteConfig\ParameterValue;
@@ -188,6 +189,105 @@ final class TemplateTest extends UnitTestCase
 
         $this->assertArrayHasKey('personalizationValue', $array = $conditionalValues[0]->toArray());
         $this->assertSame('id', $array['personalizationValue']['personalizationId']);
+    }
+
+    public function testExperimentValuesAreImportedInDefaultValues(): void
+    {
+        $data = [
+            'parameters' => [
+                'foo' => [
+                    'defaultValue' => [
+                        'experimentValue' => [
+                            'experimentId' => 'abt_1',
+                            'variantValue' => [
+                                ['variantId' => 'first', 'value' => 'foo'],
+                                ['variantId' => 'second', 'value' => 'bar'],
+                            ],
+                            'exposurePercent' => 50,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $template = Template::fromArray($data);
+        $this->assertArrayHasKey('foo', $parameters = $template->parameters());
+        $defaultValue = $parameters['foo']->defaultValue();
+
+        $this->assertInstanceOf(ParameterValue::class, $defaultValue);
+        $this->assertSame($data['parameters']['foo']['defaultValue'], $defaultValue->toArray());
+    }
+
+    public function testExperimentValuesAreImportedInConditionalValues(): void
+    {
+        $data = [
+            'conditions' => [
+                [
+                    'name' => 'condition',
+                    'expression' => 'true',
+                ],
+            ],
+            'parameters' => [
+                'foo' => [
+                    'conditionalValues' => [
+                        'condition' => [
+                            'experimentValue' => [
+                                'experimentId' => 'abt_1',
+                                'variantValue' => [
+                                    ['variantId' => 'first', 'value' => ''],
+                                    ['variantId' => 'second', 'noChange' => true],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $template = Template::fromArray($data)
+            ->withParameter(Parameter::named('unrelated', 'changed'))
+        ;
+        $this->assertArrayHasKey('foo', $parameters = $template->parameters());
+
+        $conditionalValues = $parameters['foo']->conditionalValues();
+        $this->assertArrayHasKey(0, $conditionalValues);
+        $expected = $data['parameters']['foo']['conditionalValues']['condition'];
+
+        $this->assertSame($expected, $conditionalValues[0]->toArray());
+        $this->assertSame($expected, $conditionalValues[0]->value());
+    }
+
+    public function testExperimentValuesCanBeUsedInFluidConfiguration(): void
+    {
+        $data = [
+            'experimentId' => 'abt_1',
+            'variantValue' => [
+                ['variantId' => 'first', 'value' => 'foo'],
+                ['variantId' => 'second', 'noChange' => true],
+            ],
+            'exposurePercent' => 50,
+        ];
+
+        $experiment = ExperimentValue::fromArray($data);
+        $value = ParameterValue::withExperimentValue($experiment);
+        $condition = Condition::named('condition')->withExpression('true');
+        $parameter = Parameter::named('foo')
+            ->withDefaultValue($value->toArray())
+            ->withConditionalValue(ConditionalValue::basedOn($condition)->withValue($value))
+        ;
+
+        $template = Template::new()
+            ->withCondition($condition)
+            ->withParameterGroup(ParameterGroup::named('group')->withParameter($parameter))
+        ;
+
+        $parameters = $template->parameterGroups()['group']->parameters();
+        $this->assertArrayHasKey('foo', $parameters);
+        $defaultValue = $parameters['foo']->defaultValue();
+
+        $this->assertInstanceOf(ParameterValue::class, $defaultValue);
+        $this->assertSame(['experimentValue' => $data], $defaultValue->toArray());
+        $this->assertSame(['experimentValue' => $data], $parameters['foo']->conditionalValues()[0]->toArray());
     }
 
     public function testItProvidesConditionNames(): void
