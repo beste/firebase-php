@@ -9,6 +9,13 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+### Remote Config
+
+* Added support for Remote Config experiment values
+  ([#1149](https://github.com/beste/firebase-php/pull/1149))
+
+### Testing
+
 * Emulator tests now run without real credentials or a Firebase project, including on external contributor PRs.
 * Added support for using the Realtime Database emulator without Google credentials or an OAuth token exchange.
 * Added support for using the Authentication emulator without Google credentials.
