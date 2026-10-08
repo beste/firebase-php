@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase;
 
 use function getenv;
+use function is_string;
 use function putenv;
 
 /**
@@ -19,7 +20,13 @@ final class Util
      */
     public static function getenv(string $name): ?string
     {
-        $value = trim((string) ($_SERVER[$name] ?? $_ENV[$name] ?? getenv($name)));
+        $value = $_SERVER[$name] ?? $_ENV[$name] ?? getenv($name);
+
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $value = trim($value);
 
         return $value !== '' ? $value : null;
     }
