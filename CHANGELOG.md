@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.6.0 - 2026-10-09
+
 ### Remote Config
 
 * Added support for Remote Config experiment values
