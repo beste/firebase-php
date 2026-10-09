@@ -4,22 +4,25 @@ on:
   pull_request:
     paths:
       - "docs/**"
+      - "**.md"
+      - "src/**/*.php"
+      - "tests/**/*.php"
       - ".github/workflows/docs.yml"
-      - "CHANGELOG.md"
-      - "README.md"
       - "lychee.toml"
   push:
     branches: ['8.x']
     paths:
       - "docs/**"
+      - "**.md"
+      - "src/**/*.php"
+      - "tests/**/*.php"
       - ".github/workflows/docs.yml"
-      - "CHANGELOG.md"
-      - "README.md"
       - "lychee.toml"
   release:
     types: [published]
   schedule:
     - cron: "23 5 * * 1" # weekly, off the hour
+  workflow_dispatch:
 
 permissions:
   contents: read
