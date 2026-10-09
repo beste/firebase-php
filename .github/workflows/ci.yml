@@ -177,7 +177,7 @@ jobs:
         run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
       - name: Run Composer Audit
-        run: composer audit --no-interaction --format=summary --abandoned=report --ansi
+        run: composer audit --no-interaction --format=table --abandoned=report --ansi
 
   lint:
     name: "Lint (${{ matrix.name }})"
@@ -192,7 +192,7 @@ jobs:
           - id: rector
             name: Rector
             php: "8.5"
-            command: tools/rector --ansi --dry-run
+            command: tools/rector --dry-run --ansi --no-progress-bar
           - id: php-cs-fixer
             name: PHP-CS-Fixer
             php: "8.5"
@@ -200,7 +200,7 @@ jobs:
           - id: composer-normalize
             name: Composer Normalize
             php: "8.5"
-            command: tools/composer-normalize --ansi --dry-run
+            command: tools/composer-normalize --ansi --dry-run --diff
 
     steps:
       - name: Checkout code
@@ -244,7 +244,7 @@ jobs:
 
       - name: Run Rector
         if: ${{ matrix.id == 'rector' }}
-        run: tools/rector --ansi --dry-run
+        run: tools/rector --dry-run --ansi --no-progress-bar
 
       - name: Run PHP-CS-Fixer
         if: ${{ matrix.id == 'php-cs-fixer' }}
@@ -252,7 +252,7 @@ jobs:
 
       - name: Run Composer Normalize
         if: ${{ matrix.id == 'composer-normalize' }}
-        run: tools/composer-normalize --ansi --dry-run
+        run: tools/composer-normalize --ansi --dry-run --diff
 
   tests:
     name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"

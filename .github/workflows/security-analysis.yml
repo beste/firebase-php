@@ -36,7 +36,10 @@ jobs:
           persist-credentials: false
 
       - name: Run actionlint
-        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+        run: |
+          go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12 \
+          -format '{{range .}}::error file={{.Filepath}},line={{.Line}},col={{.Column}}::{{.Message}}
+          {{end}}'
 
   zizmor:
     name: Run zizmor
