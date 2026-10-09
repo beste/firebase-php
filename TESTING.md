@@ -149,4 +149,13 @@ connections; failures of those optional requests must not prevent the tests from
 
 Run `composer test:coverage` to generate coverage for the full PHPUnit suite, including integration tests. Before
 pushing, run `composer pre-push`, which fixes lint issues, runs static analysis, lint, unit tests, and a backward
-compatibility check. The compatibility check requires Docker.
+compatibility check. Install and run the BC checker separately with PHP 8.5:
+
+```bash
+composer tools:bc:install
+composer test:bc
+```
+
+Repositories without tags are skipped. The BC checker is excluded from `composer setup` and `composer tools:update`
+because its locked dependencies do not support PHP 8.3 or 8.6. Update it with `composer tools:bc:update` under PHP 8.5.
+CI installs the same lockfile.

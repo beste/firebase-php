@@ -517,10 +517,13 @@ jobs:
           fetch-tags: true
           persist-credentials: false
 
-      - name: "Workaround: Configure Git safe.directory for roave-bc-check Docker action"
-        run: |
-          mkdir -p /home/runner/work/_temp/_github_home
-          printf "[safe]\n\tdirectory = /github/workspace\n" > /home/runner/work/_temp/_github_home/.gitconfig
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: "8.5"
+          extensions: simplexml
+          tools: composer
+          coverage: none
 
       - name: Check whether repository has tags
         id: check-tags
@@ -532,9 +535,13 @@ jobs:
             echo "has_tags=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install Roave BC Check
+        if: ${{ steps.check-tags.outputs.has_tags == 'true' }}
+        run: composer tools:bc:install
+
       - name: Run Roave BC Check
         if: ${{ steps.check-tags.outputs.has_tags == 'true' }}
-        uses: docker://nyholm/roave-bc-check-ga@sha256:a9d3d932a4d3ba6a5a0563ef3788918a538198ee9c061a153f9b55caa8d3625f
+        run: tools/.bc/vendor/bin/roave-backward-compatibility-check --format=github-actions
 
       - name: Skip Roave BC Check (no tags found)
         if: ${{ steps.check-tags.outputs.has_tags != 'true' }}

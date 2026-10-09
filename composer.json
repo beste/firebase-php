@@ -157,7 +157,7 @@
             "@lint",
             "@test:unit"
         ],
-        "test:bc": "docker run --rm -v \"$PWD\":/app nyholm/roave-bc-check",
+        "test:bc": "if [ -n \"$(git tag --list)\" ]; then XDEBUG_MODE=off tools/.bc/vendor/bin/roave-backward-compatibility-check; else echo \"Skipping BC check because no git tags were found.\"; fi",
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
             "mkdir -p build",
@@ -166,6 +166,8 @@
         "test:emulator": "XDEBUG_MODE=off php tests/bin/run-emulator-tests.php",
         "test:integration": "XDEBUG_MODE=off tools/phpunit --testsuite=integration",
         "test:unit": "XDEBUG_MODE=off tools/phpunit --testsuite=unit --colors=always --testdox",
+        "tools:bc:install": "XDEBUG_MODE=off composer --working-dir=tools/.bc install --no-interaction --no-progress --ansi",
+        "tools:bc:update": "XDEBUG_MODE=off composer --working-dir=tools/.bc update --no-interaction --no-progress --ansi",
         "tools:docs:update": "uv lock --project docs --upgrade",
         "tools:firebase:install": "npm ci --ignore-scripts --prefix tools/.firebase",
         "tools:firebase:update": "npm update --ignore-scripts --prefix tools/.firebase",
