@@ -129,7 +129,7 @@ final class MessagingApiExceptionConverterTest extends TestCase
         $converted = $this->converter->convertResponse($response);
 
         $this->assertInstanceOf(SenderIdMismatch::class, $converted);
-        $this->assertNotEmpty($converted->errors());
+        $this->assertNotSame([], $converted->errors());
     }
 
     public function testItConvertsASenderIdMismatchResponseIdentifiedByItsMessage(): void

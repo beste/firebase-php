@@ -241,7 +241,7 @@ final class MessagingTest extends IntegrationTestCase
 
         $this->assertTrue($report->hasFailures());
         $this->assertCount(2, $report->failures());
-        $this->assertEmpty($report->successes());
+        $this->assertCount(0, $report->successes());
 
         $items = $report->failures()->getItems();
 
@@ -378,7 +378,7 @@ final class MessagingTest extends IntegrationTestCase
         try {
             $this->messaging->send(['token' => self::$unknownToken]);
         } catch (NotFound $e) {
-            $this->assertNotEmpty($e->errors());
+            $this->assertNotSame([], $e->errors());
 
             throw $e;
         }
@@ -391,7 +391,7 @@ final class MessagingTest extends IntegrationTestCase
         try {
             $this->messaging->getAppInstance(self::$unknownToken);
         } catch (NotFound $e) {
-            $this->assertNotEmpty($e->errors());
+            $this->assertNotSame([], $e->errors());
 
             throw $e;
         }

@@ -113,7 +113,7 @@ final class TemplateTest extends UnitTestCase
             ->withRemovedParameter('foo')
         ;
 
-        $this->assertEmpty($template->parameters());
+        $this->assertSame([], $template->parameters());
     }
 
     public function testParameterGroupsCanBeRemoved(): void
@@ -123,7 +123,7 @@ final class TemplateTest extends UnitTestCase
             ->withRemovedParameterGroup('group')
         ;
 
-        $this->assertEmpty($template->parameterGroups());
+        $this->assertSame([], $template->parameterGroups());
     }
 
     /**

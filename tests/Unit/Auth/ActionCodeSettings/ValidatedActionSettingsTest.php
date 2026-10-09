@@ -33,7 +33,7 @@ final class ValidatedActionSettingsTest extends TestCase
 
     public function testItCanBeEmpty(): void
     {
-        $this->assertEmpty(ValidatedActionCodeSettings::empty()->toArray());
+        $this->assertSame([], ValidatedActionCodeSettings::empty()->toArray());
     }
 
     /**

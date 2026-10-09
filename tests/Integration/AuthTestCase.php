@@ -581,7 +581,7 @@ abstract class AuthTestCase extends IntegrationTestCase
 
         $this->assertSame(3, $result->successCount());
         $this->assertSame(0, $result->failureCount());
-        $this->assertEmpty($result->rawErrors());
+        $this->assertSame([], $result->rawErrors());
     }
 
     public function testSetCustomUserClaims(): void
@@ -791,7 +791,7 @@ abstract class AuthTestCase extends IntegrationTestCase
         $uid = $token->claims()->get('sub');
 
         $this->assertIsString($uid);
-        $this->assertNotEmpty($uid);
+        $this->assertNotSame('', $uid);
 
         // This should not throw an exception because the user exists
         $this->auth->getUser($uid);
