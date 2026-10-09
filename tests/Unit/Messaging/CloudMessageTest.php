@@ -29,9 +29,37 @@ final class CloudMessageTest extends TestCase
         $message = CloudMessage::new();
         $payload = Json::decode(Json::encode($message), true);
 
+        $this->assertArrayNotHasKey('fid', $payload);
         $this->assertArrayNotHasKey('token', $payload);
         $this->assertArrayNotHasKey('condition', $payload);
         $this->assertArrayNotHasKey('topic', $payload);
+    }
+
+    public function testItCanBeSentToAFirebaseInstallationId(): void
+    {
+        $message = CloudMessage::new()->withFid('fid');
+
+        $payload = Json::decode(Json::encode($message), true);
+
+        $this->assertSame(['fid' => 'fid'], $payload);
+    }
+
+    public function testItCanBeCreatedWithAFirebaseInstallationIdTarget(): void
+    {
+        $message = CloudMessage::fromArray(['fid' => 'fid']);
+
+        $payload = Json::decode(Json::encode($message), true);
+
+        $this->assertSame(['fid' => 'fid'], $payload);
+    }
+
+    public function testAChangedTargetReplacesThePreviousOne(): void
+    {
+        $message = CloudMessage::new()->withToken('token')->withFid('fid');
+
+        $payload = Json::decode(Json::encode($message), true);
+
+        $this->assertSame(['fid' => 'fid'], $payload);
     }
 
     public function testWithChangedFcmOptions(): void
@@ -162,8 +190,17 @@ final class CloudMessageTest extends TestCase
             MessageTarget::TOKEN => 'something',
             MessageTarget::TOPIC => 'something else',
         ]];
+        yield 'fid and token' => [[
+            MessageTarget::FID => 'something',
+            MessageTarget::TOKEN => 'something else',
+        ]];
+        yield 'fid and topic' => [[
+            MessageTarget::FID => 'something',
+            MessageTarget::TOPIC => 'something else',
+        ]];
         yield 'all of them' => [[
             MessageTarget::CONDITION => 'something',
+            MessageTarget::FID => 'something new',
             MessageTarget::TOKEN => 'something else',
             MessageTarget::TOPIC => 'something different',
         ]];

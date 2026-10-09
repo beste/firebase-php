@@ -24,6 +24,35 @@ Please update your remote URL if you have forked or cloned the repository.
   Custom token generation still requires signing credentials.
 * Simplified local integration test setup with helper scripts and a [testing guide](TESTING.md).
 
+### Messaging
+
+The FCM API [deprecated](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages) the
+`token` field of a message in favor of the new `fid` field, which targets a message at a
+[Firebase Installation ID](https://firebase.google.com/docs/cloud-messaging/android/get-started#access-firebase-installation-id).
+The `token` field remains fully supported until Google decommissions it, and during the transition
+period it also accepts Firebase Installation IDs - no immediate action is required.
+
+* Added `Kreait\Firebase\Messaging\CloudMessage::withFid()` and support for the `fid` key in
+  `CloudMessage::fromArray()`. Like the other targets, a FID replaces a previously set target.
+* Added the `Kreait\Firebase\Messaging\FirebaseInstallationId` and
+  `Kreait\Firebase\Messaging\FirebaseInstallationIds` value objects.
+* Added `Kreait\Firebase\Messaging\MessageTarget::FID`. A `fid` target can only occur for messages that
+  explicitly opted into it, so existing code that never sends to a FID is unaffected.
+* Added `Kreait\Firebase\Messaging\MessageTarget::ALL_TYPES`. `MessageTarget::TYPES` is left at its
+  previous value and does not include `FID`, because changing the value of a public constant would be a
+  backward compatibility break. The next major release will fold `ALL_TYPES` back into `TYPES`.
+* Added the `Kreait\Firebase\Contract\MessagingWithMulticast` interface with
+  `sendMulticastToRegistrationTokens()`, `sendMulticastToFids()` and `validateFids()`. `Messaging`
+  implements it in addition to `Kreait\Firebase\Contract\Messaging`, which is unchanged.
+* Added `validateFids()`, the Firebase Installation ID counterpart of `validateRegistrationTokens()`.
+  It returns the same `valid`/`unknown`/`invalid` keys.
+* `Messaging::sendMulticast()` is unchanged and now defers to `sendMulticastToRegistrationTokens()`.
+  A future major release will deprecate it in favor of the two explicit methods.
+* Added `MulticastSendReport::validFids()`, `unknownFids()` and `invalidFids()`.
+* `MulticastSendReport::unknownTokens()` and `invalidTokens()` now only return registration token targets,
+  like `validTokens()` already did.
+* `SendReport::messageTargetWasInvalid()` now also recognises FCM errors that name the `fid` field.
+
 ## 8.5.0 - 2026-09-13
 
 Added support for providing a PSR-14 event dispatcher to the factory.
