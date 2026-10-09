@@ -387,7 +387,7 @@ Tenant Awareness
 
 .. note::
     Multi-tenancy support requires Google Cloud's Identity Platform (GCIP). To learn more about GCIP,
-    including pricing and features, see the `GCIP documentation <https://cloud.google.com/security/products/identity-platform>`_.
+    including pricing and features, see the `GCIP documentation <https://docs.cloud.google.com/identity-platform/docs/>`_.
 
     Before multi-tenancy can be used on a Google Cloud Identity Platform project, tenants must be allowed on that
     project via the Cloud Console UI.

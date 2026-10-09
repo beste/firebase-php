@@ -7,7 +7,7 @@ namespace Kreait\Firebase\Valinor\Transformer;
 /**
  * @internal
  *
- * @see https://valinor.cuyz.io/latest/serialization/common-transformers-examples/#transforming-property-name-to-snake_case
+ * @see https://valinor-php.dev/2.2/serialization/common-transformers-examples/#transforming-property-name-to-snake_case
  */
 final class CamelToSnakeCaseTransformer
 {

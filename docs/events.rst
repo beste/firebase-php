@@ -14,7 +14,7 @@ dispatcher to the factory before creating a component:
 Events are dispatched synchronously after an operation has completed. Exceptions thrown by event listeners are
 passed to the caller.
 
-For example, with the `Symfony EventDispatcher <https://symfony.com/doc/current/components/event_dispatcher.html>`_:
+For example, with the `Symfony EventDispatcher <https://symfony.com/doc/current/event_dispatcher.html>`_:
 
 .. code-block:: php
 

@@ -123,7 +123,7 @@ using a persistent cache, you can avoid unnecessary API requests.
     $factory = $factory->withVerifierCache(new FilesystemCache());
 
 .. note::
-    The example uses the `Symfony Cache Component <https://symfony.com/doc/current/components/cache.html>`_, but you
+    The example uses the `Symfony Cache Component <https://symfony.com/doc/current/cache.html>`_, but you
     are, of course, free to use any other PSR-6 cache implementation.
 
 ********************
