@@ -35,15 +35,9 @@ final class DatabaseEmulatorTest extends FirebaseTestCase
             $this->markTestSkipped('The Database emulator must be running');
         }
 
-        $projectId = Util::getenv('TEST_FIREBASE_PROJECT_ID');
-
-        if ($projectId === null) {
-            $this->markTestSkipped('Emulator tests require a project ID');
-        }
-
         $this->factory = (new Factory())
-            ->withProjectId($projectId)
-            ->withDatabaseUri('https://'.$projectId.'-default-rtdb.firebaseio.com');
+            ->withProjectId('demo-firebase-php')
+            ->withDatabaseUri('https://demo-firebase-php-default-rtdb.firebaseio.com');
     }
 
     #[Test]

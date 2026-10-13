@@ -11,8 +11,7 @@ use RuntimeException;
 require_once __DIR__.'/../vendor/autoload.php';
 
 // Do not load tests/.env: emulator tests must never use a real signing key.
-$projectId = Util::getenv('TEST_FIREBASE_PROJECT_ID') ?? 'demo-firebase-php';
-Util::putenv('TEST_FIREBASE_PROJECT_ID', $projectId);
+$projectId = 'demo-firebase-php';
 Util::putenv('TEST_FIREBASE_RTDB_URI', 'https://'.$projectId.'-default-rtdb.firebaseio.com');
 Util::putenv('TEST_FIREBASE_TENANT_ID', 'demo-tenant');
 Util::putenv('TEST_REGISTRATION_TOKENS', '[]');
