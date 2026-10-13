@@ -55,7 +55,6 @@ use Throwable;
 
 use function array_filter;
 use function in_array;
-use function is_string;
 use function sprintf;
 use function trim;
 
@@ -323,7 +322,7 @@ final class Factory
      */
     public function createAppCheck(): Contract\AppCheck // @phpstan-ignore typePerfect.narrowReturnObjectType
     {
-        $projectId = $this->getProjectId();
+        $projectId = $this->getProjectIdWithCredentialDiscovery();
         $serviceAccount = $this->getServiceAccount();
 
         if (!($serviceAccount instanceof ServiceAccount)) {
@@ -361,7 +360,7 @@ final class Factory
      */
     public function createAuth(): Contract\Auth
     {
-        $projectId = $this->getProjectId();
+        $projectId = $this->getProjectIdWithCredentialDiscovery();
 
         $httpClient = Util::authEmulatorHost() !== null
             ? $this->createEmulatorHttpClient()
@@ -423,7 +422,7 @@ final class Factory
      */
     public function createRemoteConfig(): Contract\RemoteConfig
     {
-        $projectId = $this->getProjectId();
+        $projectId = $this->getProjectIdWithCredentialDiscovery();
 
         $http = $this->createApiClient([
             'base_uri' => "https://firebaseremoteconfig.googleapis.com/v1/projects/{$projectId}/remoteConfig",
@@ -431,7 +430,7 @@ final class Factory
 
         return new RemoteConfig(
             new RemoteConfig\ApiClient(
-                $this->getProjectId(),
+                $this->getProjectIdWithCredentialDiscovery(),
                 $http,
                 new RemoteConfigApiExceptionConverter($this->errorResponseParser),
             ),
@@ -444,7 +443,7 @@ final class Factory
      */
     public function createMessaging(): Contract\Messaging
     {
-        $projectId = $this->getProjectId();
+        $projectId = $this->getProjectIdWithCredentialDiscovery();
 
         $errorHandler = new MessagingApiExceptionConverter($this->clock);
         $requestFactory = new RequestFactory(
@@ -476,7 +475,15 @@ final class Factory
      */
     public function createFirestore(?string $databaseName = null): Contract\Firestore
     {
-        $config = $this->googleCloudClientConfig() + $this->firestoreClientConfig;
+        if (Util::firestoreEmulatorHost() !== null) {
+            $config = [
+                'projectId' => $this->getProjectIdWithoutCredentialDiscovery(),
+            ];
+        } else {
+            $config = $this->googleCloudClientConfig();
+        }
+
+        $config += $this->firestoreClientConfig;
 
         if ($databaseName !== null) {
             $config['database'] = $databaseName;
@@ -514,7 +521,7 @@ final class Factory
             throw new RuntimeException('Unable to create an API client without credentials');
         }
 
-        $cachePrefix = 'kreait_firebase_'.$this->getProjectId();
+        $cachePrefix = 'kreait_firebase_'.$this->getProjectIdWithCredentialDiscovery();
         $credentials = new FetchAuthTokenCache($credentials, ['prefix' => $cachePrefix], $this->authTokenCache ?? $this->defaultCache);
 
         try {
@@ -573,7 +580,7 @@ final class Factory
     private function googleCloudClientConfig(): array
     {
         $config = [
-            'projectId' => $this->getProjectId(),
+            'projectId' => $this->getProjectIdWithCredentialDiscovery(),
             'authCache' => $this->authTokenCache ?? $this->defaultCache,
         ];
 
@@ -591,7 +598,7 @@ final class Factory
     /**
      * @return non-empty-string
      */
-    private function getProjectId(): string
+    private function getProjectIdWithCredentialDiscovery(): string
     {
         if ($this->projectId !== null) {
             return $this->projectId;
@@ -604,12 +611,34 @@ final class Factory
 
         $projectId ??= $this->getServiceAccount()?->projectId;
 
-        if (is_string($projectId) && $projectId !== '') {
+        return $this->projectId = $this->resolveProjectId($projectId);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function getProjectIdWithoutCredentialDiscovery(): string
+    {
+        if ($this->projectId !== null) {
+            return $this->projectId;
+        }
+
+        return $this->projectId = $this->resolveProjectId(
+            $this->serviceAccount->projectId ?? Util::getenv('GOOGLE_CLOUD_PROJECT'),
+        );
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function resolveProjectId(?string $projectId): string
+    {
+        if ($projectId !== null && $projectId !== '') {
             if (preg_match('/^[a-z0-9-]{1,128}$/', $projectId) !== 1) {
                 throw new InvalidArgumentException(sprintf('Invalid project ID: "%s"', $projectId));
             }
 
-            return $this->projectId = $projectId;
+            return $projectId;
         }
 
         throw new RuntimeException('Unable to determine the Firebase Project ID');
@@ -620,7 +649,7 @@ final class Factory
      */
     private function getDatabaseUrl(): string
     {
-        return $this->databaseUrl ??= sprintf('https://%s.firebaseio.com', $this->getProjectId());
+        return $this->databaseUrl ??= sprintf('https://%s.firebaseio.com', $this->getProjectIdWithCredentialDiscovery());
     }
 
     /**
@@ -628,7 +657,7 @@ final class Factory
      */
     private function getStorageBucketName(): string
     {
-        return $this->defaultStorageBucket ??= sprintf('%s.appspot.com', $this->getProjectId());
+        return $this->defaultStorageBucket ??= sprintf('%s.appspot.com', $this->getProjectIdWithCredentialDiscovery());
     }
 
     private function createCustomTokenGenerator(): ?CustomTokenViaGoogleCredentials
@@ -644,7 +673,7 @@ final class Factory
 
     private function createIdTokenVerifier(): IdTokenVerifier
     {
-        $verifier = IdTokenVerifier::createWithProjectIdAndCache($this->getProjectId(), $this->verifierCache ?? $this->defaultCache);
+        $verifier = IdTokenVerifier::createWithProjectIdAndCache($this->getProjectIdWithCredentialDiscovery(), $this->verifierCache ?? $this->defaultCache);
 
         if ($this->tenantId === null) {
             return $verifier;
@@ -665,7 +694,7 @@ final class Factory
 
     private function createSessionCookieVerifier(): SessionCookieVerifier
     {
-        return SessionCookieVerifier::createWithProjectIdAndCache($this->getProjectId(), $this->verifierCache ?? $this->defaultCache);
+        return SessionCookieVerifier::createWithProjectIdAndCache($this->getProjectIdWithCredentialDiscovery(), $this->verifierCache ?? $this->defaultCache);
     }
 
     private function getServiceAccount(): ?ServiceAccount

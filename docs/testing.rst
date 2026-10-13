@@ -28,8 +28,7 @@ Using the Firebase Emulator Suite
 For an introduction to the Firebase Emulator suite, please visit the official documentation:
 `https://firebase.google.com/docs/emulator-suite <https://firebase.google.com/docs/emulator-suite>`_
 
-.. warning::
-    Only the Auth and Realtime Database Emulators are currently supported in this PHP SDK.
+The Auth, Realtime Database, and Firestore emulators are supported by this PHP SDK.
 
 To use the Firebase Emulator Suite, you must first `install it <https://firebase.google.com/docs/cli>`_.
 
@@ -115,3 +114,38 @@ Firebase Admin SDKs automatically connect to the Realtime Database emulator when
 .. code-block:: bash
 
     $ export FIREBASE_DATABASE_EMULATOR_HOST="localhost:9100"
+
+Firestore Emulator
+------------------
+
+Install ``google/cloud-firestore`` and the gRPC PHP extension as described in :doc:`cloud-firestore`.
+
+If not already present, create a ``firebase.json`` file in the root of your project and make sure that at least the
+following fields are set:
+
+.. code-block:: js
+
+    {
+      "emulators": {
+        "firestore": {
+          "port": 8080
+        }
+      }
+    }
+
+Set ``FIRESTORE_EMULATOR_HOST`` in the process environment, without a URL scheme. Google's Firestore client reads
+this variable directly; setting it only in ``$_SERVER`` or ``$_ENV`` does not enable the emulator.
+
+.. code-block:: bash
+
+    $ export FIRESTORE_EMULATOR_HOST="localhost:8080"
+    $ firebase emulators:start --only firestore --project demo-project
+
+Use the same project ID in the SDK and the emulator command. You can pass it to the Factory directly or set
+``GOOGLE_CLOUD_PROJECT``. No service account or Google credentials are required:
+
+.. code-block:: php
+
+    use Kreait\Firebase\Factory;
+
+    $database = (new Factory())->withProjectId('demo-project')->createFirestore()->database();

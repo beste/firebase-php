@@ -7,6 +7,7 @@
 - Node.js 20.12 or later
 - Google Chrome to generate registration tokens and FIDs
 - A Java Development Kit (JDK) for emulator tests (CI uses Java 21)
+- The gRPC PHP extension for Firestore emulator and live integration tests
 - `jq` for the service account command in step 13, or another way to compact the JSON
 
 From the project root, install the project dependencies and test tools:
@@ -83,7 +84,6 @@ composer setup
 16. Copy `tests/.env.dist` to `tests/.env` and fill in the values you obtained in the previous steps:
 
     ```dotenv
-    TEST_FIREBASE_PROJECT_ID="project id from step 2"
     TEST_FIREBASE_APP_ID="app id from step 3"
     TEST_FIREBASE_RTDB_URI="database URL from step 9"
     TEST_FIREBASE_TENANT_ID="tenant ID from step 12, optional"
@@ -115,17 +115,24 @@ After installing dependencies and tools with `composer setup`, run:
 composer test:emulator
 ```
 
-No Firebase project, service account, Firebase CLI login, or `tests/.env` is needed. The runner reads the exported
-`TEST_FIREBASE_PROJECT_ID`, defaulting to `demo-firebase-php` when unset. The Database namespace is
-`<project-id>-default-rtdb`. Use a `demo-` project ID to avoid Firebase CLI requests for a real project's configuration.
+No Firebase project, service account, Firebase CLI login, or `tests/.env` is needed. Emulator tests always use
+`demo-firebase-php`, avoiding Firebase CLI requests for a real project's configuration. The Database namespace is
+`demo-firebase-php-default-rtdb`.
 The emulator bootstrap ignores `tests/.env` and replaces inherited credentials with synthetic service account metadata
 and a freshly generated, test-only RSA signing key for custom token tests. Separate tests explicitly remove credentials
 to cover credentialless Auth and Database clients. Tenant tests use `demo-tenant`.
 
-The command starts the Auth and Realtime Database emulators on ports `9099` and `9100`, runs the shared integration
-test bodies in the `emulator` group, and stops the emulators afterward. It sets the emulator host variables for you.
+The command starts the Auth, Realtime Database, and Firestore emulators on ports `9099`, `9100`, and `8080`, runs
+the tests in the `emulator` group, and stops the emulators afterward. It sets the emulator host variables for you.
 The full live integration suite remains available through `composer test:integration` and the protected CI workflow.
 Emulator tests run in ordinary pull request CI, including external contributor PRs, without secrets.
+
+Firestore tests cover client construction and a document write/read/delete round trip with invalid credentials.
+The construction tests can also run separately without a running emulator or real credentials:
+
+```bash
+XDEBUG_MODE=off tools/phpunit tests/Integration/Factory/FirestoreEmulatorTest.php
+```
 
 Additional PHPUnit options can be passed through the runner, for example:
 
@@ -140,15 +147,18 @@ as CI does. The runner accepts the same PHPUnit options:
 XDEBUG_MODE=coverage php tests/bin/run-emulator-tests.php --coverage-clover=build/emulator-coverage.xml
 ```
 
-Install dependencies and let the Firebase CLI download the Database emulator while online before testing offline.
+Install dependencies and let the Firebase CLI download the Database and Firestore emulators while online before testing offline.
 Then disconnect external networking, leaving loopback available, and run `composer test:emulator` again. The tests must
 pass without access to Firebase or Google APIs. Firebase CLI update checks or telemetry may still attempt external
 connections; failures of those optional requests must not prevent the tests from passing.
 
 ## Coverage and pre-push checks
 
-Run `composer test:coverage` to generate coverage for the full PHPUnit suite, including integration tests. Before
-pushing, run `composer pre-push`, which fixes lint issues, runs static analysis, lint, unit tests, and a backward
+Run `composer test:coverage` to generate coverage for the full PHPUnit suite using the normal bootstrap. Live
+integration tests require a configured test project and credentials. This command does not start emulators; collect
+emulator coverage separately using the runner command above.
+
+Before pushing, run `composer pre-push`, which fixes lint issues, runs static analysis, lint, unit tests, and a backward
 compatibility check. Install and run the BC checker separately with PHP 8.5:
 
 ```bash

@@ -31,14 +31,8 @@ final class AuthEmulatorTest extends FirebaseTestCase
             $this->markTestSkipped('The Auth emulator must be running');
         }
 
-        $projectId = Util::getenv('TEST_FIREBASE_PROJECT_ID');
-
-        if ($projectId === null) {
-            $this->markTestSkipped('Emulator tests require a project ID');
-        }
-
         Util::rmenv('GOOGLE_APPLICATION_CREDENTIALS');
-        $this->auth = (new Factory())->withProjectId($projectId)->createAuth();
+        $this->auth = (new Factory())->withProjectId('demo-firebase-php')->createAuth();
     }
 
     #[Test]

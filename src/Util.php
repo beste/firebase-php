@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kreait\Firebase;
 
 use function getenv;
+use function in_array;
 use function is_string;
 use function putenv;
 
@@ -65,5 +66,16 @@ final class Util
     public static function rtdbEmulatorHost(): ?string
     {
         return self::getenv('FIREBASE_DATABASE_EMULATOR_HOST');
+    }
+
+    /**
+     * @return non-empty-string|null
+     */
+    public static function firestoreEmulatorHost(): ?string
+    {
+        // Google's Firestore client reads the process environment without trimming.
+        $host = getenv('FIRESTORE_EMULATOR_HOST');
+
+        return !in_array($host, [false, '', '0'], true) ? $host : null;
     }
 }
