@@ -56,6 +56,7 @@ return Architecture::define()
         'src/Storage.php',
         'src/Contract/Storage.php',
     ])
+    // The third argument excludes exceptions and converters already assigned to their specific component layers.
     ->layer('Exception', 'src/Exception/', [
         'src/Exception/AppCheck/',
         'src/Exception/AppCheckException.php',
@@ -82,6 +83,7 @@ return Architecture::define()
         'src/Util.php',
     ])
     ->layer('Factory', 'src/Factory.php')
+    // The third argument excludes files and directories already assigned to other layers.
     ->layer('Core', 'src/', [
         'src/AppCheck/',
         'src/Auth/',
@@ -106,6 +108,7 @@ return Architecture::define()
         'src/Util.php',
     ])
     ->layer('Tests', 'tests/')
+    // The third argument excludes contracts already assigned to their specific component layers.
     ->layer('Contract', 'src/Contract/', [
         'src/Contract/AppCheck.php',
         'src/Contract/AppCheckWithReplayProtection.php',
@@ -116,13 +119,6 @@ return Architecture::define()
         'src/Contract/Firestore.php',
         'src/Contract/Storage.php',
     ])
-    // PHPUnit is supplied as a PHAR, so it has no stable source directory.
-    ->layerPattern('PHPUnit', '/^PHPUnit\\\\/')
-    // AuthError mentions Factory::class only in a diagnostic message.
-    ->skipClassViolation(
-        Kreait\Firebase\Exception\Auth\AuthError::class,
-        Kreait\Firebase\Factory::class,
-    )
     // +Layer grants access to that layer and its allowed dependencies.
     ->ruleset([
         'Core' => [],
@@ -152,6 +148,6 @@ return Architecture::define()
             '+Valinor',
             'Contract',
         ],
-        'Tests' => ['+Factory', 'PHPUnit'],
+        'Tests' => ['+Factory'],
     ])
     ->withPresets(Preset::PSR4(), Preset::CODEQUALITY());
