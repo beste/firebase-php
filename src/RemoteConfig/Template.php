@@ -208,9 +208,9 @@ class Template implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        $conditions = array_map(fn(Condition $c): array => $c->jsonSerialize(), $this->conditions);
-        $parameters = array_map(fn(Parameter $p): array => $p->jsonSerialize(), $this->parameters);
-        $parameterGroups = array_map(fn(ParameterGroup $p): array => $p->jsonSerialize(), $this->parameterGroups);
+        $conditions = array_map(static fn(Condition $c): array => $c->jsonSerialize(), $this->conditions);
+        $parameters = array_map(static fn(Parameter $p): array => $p->jsonSerialize(), $this->parameters);
+        $parameterGroups = array_map(static fn(ParameterGroup $p): array => $p->jsonSerialize(), $this->parameterGroups);
 
         return [
             'conditions' => $conditions !== [] ? $conditions : null,

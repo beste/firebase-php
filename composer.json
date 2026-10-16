@@ -146,14 +146,21 @@
             "@dependencies:install",
             "@tools:phpstan:install",
             "@tools:rector:install",
+            "@tools:structarmed:install",
             "@tools:firebase:install",
             "@tools:messaging:install",
             "@tools:link"
+        ],
+        "structarmed": "XDEBUG_MODE=off tools/structarmed analyze",
+        "structarmed:fix": [
+            "XDEBUG_MODE=off tools/structarmed analyze --fix",
+            "XDEBUG_MODE=off tools/php-cs-fixer fix --ansi --diff --verbose"
         ],
         "test": "@test:all",
         "test:all": [
             "Composer\\Config::disableProcessTimeout",
             "@analyze",
+            "@structarmed",
             "@lint",
             "@test:unit"
         ],
@@ -175,7 +182,8 @@
         "tools:link": [
             "ln -snf phpunit tools/phpunit.phar",
             "ln -snf .phpstan/vendor/bin/phpstan tools/phpstan",
-            "ln -snf .rector/vendor/bin/rector tools/rector"
+            "ln -snf .rector/vendor/bin/rector tools/rector",
+            "ln -snf .structarmed/vendor/bin/structarmed tools/structarmed"
         ],
         "tools:messaging:install": "npm ci --prefix tools/messaging",
         "tools:messaging:update": "npm update --prefix tools/messaging",
@@ -189,11 +197,17 @@
             "XDEBUG_MODE=off composer --working-dir=tools/.rector update --no-interaction --no-progress --ansi",
             "XDEBUG_MODE=off composer --working-dir=tools/.rector bump --no-interaction --ansi"
         ],
+        "tools:structarmed:install": "XDEBUG_MODE=off composer --working-dir=tools/.structarmed install --no-interaction --no-progress --ansi",
+        "tools:structarmed:update": [
+            "XDEBUG_MODE=off composer --working-dir=tools/.structarmed update --no-interaction --no-progress --ansi",
+            "XDEBUG_MODE=off composer --working-dir=tools/.structarmed bump --no-interaction --ansi"
+        ],
         "tools:update": [
             "XDEBUG_MODE=off tools/phive --no-progress selfupdate",
             "XDEBUG_MODE=off tools/phive --no-progress update",
             "@tools:phpstan:update",
             "@tools:rector:update",
+            "@tools:structarmed:update",
             "@tools:firebase:update",
             "@tools:messaging:update",
             "@tools:docs:update",

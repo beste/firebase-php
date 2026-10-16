@@ -159,7 +159,7 @@ final class GuzzleHandler
             'providerId' => $action->provider(),
             'oauth_token_secret' => $action->oauthTokenSecret(),
             'nonce' => $action->rawNonce(),
-        ], fn(?string $value): bool => $value !== null);
+        ], static fn(?string $value): bool => $value !== null);
 
         $rawBody = array_filter([
             ...$this->prepareBody($action),
@@ -167,7 +167,7 @@ final class GuzzleHandler
             'returnIdpCredential' => true,
             'requestUri' => $action->requestUri(),
             'idToken' => $action->linkingIdToken(),
-        ], fn(mixed $value): bool => $value !== null);
+        ], static fn(mixed $value): bool => $value !== null);
 
         $body = Utils::streamFor(Json::encode($rawBody, JSON_FORCE_OBJECT));
 

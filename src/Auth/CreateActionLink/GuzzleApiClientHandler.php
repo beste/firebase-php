@@ -91,7 +91,7 @@ final readonly class GuzzleApiClientHandler
             'Content-Type' => 'application/json; charset=UTF-8',
             'Content-Length' => (string) $body->getSize(),
             'X-Firebase-Locale' => $action->locale(),
-        ], fn(?string $value): bool => $value !== null);
+        ], static fn(?string $value): bool => $value !== null);
 
         return new Request('POST', $url, $headers, $body);
     }

@@ -135,7 +135,7 @@ final readonly class ApiClient
         $urlParams = array_filter([
             'maxResults' => (string) $batchSize,
             'nextPageToken' => (string) $nextPageToken,
-        ], fn(string $value): bool => $value !== '');
+        ], static fn(string $value): bool => $value !== '');
 
         $url = $this->awareAuthResourceUrlBuilder->getUrl('/accounts:batchGet', $urlParams);
 

@@ -132,7 +132,7 @@ abstract class IntegrationTestCase extends FirebaseTestCase
         $tokens = Json::decode(Util::getenv('TEST_REGISTRATION_TOKENS') ?? '', true);
         $tokens = array_map(strval(...), $tokens);
         $tokens = array_map(trim(...), $tokens);
-        $tokens = array_filter($tokens, fn(string $token): bool => $token !== '');
+        $tokens = array_filter($tokens, static fn(string $token): bool => $token !== '');
 
         return array_values($tokens);
     }

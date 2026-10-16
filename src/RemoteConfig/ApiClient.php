@@ -103,7 +103,7 @@ final readonly class ApiClient
                 'endVersionNumber' => $lastVersionNumber,
                 'pageSize' => $pageSize,
                 'pageToken' => $nextPageToken,
-            ], fn(?string $value): bool => $value !== null),
+            ], static fn(?string $value): bool => $value !== null),
         ]);
     }
 

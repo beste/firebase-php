@@ -70,7 +70,7 @@ final class SourceTest extends TestCase
 
     public function testItSupportsIterables(): void
     {
-        $iterable = fn() => yield ['foo' => 'bar'];
+        $iterable = static fn() => yield ['foo' => 'bar'];
 
         $source = Source::parse($iterable());
 

@@ -16,8 +16,8 @@ final class DecodedAppCheckTokenTest extends UnitTestCase
     {
         $options = DecodedAppCheckToken::fromArray([
             'aud' => $aud = ['111111111111', 'project-id'],
-            'exp' => $exp = 1667915200,
-            'iat' => $iat = 1667915500,
+            'exp' => $exp = 1_667_915_200,
+            'iat' => $iat = 1_667_915_500,
             'iss' => $iss = 'https://firebaseappcheck.googleapis.com/111111111111',
             'sub' => $sub = '1:111111111111:android:0000000000000000000000',
         ]);

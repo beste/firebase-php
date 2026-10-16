@@ -42,7 +42,7 @@ final class TransactionTest extends DatabaseTestCase
         $ref = $this->ref->getChild(__FUNCTION__);
         $ref->set('value');
 
-        self::$db->runTransaction(function (Transaction $transaction) use ($ref): void {
+        self::$db->runTransaction(static function (Transaction $transaction) use ($ref): void {
             $transaction->snapshot($ref);
             $transaction->remove($ref);
         });

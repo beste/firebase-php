@@ -20,3 +20,4 @@
 /phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
 /rector.php export-ignore
+/structarmed.php export-ignore

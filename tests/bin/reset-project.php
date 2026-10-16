@@ -31,7 +31,7 @@ echo 'DONE'.PHP_EOL;
 echo 'Purging auth users... ';
 do {
     $users = iterator_to_array($auth->listUsers());
-    $uids = array_map(fn(UserRecord $record): string => $record->uid, $users);
+    $uids = array_map(static fn(UserRecord $record): string => $record->uid, $users);
 
     if (count($uids) > 0) {
         $auth->deleteUsers($uids, true);

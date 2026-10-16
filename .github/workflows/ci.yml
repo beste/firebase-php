@@ -12,6 +12,7 @@ on:
       - "firebase.json"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
+      - "structarmed.php"
       - "tools/**"
       - ".github/workflows/ci.yml"
       - ".github/workflows/secure-tests.yml"
@@ -27,6 +28,7 @@ on:
       - "firebase.json"
       - ".php-cs-fixer.dist.php"
       - "rector.php"
+      - "structarmed.php"
       - "tools/**"
       - ".github/workflows/ci.yml"
       - ".github/workflows/secure-tests.yml"
@@ -139,6 +141,54 @@ jobs:
 
       - name: Run PHPStan
         run: XDEBUG_MODE=off tools/phpstan analyse --no-progress --error-format=github
+
+  static-analysis-structarmed:
+    name: "StructArmed (PHP 8.5)"
+    needs:
+      - dependency-validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: "8.5"
+          tools: composer
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with Composer
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
+
+      - name: Cache StructArmed dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tools/.structarmed/vendor
+          key: ${{ runner.os }}-structarmed-tools-${{ hashFiles('tools/.structarmed/composer.lock') }}
+
+      - name: Install StructArmed dependencies
+        run: composer --working-dir=tools/.structarmed install --no-interaction --no-progress --ansi
+
+      - name: Run StructArmed
+        run: tools/structarmed analyze
 
   dependency-audit:
     name: Composer Audit
@@ -258,6 +308,7 @@ jobs:
     name: "PHP ${{ matrix.php }}, ${{ matrix.dependencies }} deps"
     needs:
       - static-analysis
+      - static-analysis-structarmed
       - lint
     runs-on: ubuntu-latest
     timeout-minutes: 10

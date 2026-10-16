@@ -1,0 +1,6 @@
+{
+    "type": "project",
+    "require-dev": {
+        "boundwize/structarmed": "^0.19"
+    }
+}

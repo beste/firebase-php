@@ -89,7 +89,7 @@ final readonly class RegistrationTokens implements Countable, IteratorAggregate
      */
     public function asStrings(): array
     {
-        return array_map(fn(RegistrationToken $token): string => $token->value(), $this->tokens);
+        return array_map(static fn(RegistrationToken $token): string => $token->value(), $this->tokens);
     }
 
     public function count(): int
