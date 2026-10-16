@@ -130,7 +130,8 @@ return Architecture::define()
         'Valinor' => ['+Exception'],
         'Request' => ['+Value'],
         'AppCheck' => ['+Http'],
-        'Auth' => ['+Http', '+Request', '+Util'],
+        // AuthError references Factory in its diagnostic message; its dependencies are not inherited.
+        'Auth' => ['+Http', '+Request', '+Util', 'Factory'],
         'Database' => ['+Http', '+Util'],
         'Messaging' => ['+Http', '+Util'],
         'RemoteConfig' => ['+Http', '+Util'],
