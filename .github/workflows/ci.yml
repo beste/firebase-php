@@ -349,7 +349,7 @@ jobs:
 
       - name: Setup cache environment
         id: extcache
-        uses: shivammathur/cache-extensions@38b47b5568926cb949d3c946e30cf8eab5326c39 # 1.15.5
+        uses: shivammathur/cache-extensions@d894929efeece5f8d386bd667369b321947064ad # 1.15.6
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.extensions }}
