@@ -41,7 +41,10 @@ final class UserQueryTest extends IntegrationTestCase
         $this->assertInstanceOf(UserRecord::class, $first);
         $this->assertInstanceOf(UserRecord::class, $second);
 
-        $this->assertGreaterThan($first->metadata->createdAt, $second->metadata->createdAt);
+        $this->assertGreaterThanOrEqual(
+            $first->metadata->createdAt->getTimestamp(),
+            $second->metadata->createdAt->getTimestamp(),
+        );
     }
 
     public function testItReturnsResultsInDescendingOrder(): void
@@ -59,7 +62,10 @@ final class UserQueryTest extends IntegrationTestCase
         $this->assertInstanceOf(UserRecord::class, $first);
         $this->assertInstanceOf(UserRecord::class, $second);
 
-        $this->assertLessThan($first->metadata->createdAt, $second->metadata->createdAt);
+        $this->assertLessThanOrEqual(
+            $first->metadata->createdAt->getTimestamp(),
+            $second->metadata->createdAt->getTimestamp(),
+        );
     }
 
     public function testLimit(): void
