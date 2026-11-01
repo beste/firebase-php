@@ -2,5 +2,34 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "local>beste/renovate-config:lang-php.json"
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "description": "Update Python in Read the Docs builds",
+            "managerFilePatterns": ["/^\\.readthedocs\\.ya?ml$/"],
+            "matchStrings": [
+                "(?:^|\\r?\\n)[ \\t]+python:[ \\t]+[\"']?(?<currentValue>\\d+\\.\\d+)[\"']?[ \\t]*(?:#[^\\r\\n]*)?(?:\\r?\\n|$)"
+            ],
+            "depNameTemplate": "python",
+            "datasourceTemplate": "python-version",
+            "versioningTemplate": "pep440"
+        }
+    ],
+    "packageRules": [
+        {
+            "description": "Update the docs Python minimum and build runtime together for manual review",
+            "matchFileNames": ["docs/pyproject.toml", ".readthedocs.yaml", ".readthedocs.yml"],
+            "matchManagers": ["pep621", "custom.regex"],
+            "matchDatasources": ["python-version"],
+            "matchPackageNames": ["python"],
+            "extractVersion": "^(?<version>\\d+\\.\\d+)(?:\\.\\d+)?$",
+            "rangeStrategy": "bump",
+            "groupName": "Docs Python",
+            "groupSlug": "docs-python",
+            "minimumReleaseAge": null,
+            "automerge": false,
+            "dependencyDashboardCategory": "📚 Docs"
+        }
     ]
 }
