@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efa149e5a2c0bfd22e9cb148ed802a9d",
+    "content-hash": "a924150937d4046e47a9d752cf91666a",
     "packages": [],
     "packages-dev": [
         {
@@ -244,11 +244,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.3.1",
+            "version": "2.3.4",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6155239b488e95d26d1ebd95c6b4bb294d7f09db",
-                "reference": "6155239b488e95d26d1ebd95c6b4bb294d7f09db",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f20ce6f3c82556cfcfc086b152445a12d1d64fff",
+                "reference": "f20ce6f3c82556cfcfc086b152445a12d1d64fff",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +304,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-08T21:09:11+00:00"
+            "time": "2026-10-28T22:38:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -665,16 +665,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.40",
+            "version": "12.5.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "76bd3198f16aeb375a4d5f3626471445aed0966e"
+                "reference": "1d6dbe748c079e5d2b03bca1be69d0f4cc52a578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/76bd3198f16aeb375a4d5f3626471445aed0966e",
-                "reference": "76bd3198f16aeb375a4d5f3626471445aed0966e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1d6dbe748c079e5d2b03bca1be69d0f4cc52a578",
+                "reference": "1d6dbe748c079e5d2b03bca1be69d0f4cc52a578",
                 "shasum": ""
             },
             "require": {
@@ -743,7 +743,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.40"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.42"
             },
             "funding": [
                 {
@@ -751,25 +751,25 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-10-16T05:55:07+00:00"
+            "time": "2026-10-27T04:15:03+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "2.7.0",
+            "version": "2.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "4d6a39b7fff302cac0ce90cd959a53c2f6a32776"
+                "reference": "12ddb68d34acb91bcf3d00302bf1c7c1b5840bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/4d6a39b7fff302cac0ce90cd959a53c2f6a32776",
-                "reference": "4d6a39b7fff302cac0ce90cd959a53c2f6a32776",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/12ddb68d34acb91bcf3d00302bf1c7c1b5840bd6",
+                "reference": "12ddb68d34acb91bcf3d00302bf1c7c1b5840bd6",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.3.0"
+                "phpstan/phpstan": "^2.3.4"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -800,7 +800,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.7.0"
+                "source": "https://github.com/rectorphp/rector/tree/2.8.3"
             },
             "funding": [
                 {
@@ -808,7 +808,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-06T08:46:45+00:00"
+            "time": "2026-10-29T05:51:41+00:00"
         },
         {
             "name": "sebastian/cli-parser",
