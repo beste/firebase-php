@@ -120,7 +120,7 @@ final readonly class MessagingApiExceptionConverter
 
                 $convertedError = new ServerUnavailable($message, previous: $previous);
 
-                if ($retryAfter !== null) {
+                if ($retryAfter instanceof DateTimeImmutable) {
                     $convertedError = $convertedError->withRetryAfter($retryAfter);
                 }
 
