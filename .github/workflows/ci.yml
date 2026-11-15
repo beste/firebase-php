@@ -90,9 +90,7 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
-        include:
-          - php: "8.6"
-            composer-options: "--ignore-platform-req=php+"
+          - "8.6"
 
     steps:
       - name: Checkout code
@@ -121,7 +119,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies with Composer
-        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc ${{ matrix.composer-options }}
+        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
 
       - name: Cache PHPStan dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -269,13 +267,10 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
+          - "8.6"
         dependencies:
           - "lowest"
           - "highest"
-        include:
-          - php: "8.6"
-            dependencies: "highest"
-            composer-options: "--ignore-platform-req=php+"
 
     steps:
       - name: Checkout code
@@ -308,9 +303,9 @@ jobs:
           DEPENDENCIES: ${{ matrix.dependencies }}
         run: |
           if [ "$DEPENDENCIES" = "lowest" ]; then
-            composer update --prefer-lowest --prefer-stable --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc ${{ matrix.composer-options }}
+            composer update --prefer-lowest --prefer-stable --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
           else
-            composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc ${{ matrix.composer-options }}
+            composer update --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
           fi
 
       - name: Setup problem matchers for PHP
