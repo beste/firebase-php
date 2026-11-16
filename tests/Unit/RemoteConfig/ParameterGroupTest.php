@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
+use Beste\Json;
 use Kreait\Firebase\RemoteConfig\Parameter;
 use Kreait\Firebase\RemoteConfig\ParameterGroup;
 use PHPUnit\Framework\TestCase;
@@ -26,5 +27,15 @@ final class ParameterGroupTest extends TestCase
 
         $this->assertContains($first, $group->parameters());
         $this->assertContains($second, $group->parameters());
+    }
+
+    /**
+     * @see https://github.com/beste/firebase-php/issues/1164
+     */
+    public function testAnEmptyGroupIsSerializedWithoutParameters(): void
+    {
+        $group = ParameterGroup::named('empty')->withDescription('description');
+
+        $this->assertSame('{"description":"description"}', Json::encode($group));
     }
 }

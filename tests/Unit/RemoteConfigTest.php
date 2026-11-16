@@ -65,6 +65,31 @@ final class RemoteConfigTest extends UnitTestCase
         $this->assertSame('3', (string) $rolledBack->activeTemplate->version()?->versionNumber());
     }
 
+    /**
+     * @see https://github.com/beste/firebase-php/issues/1164
+     */
+    public function testItSendsEmptyParameterGroupsWithoutParameters(): void
+    {
+        $handler = new MockHandler([
+            new Response(200, [], $this->templateResponse('1')),
+            new Response(200, ['ETag' => 'published-etag'], $this->templateResponse('2')),
+        ]);
+
+        $remoteConfig = new RemoteConfig(
+            new ApiClient('project-id', new Client(['handler' => $handler]), new RemoteConfigApiExceptionConverter(new ErrorResponseParser())),
+        );
+
+        // The Remote Config API omits "parameters" when a parameter group is empty
+        $template = Template::fromArray(['parameterGroups' => ['empty' => ['description' => 'Empty group']]]);
+        $expectedBody = '{"conditions":null,"parameters":null,"parameterGroups":{"empty":{"description":"Empty group"}}}';
+
+        $remoteConfig->validate($template);
+        $this->assertSame($expectedBody, (string) $handler->getLastRequest()?->getBody());
+
+        $remoteConfig->publish($template);
+        $this->assertSame($expectedBody, (string) $handler->getLastRequest()?->getBody());
+    }
+
     private function templateResponse(string $versionNumber, ?string $rollbackSource = null): string
     {
         $version = [

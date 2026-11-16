@@ -85,10 +85,16 @@ final class ParameterGroup implements JsonSerializable
             $parameters[$parameter->name()] = $parameter->toArray();
         }
 
-        return [
+        $array = [
             'description' => $this->description,
-            'parameters' => $parameters,
         ];
+
+        // An empty PHP array would be encoded as a JSON list, but the API expects a map
+        if ($parameters !== []) {
+            $array['parameters'] = $parameters;
+        }
+
+        return $array;
     }
 
     /**

@@ -12,6 +12,11 @@ Please update your remote URL if you have forked or cloned the repository.
 * Added Firebase Emulator support 
   ([#1151](https://github.com/beste/firebase-php/pull/1151))
 
+### Remote Config
+
+* Fixed validating and publishing templates that contain an empty parameter group
+  ([#1164](https://github.com/beste/firebase-php/issues/1164))
+
 ## 8.6.0 - 2026-10-09
 
 ### Remote Config
