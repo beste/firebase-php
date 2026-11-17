@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception\RemoteConfig\VersionMismatch;
 use Kreait\Firebase\Exception\RemoteConfig\VersionNotFound;
 use Kreait\Firebase\RemoteConfig\FindVersions;
 use Kreait\Firebase\RemoteConfig\Parameter;
+use Kreait\Firebase\RemoteConfig\ParameterGroup;
 use Kreait\Firebase\RemoteConfig\ParameterValueType;
 use Kreait\Firebase\RemoteConfig\Template;
 use Kreait\Firebase\RemoteConfig\UpdateOrigin;
@@ -335,6 +336,16 @@ final class RemoteConfigTest extends IntegrationTestCase
     {
         // This should not throw an exception
         $this->remoteConfig->validate(Template::new());
+    }
+
+    /**
+     * @see https://github.com/beste/firebase-php/issues/1164
+     */
+    #[DoesNotPerformAssertions]
+    public function testValidateTemplateWithEmptyParameterGroup(): void
+    {
+        // This should not throw an exception
+        $this->remoteConfig->validate(Template::new()->withParameterGroup(ParameterGroup::named('empty')));
     }
 
     private function templateWithTooManyParameters(): Template
