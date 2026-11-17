@@ -27,6 +27,11 @@ final class ParameterGroupTest extends TestCase
 
         $this->assertContains($first, $group->parameters());
         $this->assertContains($second, $group->parameters());
+
+        $this->assertSame(
+            '{"description":"description","parameters":{"first":{"valueType":"PARAMETER_VALUE_TYPE_UNSPECIFIED"},"second":{"valueType":"PARAMETER_VALUE_TYPE_UNSPECIFIED"}}}',
+            Json::encode($group),
+        );
     }
 
     /**
