@@ -40,7 +40,7 @@ final class CamelToSnakeCaseTransformerTest extends TestCase
 
         $result = $transformer(
             new class() {},
-            static fn() => $resultFromNext,
+            static fn(): mixed => $resultFromNext,
         );
 
         $this->assertSame($resultFromNext, $result);
