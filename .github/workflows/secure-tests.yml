@@ -228,6 +228,8 @@ jobs:
           TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
           TEST_FIREBASE_INSTALLATION_IDS: ${{secrets.TEST_FIREBASE_INSTALLATION_IDS}}
           XDEBUG_MODE: coverage
+          # Work around ext-grpc shutdown segfault on PHP 8.5 (https://github.com/grpc/grpc/issues/42242)
+          ZEND_DONT_UNLOAD_MODULES: "1"
         run: |
           mkdir -p build
           tools/phpunit --testsuite=integration --group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox

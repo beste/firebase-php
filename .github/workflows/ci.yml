@@ -412,6 +412,8 @@ jobs:
       - name: Run Emulator Tests
         env:
           XDEBUG_MODE: coverage
+          # Work around ext-grpc shutdown segfault on PHP 8.5 (https://github.com/grpc/grpc/issues/42242)
+          ZEND_DONT_UNLOAD_MODULES: "1"
         run: |
           mkdir -p build
           php tests/bin/run-emulator-tests.php --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml
