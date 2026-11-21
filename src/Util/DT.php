@@ -74,8 +74,8 @@ final class DT
 
         // microtime
         if (preg_match('@(?P<msec>^0?\.\d+) (?P<sec>\d+)$@', $value, $matches) === 1) {
-            $value = (string) ((float) $matches['sec'] + (float) $matches['msec']);
-            $result = DateTimeImmutable::createFromFormat('U.u', sprintf('%F', $value));
+            $timestamp = (float) $matches['sec'] + (float) $matches['msec'];
+            $result = DateTimeImmutable::createFromFormat('U.u', sprintf('%F', $timestamp));
 
             if ($result instanceof DateTimeImmutable) {
                 return $result->setTimezone($tz);
