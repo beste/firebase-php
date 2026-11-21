@@ -576,7 +576,7 @@ jobs:
     permissions:
       contents: read
       id-token: write # allow the reusable workflow to authenticate Codecov uploads
-    uses: ./.github/workflows/secure-tests.yml
+    uses: $/.github/workflows/secure-tests.yml
     secrets:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       TEST_FIREBASE_APP_ID: ${{ secrets.TEST_FIREBASE_APP_ID }}
