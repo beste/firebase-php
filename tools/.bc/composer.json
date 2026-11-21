@@ -3,6 +3,9 @@
         "roave/backward-compatibility-check": "^8.17"
     },
     "config": {
+        "platform": {
+            "php": "8.5.0"
+        },
         "sort-packages": true
     }
 }

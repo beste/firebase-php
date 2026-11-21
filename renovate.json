@@ -19,8 +19,8 @@
     "packageRules": [
         {
             "description": "Update the docs Python minimum and build runtime together for manual review",
-            "matchFileNames": ["docs/pyproject.toml", ".readthedocs.yaml", ".readthedocs.yml"],
-            "matchManagers": ["pep621", "custom.regex"],
+            "matchFileNames": ["docs/.python-version", "docs/pyproject.toml", ".readthedocs.yaml", ".readthedocs.yml"],
+            "matchManagers": ["pep621", "pyenv", "custom.regex"],
             "matchDatasources": ["python-version"],
             "matchPackageNames": ["python"],
             "extractVersion": "^(?<version>\\d+\\.\\d+)(?:\\.\\d+)?$",
