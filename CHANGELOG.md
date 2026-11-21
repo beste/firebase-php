@@ -9,6 +9,8 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+## 8.7.0 - 2026-11-21
+
 * Added Firebase Emulator support 
   ([#1151](https://github.com/beste/firebase-php/pull/1151))
 
