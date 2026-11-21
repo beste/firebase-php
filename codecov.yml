@@ -14,5 +14,3 @@ flag_management:
       carryforward: true
     - name: emulator
       carryforward: true
-    - name: grpc
-      carryforward: true

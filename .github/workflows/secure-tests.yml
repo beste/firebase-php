@@ -67,92 +67,8 @@ jobs:
       id-token: write # authenticate uploads to Codecov with OIDC
 
     env:
-      php-version: '8.5'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
-        with:
-          php-version: ${{ env.php-version }}
-          tools: composer, pecl
-          coverage: xdebug
-
-      - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${MATCHER_PATH}"
-        env:
-          MATCHER_PATH: ${{ runner.tool_cache }}/php.json
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        shell: bash
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache Composer cache directory
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies with Composer
-        run: composer install --no-interaction --no-progress --ansi --ignore-platform-req=ext-grpc
-
-      - name: Setup Problem Matchers for PHPUnit
-        run: echo "::add-matcher::${MATCHER_PATH}"
-        env:
-          MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
-
-      - name: Run Integration Tests
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-          TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
-          TEST_FIREBASE_RTDB_URI: ${{secrets.TEST_FIREBASE_RTDB_URI}}
-          TEST_FIREBASE_TENANT_ID: ${{secrets.TEST_FIREBASE_TENANT_ID}}
-          TEST_REGISTRATION_TOKENS: ${{secrets.TEST_REGISTRATION_TOKENS}}
-          TEST_FIREBASE_INSTALLATION_IDS: ${{secrets.TEST_FIREBASE_INSTALLATION_IDS}}
-          XDEBUG_MODE: coverage
-        run: |
-          mkdir -p build
-          tools/phpunit --testsuite=integration --exclude-group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox
-
-      - name: Upload integration test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
-        with:
-          use_oidc: true
-          flags: integration
-          report_type: test_results
-          files: ./build/test-report.xml
-          fail_ci_if_error: false
-
-      - name: Upload integration coverage to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
-        with:
-          use_oidc: true
-          files: ./build/coverage.xml
-          flags: integration
-          fail_ci_if_error: false
-
-  grpc-tests:
-    name: gRPC Tests (PHP 8.5)
-    needs:
-      - dependency-validation
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      id-token: write # authenticate uploads to Codecov with OIDC
-
-    env:
       key: cache-grpc
-      php-version: 8.5
+      php-version: '8.5'
       extensions: grpc
 
     steps:
@@ -191,18 +107,15 @@ jobs:
           MATCHER_PATH: ${{ runner.tool_cache }}/php.json
 
       - name: Verify gRPC extension
-        id: grpc
         run: php -m | grep -i '^grpc$'
 
       - name: Get Composer cache directory
         id: composer-cache
-        if: ${{ steps.grpc.outcome == 'success' }}
         shell: bash
         run: |
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        if: ${{ steps.grpc.outcome == 'success' }}
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -210,7 +123,6 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies with Composer
-        if: ${{ steps.grpc.outcome == 'success' }}
         run: composer install --no-interaction --no-progress --ansi
 
       - name: Setup Problem Matchers for PHPUnit
@@ -218,8 +130,7 @@ jobs:
         env:
           MATCHER_PATH: ${{ runner.tool_cache }}/phpunit.json
 
-      - name: Run gRPC Tests
-        if: ${{ steps.grpc.outcome == 'success' }}
+      - name: Run Integration Tests
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           TEST_FIREBASE_APP_ID: ${{secrets.TEST_FIREBASE_APP_ID}}
@@ -232,23 +143,23 @@ jobs:
           ZEND_DONT_UNLOAD_MODULES: "1"
         run: |
           mkdir -p build
-          tools/phpunit --testsuite=integration --group grpc --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox
+          tools/phpunit --testsuite=integration --coverage-clover=build/coverage.xml --log-junit=build/test-report.xml --testdox
 
-      - name: Upload gRPC test results to Codecov
-        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+      - name: Upload integration test results to Codecov
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
-          flags: grpc
+          flags: integration
           report_type: test_results
           files: ./build/test-report.xml
           fail_ci_if_error: false
 
-      - name: Upload gRPC coverage to Codecov
-        if: ${{ !cancelled() && steps.grpc.outcome == 'success' }}
+      - name: Upload integration coverage to Codecov
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
           files: ./build/coverage.xml
-          flags: grpc
+          flags: integration
           fail_ci_if_error: false
