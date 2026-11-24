@@ -6,7 +6,6 @@ namespace Kreait\Firebase\Valinor;
 
 use CuyZ\Valinor\Normalizer\ArrayNormalizer;
 use CuyZ\Valinor\Normalizer\Format;
-use CuyZ\Valinor\Normalizer\JsonNormalizer;
 use CuyZ\Valinor\NormalizerBuilder;
 use Kreait\Firebase\Valinor\Transformer\CamelToSnakeCaseTransformer;
 
@@ -15,17 +14,9 @@ use Kreait\Firebase\Valinor\Transformer\CamelToSnakeCaseTransformer;
  */
 final class Normalizer
 {
-    private const int DEFAULT_JSON_OPTIONS = JSON_UNESCAPED_SLASHES
-        | JSON_UNESCAPED_UNICODE
-        | JSON_UNESCAPED_SLASHES
-        | JSON_UNESCAPED_UNICODE
-    ;
-
     public NormalizerBuilder $normalizerBuilder;
 
     public ?ArrayNormalizer $arrayNormalizer = null;
-
-    public ?JsonNormalizer $jsonNormalizer = null;
 
     public function __construct(private readonly mixed $cache = null, ?NormalizerBuilder $builder = null)
     {
@@ -59,23 +50,6 @@ final class Normalizer
 
         $result = $this->arrayNormalizer->normalize($value);
         assert(is_array($result));
-
-        return $result;
-    }
-
-    /**
-     * @param int|null $options JSON encoding options
-     *
-     * @return non-empty-string
-     */
-    public function toJson(mixed $value, ?int $options = null): string
-    {
-        $options ??= self::DEFAULT_JSON_OPTIONS;
-
-        $this->jsonNormalizer ??=  $this->normalizerBuilder->normalizer(Format::json())->withOptions($options);
-
-        $result = $this->jsonNormalizer->normalize($value);
-        assert($result !== '');
 
         return $result;
     }
