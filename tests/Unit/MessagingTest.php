@@ -15,13 +15,13 @@ use Kreait\Firebase\Messaging\AppInstanceApiClient;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Event\MessagesSent;
 use Kreait\Firebase\Messaging\RequestFactory;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
  */
-final class MessagingTest extends UnitTestCase
+final class MessagingTest extends TestCase
 {
     public function testItDispatchesAnEventAfterSendingMessages(): void
     {

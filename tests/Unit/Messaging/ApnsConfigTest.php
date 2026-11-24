@@ -7,13 +7,13 @@ namespace Kreait\Firebase\Tests\Unit\Messaging;
 use Beste\Json;
 use Iterator;
 use Kreait\Firebase\Messaging\ApnsConfig;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class ApnsConfigTest extends UnitTestCase
+final class ApnsConfigTest extends TestCase
 {
     public function testItIsEmptyWhenItIsEmpty(): void
     {

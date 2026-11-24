@@ -7,12 +7,12 @@ namespace Kreait\Firebase\Tests\Integration;
 use Iterator;
 use Kreait\Firebase\Database\RuleSet;
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Tests\FirebaseTestCase;
 use Kreait\Firebase\Util;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
 use function in_array;
@@ -23,7 +23,7 @@ use function random_bytes;
  */
 #[Group('database-emulator')]
 #[Group('emulator')]
-final class DatabaseEmulatorTest extends FirebaseTestCase
+final class DatabaseEmulatorTest extends TestCase
 {
     private Factory $factory;
 

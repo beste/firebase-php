@@ -6,12 +6,12 @@ namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
 use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\RemoteConfig\TagColor;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class TagColorTest extends UnitTestCase
+final class TagColorTest extends TestCase
 {
     public function testCreateWithInvalidValue(): void
     {

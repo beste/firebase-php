@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Unit\AppCheck;
 
 use Kreait\Firebase\AppCheck\AppCheckToken;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class AppCheckTokenTest extends UnitTestCase
+final class AppCheckTokenTest extends TestCase
 {
     public function testCreateFromValidArray(): void
     {

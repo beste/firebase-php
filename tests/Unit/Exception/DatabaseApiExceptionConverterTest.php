@@ -16,13 +16,13 @@ use Kreait\Firebase\Exception\Database\PermissionDenied;
 use Kreait\Firebase\Exception\DatabaseApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\Tests\CreatesRequestExceptions;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class DatabaseApiExceptionConverterTest extends UnitTestCase
+final class DatabaseApiExceptionConverterTest extends TestCase
 {
     use CreatesRequestExceptions;
 

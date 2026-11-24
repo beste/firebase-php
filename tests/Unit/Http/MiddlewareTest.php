@@ -7,13 +7,13 @@ namespace Kreait\Firebase\Tests\Unit\Http;
 use Closure;
 use GuzzleHttp\Psr7\Request;
 use Kreait\Firebase\Http\Middleware;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * @internal
  */
-final class MiddlewareTest extends UnitTestCase
+final class MiddlewareTest extends TestCase
 {
     private Request $request;
 

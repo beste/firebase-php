@@ -6,12 +6,12 @@ namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
 use Kreait\Firebase\RemoteConfig\Condition;
 use Kreait\Firebase\RemoteConfig\ConditionalValue;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class ConditionalValueTest extends UnitTestCase
+final class ConditionalValueTest extends TestCase
 {
     public function testCreate(): void
     {
