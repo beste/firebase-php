@@ -7,6 +7,7 @@ namespace Kreait\Firebase\Tests;
 use Beste\Json;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Util;
+use PHPUnit\Framework\TestCase;
 
 use function array_rand;
 use function bin2hex;
@@ -18,7 +19,7 @@ use function sleep;
 /**
  * @internal
  */
-abstract class IntegrationTestCase extends FirebaseTestCase
+abstract class IntegrationTestCase extends TestCase
 {
     protected static Factory $factory;
 

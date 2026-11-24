@@ -10,22 +10,9 @@ language = 'en'
 
 # Extensions
 extensions = [
-    "myst_parser",
-    "sphinx_design",
     "sphinx_copybutton",
-    "sphinx_inline_tabs",        # Tabbed content blocks
     "sphinxext.opengraph",
     "sphinx_sitemap",
-]
-
-# MyST parser configuration
-myst_enable_extensions = [
-    "colon_fence",
-    "deflist",
-    "fieldlist",
-    "attrs_block",
-    "attrs_inline",
-    "linkify",
 ]
 
 # Build configuration

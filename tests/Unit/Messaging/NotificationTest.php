@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Unit\Messaging;
 
 use Kreait\Firebase\Messaging\Notification;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class NotificationTest extends UnitTestCase
+final class NotificationTest extends TestCase
 {
     public function testCreateWithEmptyStrings(): void
     {

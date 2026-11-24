@@ -28,16 +28,16 @@ use Kreait\Firebase\Exception\Auth\WeakPassword;
 use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\Tests\CreatesRequestExceptions;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 
 /**
  * @internal
  */
-final class AuthApiExceptionConverterTest extends UnitTestCase
+final class AuthApiExceptionConverterTest extends TestCase
 {
     use CreatesRequestExceptions;
 

@@ -22,13 +22,13 @@ use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Http\ErrorResponseParser;
 use Kreait\Firebase\JWT\IdTokenVerifier;
 use Kreait\Firebase\JWT\SessionCookieVerifier;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
  */
-final class AuthTest extends UnitTestCase
+final class AuthTest extends TestCase
 {
     public function testItDispatchesEventsAfterAuthChanges(): void
     {

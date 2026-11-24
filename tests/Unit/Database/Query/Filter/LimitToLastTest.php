@@ -7,12 +7,12 @@ namespace Kreait\Firebase\Tests\Unit\Database\Query\Filter;
 use GuzzleHttp\Psr7\Uri;
 use Kreait\Firebase\Database\Query\Filter\LimitToLast;
 use Kreait\Firebase\Exception\InvalidArgumentException;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class LimitToLastTest extends UnitTestCase
+final class LimitToLastTest extends TestCase
 {
     public function testCreateWithInvalidValue(): void
     {

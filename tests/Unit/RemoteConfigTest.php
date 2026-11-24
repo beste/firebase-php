@@ -16,13 +16,13 @@ use Kreait\Firebase\RemoteConfig\Event\TemplatePublished;
 use Kreait\Firebase\RemoteConfig\Event\TemplateRolledBack;
 use Kreait\Firebase\RemoteConfig\Template;
 use Kreait\Firebase\RemoteConfig\VersionNumber;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
  */
-final class RemoteConfigTest extends UnitTestCase
+final class RemoteConfigTest extends TestCase
 {
     public function testItDispatchesEventsAfterPublishingAndRollingBackTemplates(): void
     {

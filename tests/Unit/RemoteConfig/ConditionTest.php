@@ -6,13 +6,13 @@ namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
 use Kreait\Firebase\RemoteConfig\Condition;
 use Kreait\Firebase\RemoteConfig\TagColor;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class ConditionTest extends UnitTestCase
+final class ConditionTest extends TestCase
 {
     public function testItCanBeNamed(): void
     {

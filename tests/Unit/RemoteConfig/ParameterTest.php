@@ -6,12 +6,12 @@ namespace Kreait\Firebase\Tests\Unit\RemoteConfig;
 
 use Kreait\Firebase\RemoteConfig\Parameter;
 use Kreait\Firebase\RemoteConfig\ParameterValue;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class ParameterTest extends UnitTestCase
+final class ParameterTest extends TestCase
 {
     public function testCreateWithImplicitDefaultValue(): void
     {

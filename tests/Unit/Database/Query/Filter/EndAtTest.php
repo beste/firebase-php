@@ -7,13 +7,13 @@ namespace Kreait\Firebase\Tests\Unit\Database\Query\Filter;
 use GuzzleHttp\Psr7\Uri;
 use Iterator;
 use Kreait\Firebase\Database\Query\Filter\EndAt;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class EndAtTest extends UnitTestCase
+final class EndAtTest extends TestCase
 {
     #[DataProvider('valueProvider')]
     public function testModifyUri(mixed $given, string $expected): void

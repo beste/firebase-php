@@ -7,15 +7,15 @@ namespace Kreait\Firebase\Tests\Unit\Database\Query\Sorter;
 use GuzzleHttp\Psr7\Uri;
 use Iterator;
 use Kreait\Firebase\Database\Query\Sorter\OrderByValue;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 use function rawurlencode;
 
 /**
  * @internal
  */
-final class OrderByValueTest extends UnitTestCase
+final class OrderByValueTest extends TestCase
 {
     private OrderByValue $sorter;
 

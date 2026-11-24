@@ -7,9 +7,9 @@ namespace Kreait\Firebase\Tests\Unit\Messaging;
 use Iterator;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Kreait\Firebase\Messaging\WebPushConfig;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
  * @phpstan-import-type WebPushConfigShape from WebPushConfig
  * @phpstan-import-type WebPushHeadersShape from WebPushConfig
  */
-final class WebPushConfigTest extends UnitTestCase
+final class WebPushConfigTest extends TestCase
 {
     /**
      * @param array<string, mixed> $data

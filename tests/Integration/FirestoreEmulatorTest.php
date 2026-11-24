@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Tests\Integration;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Tests\FirebaseTestCase;
 use Kreait\Firebase\Util;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[RequiresPhpExtension('grpc')]
 #[RunTestsInSeparateProcesses]
 #[PreserveGlobalState(false)]
-final class FirestoreEmulatorTest extends FirebaseTestCase
+final class FirestoreEmulatorTest extends TestCase
 {
     public function testItWorksWithoutUsableCredentials(): void
     {

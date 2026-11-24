@@ -14,14 +14,14 @@ use Kreait\Firebase\RemoteConfig\ParameterValue;
 use Kreait\Firebase\RemoteConfig\TagColor;
 use Kreait\Firebase\RemoteConfig\Template;
 use Kreait\Firebase\RemoteConfig\Version;
-use Kreait\Firebase\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 use function array_map;
 
 /**
  * @internal
  */
-final class TemplateTest extends UnitTestCase
+final class TemplateTest extends TestCase
 {
     public function testGetDefaultEtag(): void
     {

@@ -8,16 +8,16 @@ use Beste\Json;
 use Iterator;
 use Kreait\Firebase\Exception\Messaging\InvalidArgument;
 use Kreait\Firebase\Messaging\AndroidConfig;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  *
  * @phpstan-import-type AndroidConfigShape from AndroidConfig
  */
-final class AndroidConfigTest extends UnitTestCase
+final class AndroidConfigTest extends TestCase
 {
     public function testItIsEmptyWhenItIsEmpty(): void
     {

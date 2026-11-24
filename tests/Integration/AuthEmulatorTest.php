@@ -6,11 +6,11 @@ namespace Kreait\Firebase\Tests\Integration;
 
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Tests\FirebaseTestCase;
 use Kreait\Firebase\Util;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
 use function random_bytes;
@@ -19,7 +19,7 @@ use function random_bytes;
  * @internal
  */
 #[Group('emulator')]
-final class AuthEmulatorTest extends FirebaseTestCase
+final class AuthEmulatorTest extends TestCase
 {
     private Auth $auth;
 

@@ -6,13 +6,13 @@ namespace Kreait\Firebase\Tests\Unit\Auth;
 
 use Iterator;
 use Kreait\Firebase\Auth\SignInResult;
-use Kreait\Firebase\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class SignInResultTest extends UnitTestCase
+final class SignInResultTest extends TestCase
 {
     /**
      * @param array<string, mixed> $input

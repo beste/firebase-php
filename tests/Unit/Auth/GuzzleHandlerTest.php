@@ -14,15 +14,15 @@ use Kreait\Firebase\Auth\SignIn;
 use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
 use Kreait\Firebase\Auth\SignIn\GuzzleHandler;
 use Kreait\Firebase\Auth\SignInAnonymously;
-use Kreait\Firebase\Tests\UnitTestCase;
-
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+use PHPUnit\Framework\TestCase;
 use const JSON_FORCE_OBJECT;
 
 /**
  * @internal
  */
-final class GuzzleHandlerTest extends UnitTestCase
+final class GuzzleHandlerTest extends TestCase
 {
     private MockHandler $httpResponses;
 

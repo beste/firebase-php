@@ -7,14 +7,14 @@ namespace Kreait\Firebase\Tests\Unit\Database;
 use InvalidArgumentException;
 use Iterator;
 use Kreait\Firebase\Database\UrlBuilder;
-use Kreait\Firebase\Tests\UnitTestCase;
 use Kreait\Firebase\Util;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class UrlBuilderTest extends UnitTestCase
+final class UrlBuilderTest extends TestCase
 {
     protected function tearDown(): void
     {
