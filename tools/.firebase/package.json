@@ -3,5 +3,8 @@
     "private": true,
     "devDependencies": {
         "firebase-tools": "^15.28.2"
+    },
+    "overrides": {
+        "minimatch@>=7.0.0 <11.0.1": "^11.0.9"
     }
 }
