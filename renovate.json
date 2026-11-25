@@ -18,6 +18,22 @@
     ],
     "packageRules": [
         {
+            "description": "Automerge docs Python tooling minor and patch updates",
+            "matchFileNames": ["docs/pyproject.toml", "docs/uv.lock"],
+            "matchManagers": ["pep621"],
+            "matchUpdateTypes": ["minor", "patch"],
+            "automerge": true,
+            "dependencyDashboardCategory": "📚 Docs"
+        },
+        {
+            "description": "Require manual merge for pre-1.0 docs Python tooling minor updates",
+            "matchFileNames": ["docs/pyproject.toml", "docs/uv.lock"],
+            "matchManagers": ["pep621"],
+            "matchCurrentVersion": "/^[~^>=<\\s]*v?0\\./",
+            "matchUpdateTypes": ["minor"],
+            "automerge": false
+        },
+        {
             "description": "Update the docs Python minimum and build runtime together for manual review",
             "matchFileNames": ["docs/.python-version", "docs/pyproject.toml", ".readthedocs.yaml", ".readthedocs.yml"],
             "matchManagers": ["pep621", "pyenv", "custom.regex"],
