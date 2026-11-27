@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Kreait\Firebase\Tests\Integration;
 
+use Kreait\Firebase\AppCheck\DebugToken;
 use Kreait\Firebase\Contract\AppCheck;
+use Kreait\Firebase\Contract\AppCheckWithDebugTokens;
 use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
 use Kreait\Firebase\Tests\IntegrationTestCase;
+
+use function array_map;
 
 /**
  * @internal
  */
 final class AppCheckTest extends IntegrationTestCase
 {
-    public AppCheck&AppCheckWithReplayProtection $appCheck;
+    public AppCheck&AppCheckWithReplayProtection&AppCheckWithDebugTokens $appCheck;
 
     protected function setUp(): void
     {
@@ -72,5 +76,27 @@ final class AppCheckTest extends IntegrationTestCase
         $this->assertSame(self::$appId, $firstVerification->token->app_id);
         $this->assertFalse($firstVerification->alreadyConsumed);
         $this->assertTrue($secondVerification->alreadyConsumed);
+    }
+
+    public function testDebugTokenLifecycle(): void
+    {
+        $debugToken = $this->appCheck->createDebugToken(self::$appId, 'Integration Test');
+
+        try {
+            $this->assertNotNull($debugToken->token);
+            $this->assertSame('Integration Test', $debugToken->displayName);
+
+            $fetched = $this->appCheck->getDebugToken(self::$appId, $debugToken->id);
+            $this->assertSame($debugToken->name, $fetched->name);
+            $this->assertNull($fetched->token);
+
+            $names = array_map(static fn(DebugToken $token): string => $token->name, $this->appCheck->listDebugTokens(self::$appId));
+            $this->assertContains($debugToken->name, $names);
+
+            $updated = $this->appCheck->updateDebugToken(self::$appId, $debugToken->id, 'Integration Test (renamed)');
+            $this->assertSame('Integration Test (renamed)', $updated->displayName);
+        } finally {
+            $this->appCheck->deleteDebugToken(self::$appId, $debugToken->id);
+        }
     }
 }

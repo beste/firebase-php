@@ -318,7 +318,7 @@ final class Factory
     }
 
     /**
-     * @return Contract\AppCheck&Contract\AppCheckWithReplayProtection
+     * @return Contract\AppCheck&Contract\AppCheckWithReplayProtection&Contract\AppCheckWithDebugTokens
      */
     public function createAppCheck(): Contract\AppCheck // @phpstan-ignore typePerfect.narrowReturnObjectType
     {

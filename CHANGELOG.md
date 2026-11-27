@@ -9,6 +9,12 @@ Please update your remote URL if you have forked or cloned the repository.
 
 ## Unreleased
 
+### App Check
+
+* Added support for managing App Check debug tokens: creating, listing, getting, updating and deleting
+  debug tokens. The methods are exposed through the transitional
+  `Kreait\Firebase\Contract\AppCheckWithDebugTokens` contract.
+
 ## 8.7.0 - 2026-11-21
 
 * Added Firebase Emulator support 

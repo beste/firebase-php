@@ -82,3 +82,39 @@ See https://firebase.google.com/docs/app-check/custom-provider for more informat
 .. code-block:: php
 
     $token = $appCheck->createToken("com.example.app-id");
+
+.. _debug-tokens:
+
+************
+Debug Tokens
+************
+
+Debug tokens let apps running in debug environments, emulators or CI obtain valid App Check tokens without
+a real attestation provider. You can register and manage debug tokens with the SDK; the app then uses the
+secret with the App Check debug provider. See https://firebase.google.com/docs/app-check/web/debug-provider
+for more information.
+
+.. note::
+   Debug token support is exposed through ``Kreait\Firebase\Contract\AppCheckWithDebugTokens`` as a
+   transitional API to preserve backwards compatibility in the current major version.
+
+.. code-block:: php
+
+    use Kreait\Firebase\Contract\AppCheck;
+    use Kreait\Firebase\Contract\AppCheckWithDebugTokens;
+
+    /** @var AppCheck&AppCheckWithDebugTokens $appCheck */
+    $appId = '1:123456789:ios:abcdef';
+
+    // Register a debug token. If no secret is given, a random UUID4 is generated.
+    // The secret is only available on the returned object; the API never returns it again.
+    // Display names can be at most 50 characters long.
+    $debugToken = $appCheck->createDebugToken($appId, 'CI');
+    $secret = $debugToken->token; // Hand this to the app's App Check debug provider
+
+    // Manage registered debug tokens (an app can have at most 20)
+    $tokens = $appCheck->listDebugTokens($appId);
+    $debugToken = $appCheck->getDebugToken($appId, $debugToken->id);
+    $debugToken = $appCheck->updateDebugToken($appId, $debugToken->id, 'CI (renamed)');
+    $appCheck->deleteDebugToken($appId, $debugToken->id);
+
