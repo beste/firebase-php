@@ -18,6 +18,7 @@ use function is_bool;
  * @internal
  *
  * @phpstan-import-type AppCheckTokenShape from AppCheckToken
+ * @phpstan-import-type DebugTokenShape from DebugToken
  */
 final readonly class ApiClient
 {
@@ -47,6 +48,94 @@ final readonly class ApiClient
         $decoded = Json::decode((string) $response->getBody(), true);
 
         return $decoded;
+    }
+
+    /**
+     * @throws AppCheckException
+     *
+     * @return DebugTokenShape
+     */
+    public function createDebugToken(string $appId, string $displayName, #[SensitiveParameter] string $token): array
+    {
+        $response = $this->post('apps/'.$appId.'/debugTokens', [
+            'headers' => [
+                'Content-Type' => 'application/json; UTF-8',
+            ],
+            'body' => Json::encode([
+                'displayName' => $displayName,
+                'token' => $token,
+            ]),
+        ]);
+
+        /** @var DebugTokenShape $decoded */
+        $decoded = Json::decode((string) $response->getBody(), true);
+
+        return $decoded;
+    }
+
+    /**
+     * @throws AppCheckException
+     *
+     * @return DebugTokenShape
+     */
+    public function getDebugToken(string $appId, string $debugTokenId): array
+    {
+        $response = $this->request('GET', 'apps/'.$appId.'/debugTokens/'.$debugTokenId);
+
+        /** @var DebugTokenShape $decoded */
+        $decoded = Json::decode((string) $response->getBody(), true);
+
+        return $decoded;
+    }
+
+    /**
+     * @throws AppCheckException
+     *
+     * @return array{debugTokens?: list<DebugTokenShape>, nextPageToken?: string}
+     */
+    public function listDebugTokens(string $appId, ?string $pageToken = null): array
+    {
+        $options = $pageToken !== null && $pageToken !== '' ? ['query' => ['pageToken' => $pageToken]] : [];
+
+        $response = $this->request('GET', 'apps/'.$appId.'/debugTokens', $options);
+
+        /** @var array{debugTokens?: list<DebugTokenShape>, nextPageToken?: string} $decoded */
+        $decoded = Json::decode((string) $response->getBody(), true);
+
+        return $decoded;
+    }
+
+    /**
+     * @throws AppCheckException
+     *
+     * @return DebugTokenShape
+     */
+    public function updateDebugToken(string $appId, string $debugTokenId, string $displayName): array
+    {
+        $response = $this->request('PATCH', 'apps/'.$appId.'/debugTokens/'.$debugTokenId, [
+            'headers' => [
+                'Content-Type' => 'application/json; UTF-8',
+            ],
+            'query' => [
+                'updateMask' => 'displayName',
+            ],
+            'body' => Json::encode([
+                'displayName' => $displayName,
+            ]),
+        ]);
+
+        /** @var DebugTokenShape $decoded */
+        $decoded = Json::decode((string) $response->getBody(), true);
+
+        return $decoded;
+    }
+
+    /**
+     * @throws AppCheckException
+     */
+    public function deleteDebugToken(string $appId, string $debugTokenId): void
+    {
+        $this->request('DELETE', 'apps/'.$appId.'/debugTokens/'.$debugTokenId);
     }
 
     /**
@@ -87,10 +176,21 @@ final readonly class ApiClient
      */
     private function post(string $path, ?array $options = null): ResponseInterface
     {
+        return $this->request('POST', $path, $options);
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @param non-empty-string $path
+     * @param array<string, mixed>|null $options
+     * @throws AppCheckException
+     */
+    private function request(string $method, string $path, ?array $options = null): ResponseInterface
+    {
         $options ??= [];
 
         try {
-            return $this->client->request('POST', $path, $options);
+            return $this->client->request($method, $path, $options);
         } catch (Throwable $e) {
             throw $this->errorHandler->convertException($e);
         }
